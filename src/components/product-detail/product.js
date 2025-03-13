@@ -350,7 +350,6 @@ const Product = () => {
                         </div>
                       </div>
                     </div>
-                    yyy
                   </div>
                 </div>
               </div>
