@@ -14,31 +14,32 @@ const Cart = () => {
     const fetchCart = async () => {
       try {
         const response = await axios.get("/api/cart");
-        setCartItems(response.data.items || []);
+        const items = response.data.items || [];
+        setCartItems(items);
 
-        // Fetch product details
-        const productRequests = response.data.items.map((item) =>
-          axios
-            .get(`/api/product/${item.productId}`)
-            .then((res) => res.data)
-            .catch(() => {
-              console.error(
-                `Failed to fetch product ${item.productId}, using mock data.`
-              );
-              return { ...mockProductData, id: item.productId };
-            })
-        );
+        if (items.length > 0) {
+          const productRequests = items.map((item) =>
+            axios
+              .get(`/api/product/${item.productId}`)
+              .then((res) => res.data)
+              .catch(() => {
+                console.error(
+                  `Failed to fetch product ${item.productId}, using mock data.`
+                );
+                return { ...mockProductData, id: item.productId };
+              })
+          );
 
-        const productsData = await Promise.all(productRequests);
-        const productMap = productsData.reduce((acc, product) => {
-          acc[product.id] = product;
-          return acc;
-        }, {});
-
-        setProducts(productMap);
+          const productsData = await Promise.all(productRequests);
+          const productMap = productsData.reduce((acc, product) => {
+            acc[product.id] = product;
+            return acc;
+          }, {});
+          setProducts(productMap);
+        }
       } catch (err) {
         console.error("Error fetching cart:", err);
-        setError("Failed to load cart");
+        setError("Failed to load cart. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -55,8 +56,7 @@ const Cart = () => {
           : item
       );
       setCartItems(updatedItems);
-
-      await axios.post("/api/cart", { productId, quantity: change });
+      await axios.post("/api/cart/update", { productId, quantity: change });
     } catch (err) {
       console.error("Error updating cart:", err);
     }
@@ -71,8 +71,17 @@ const Cart = () => {
     }
   };
 
+  const handleProceedToCheckout = async () => {
+    try {
+      await axios.post("/api/checkout", { items: cartItems, products });
+      window.location.href = "/checkout";
+    } catch (error) {
+      console.error("Error sending cart data to checkout:", error);
+    }
+  };
+
   if (loading) return <div>Loading cart...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + (products[item.productId]?.price || 0) * item.quantity,
@@ -97,97 +106,105 @@ const Cart = () => {
 
       <section className="cart-section section-b-space">
         <div className="container">
-          <div className="table-responsive">
-            <table className="table cart-table">
-              <thead>
-                <tr className="table-head">
-                  <th>Image</th>
-                  <th>Product Name</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Total</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              {cartItems.map((item) => {
-                const product = products[item.productId] || mockProductData;
-
-                return (
-                  <tbody key={item.productId}>
-                    <tr>
-                      <td>
-                        <Link href={`/product/${item.productId}`}>
-                          <Image
-                            src={product.images?.[0] || "/placeholder.jpg"}
-                            className="img-fluid"
-                            alt={product.name}
-                            width={100}
-                            height={100}
-                          />
-                        </Link>
-                      </td>
-                      <td>
-                        <Link href={`/product/${item.productId}`}>
-                          {product.name}
-                        </Link>
-                      </td>
-                      <td className="table-price">
-                        <h2>${product.price?.toFixed(2)}</h2>
-                      </td>
-                      <td>
-                        <div className="qty-box">
-                          <div className="input-group qty-container">
-                            <button
-                              className="btn qty-btn-minus"
-                              onClick={() => updateQuantity(item.productId, -1)}
-                            >
-                              <i className="ri-arrow-left-s-line"></i>
-                            </button>
-                            <input
-                              type="number"
-                              readOnly
-                              className="form-control input-qty"
-                              value={item.quantity}
+          {cartItems.length === 0 ? (
+            <p className="empty-cart-message">Your cart is empty.</p>
+          ) : (
+            <div className="table-responsive">
+              <table className="table cart-table">
+                <thead>
+                  <tr className="table-head">
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cartItems.map((item) => {
+                    const product = products[item.productId] || mockProductData;
+                    return (
+                      <tr key={item.productId}>
+                        <td>
+                          <Link href={`/product/${item.productId}`}>
+                            <Image
+                              src={product.images?.[0] || "/placeholder.jpg"}
+                              className="img-fluid"
+                              alt={product.name}
+                              width={100}
+                              height={100}
                             />
-                            <button
-                              className="btn qty-btn-plus"
-                              onClick={() => updateQuantity(item.productId, 1)}
-                            >
-                              <i className="ri-arrow-right-s-line"></i>
-                            </button>
+                          </Link>
+                        </td>
+                        <td>
+                          <Link href={`/product/${item.productId}`}>
+                            {product.name}
+                          </Link>
+                        </td>
+                        <td className="table-price">
+                          <h2>${product.price?.toFixed(2)}</h2>
+                        </td>
+                        <td>
+                          <div className="qty-box">
+                            <div className="input-group qty-container">
+                              <button
+                                className="btn qty-btn-minus"
+                                onClick={() =>
+                                  item.quantity > 1 &&
+                                  updateQuantity(item.productId, -1)
+                                }
+                              >
+                                <i className="ri-arrow-left-s-line"></i>
+                              </button>
+                              <input
+                                type="number"
+                                readOnly
+                                className="form-control input-qty"
+                                value={item.quantity}
+                              />
+                              <button
+                                className="btn qty-btn-plus"
+                                onClick={() =>
+                                  updateQuantity(item.productId, 1)
+                                }
+                              >
+                                <i className="ri-arrow-right-s-line"></i>
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td>
-                        <h2 className="td-color">
-                          ${(product.price * item.quantity).toFixed(2)}
-                        </h2>
-                      </td>
-                      <td>
-                        <button
-                          className="icon remove-btn"
-                          onClick={() => removeItem(item.productId)}
-                        >
-                          <i className="ri-close-line"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                );
-              })}
-              <tfoot>
-                <tr>
-                  <td colSpan="4" className="d-md-table-cell d-none">
-                    Total Price:
-                  </td>
-                  <td className="d-md-none">Total Price:</td>
-                  <td>
-                    <h2>${totalPrice.toFixed(2)}</h2>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
+                        </td>
+                        <td>
+                          <h2 className="td-color">
+                            ${(product.price * item.quantity).toFixed(2)}
+                          </h2>
+                        </td>
+                        <td>
+                          <button
+                            className="icon remove-btn"
+                            onClick={() => removeItem(item.productId)}
+                          >
+                            <i className="ri-close-line"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan="4" className="d-md-table-cell d-none">
+                      Total Price:
+                    </td>
+                    <td className="d-md-none">Total Price:</td>
+                    <td>
+                      <h2>${totalPrice.toFixed(2)}</h2>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          )}
 
           <div className="row cart-buttons">
             <div className="col-6">
@@ -196,9 +213,13 @@ const Cart = () => {
               </Link>
             </div>
             <div className="col-6">
-              <Link href="/checkout" className="btn btn-solid text-capitalize">
+              <button
+                className="btn btn-solid text-capitalize"
+                onClick={handleProceedToCheckout}
+                disabled={cartItems.length === 0}
+              >
                 Check Out
-              </Link>
+              </button>
             </div>
           </div>
         </div>
