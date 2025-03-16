@@ -47,6 +47,24 @@ const Checkout = () => {
 
   const handlePlaceOrder = async () => {
     try {
+      setError(null); // Clear previous errors
+      setOrderSuccess(null); // Reset success message
+
+      // Validation: Ensure all required fields are filled
+      if (
+        !billingInfo.firstName ||
+        !billingInfo.lastName ||
+        !billingInfo.email ||
+        !billingInfo.phone ||
+        !shippingAddress.street ||
+        !shippingAddress.city ||
+        !shippingAddress.state ||
+        !shippingAddress.zip
+      ) {
+        setError("All fields must be filled before placing an order.");
+        return; // Stop the function execution
+      }
+
       const totalAmount = cartItems.reduce(
         (sum, item) =>
           sum + (products[item.productId]?.price || 0) * item.quantity,
@@ -63,11 +81,22 @@ const Checkout = () => {
         status: "Processing",
       };
 
-      await axios.post("/api/order", orderData);
-      setOrderSuccess(orderData);
+      // Send order request to API
+      const response = await axios.post("/api/order", orderData);
+
+      if (response.data.transactionId) {
+        // Store transaction ID if payment is successful
+        setOrderSuccess({
+          ...orderData,
+          status: "Confirmed",
+          transactionId: response.data.transactionId,
+        });
+      } else {
+        throw new Error("Payment processing failed.");
+      }
     } catch (err) {
       console.error("Error placing order:", err);
-      setError("Failed to place order.");
+      setError("Failed to place order. Please try again.");
     }
   };
 

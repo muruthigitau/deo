@@ -1,39 +1,56 @@
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-const orderData = {
-  transactionId: "267676GHERT105467",
-  orderId: "5563853658932",
-  orderDate: "October 22, 2018",
-  orderTotal: "$907.28",
-  products: [
-    {
-      image: "/assets/images/fashion-1/product/1.jpg",
-      name: "Boyfriend Shirts",
-      quantity: 1,
-      price: "$10.69",
-    },
-    {
-      image: "/assets/images/fashion-1/product/4.jpg",
-      name: "Chic Denim",
-      quantity: 2,
-      price: "$5.94",
-    },
-    {
-      image: "/assets/images/fashion-1/product/6.jpg",
-      name: "Chic Mini Dress",
-      quantity: 1,
-      price: "$9.40",
-    },
-  ],
-  summary: {
-    subtotal: "$55.00",
-    tax: "$10.00",
-    total: "$65.00",
-  },
-};
+const OrderSuccess = ({ orderDetails }) => {
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-const OrderSuccess = () => {
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        const response = await fetch("/api/order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderDetails),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Order Unsuccessful");
+        }
+
+        setOrder(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrder();
+  }, [orderDetails]);
+
+  if (loading) return <p>Loading your order...</p>;
+
+  if (error) {
+    return (
+      <section className="section-b-space light-layout">
+        <div className="container text-center">
+          <h2 className="text-danger">Order Unsuccessful</h2>
+          <p>{error}</p>
+          <Link href="/" className="btn btn-primary">
+            Return to Shop
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <>
       <section className="section-b-space light-layout">
@@ -41,87 +58,13 @@ const OrderSuccess = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="success-text">
-                <div className="checkmark">
-                  <svg
-                    className="star"
-                    height="19"
-                    viewBox="0 0 19 19"
-                    width="19"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"></path>
-                  </svg>
-                  <svg
-                    className="star"
-                    height="19"
-                    viewBox="0 0 19 19"
-                    width="19"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"></path>
-                  </svg>
-                  <svg
-                    className="star"
-                    height="19"
-                    viewBox="0 0 19 19"
-                    width="19"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"></path>
-                  </svg>
-                  <svg
-                    className="star"
-                    height="19"
-                    viewBox="0 0 19 19"
-                    width="19"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"></path>
-                  </svg>
-                  <svg
-                    className="star"
-                    height="19"
-                    viewBox="0 0 19 19"
-                    width="19"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"></path>
-                  </svg>
-                  <svg
-                    className="star"
-                    height="19"
-                    viewBox="0 0 19 19"
-                    width="19"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"></path>
-                  </svg>
-                  <svg
-                    className="checkmark__check"
-                    height="36"
-                    viewBox="0 0 48 36"
-                    width="48"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M47.248 3.9L43.906.667a2.428 2.428 0 0 0-3.344 0l-23.63 23.09-9.554-9.338a2.432 2.432 0 0 0-3.345 0L.692 17.654a2.236 2.236 0 0 0 .002 3.233l14.567 14.175c.926.894 2.42.894 3.342.01L47.248 7.128c.922-.89.922-2.34 0-3.23"></path>
-                  </svg>
-                  <svg
-                    className="checkmark__background"
-                    height="115"
-                    viewBox="0 0 120 115"
-                    width="120"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M107.332 72.938c-1.798 5.557 4.564 15.334 1.21 19.96-3.387 4.674-14.646 1.605-19.298 5.003-4.61 3.368-5.163 15.074-10.695 16.878-5.344 1.743-12.628-7.35-18.545-7.35-5.922 0-13.206 9.088-18.543 7.345-5.538-1.804-6.09-13.515-10.696-16.877-4.657-3.398-15.91-.334-19.297-5.002-3.356-4.627 3.006-14.404 1.208-19.962C10.93 67.576 0 63.442 0 57.5c0-5.943 10.93-10.076 12.668-15.438 1.798-5.557-4.564-15.334-1.21-19.96 3.387-4.674 14.646-1.605 19.298-5.003C35.366 13.73 35.92 2.025 41.45.22c5.344-1.743 12.628 7.35 18.545 7.35 5.922 0 13.206-9.088 18.543-7.345 5.538 1.804 6.09 13.515 10.696 16.877 4.657 3.398 15.91.334 19.297 5.002 3.356 4.627-3.006 14.404-1.208 19.962C109.07 47.424 120 51.562 120 57.5c0 5.943-10.93 10.076-12.668 15.438z"></path>
-                  </svg>
-                </div>
-                <h2>thank you</h2>
+                <h2>Thank You</h2>
                 <p>
-                  Payment is successfully processsed and your order is on the
-                  way
+                  Your payment was successfully processed, and your order is on
+                  the way.
                 </p>
                 <p className="font-weight-bold">
-                  Transaction ID: {orderData.transactionId}
+                  Transaction ID: {order.transactionId}
                 </p>
               </div>
             </div>
@@ -138,13 +81,13 @@ const OrderSuccess = () => {
                   <thead>
                     <tr>
                       <th></th>
-                      <th>product name</th>
-                      <th>quantity</th>
-                      <th>price</th>
+                      <th>Product Name</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {orderData.products.map((product, index) => (
+                    {order.items.map((product, index) => (
                       <tr key={index}>
                         <td>
                           <Image
@@ -163,16 +106,16 @@ const OrderSuccess = () => {
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td colSpan="2">subtotal</td>
-                      <td colSpan="2">{orderData.summary.subtotal}</td>
+                      <td colSpan="2">Subtotal</td>
+                      <td colSpan="2">{order.totalAmount}</td>
                     </tr>
                     <tr>
-                      <td colSpan="2">tax(GST)</td>
-                      <td colSpan="2">{orderData.summary.tax}</td>
+                      <td colSpan="2">Tax (GST)</td>
+                      <td colSpan="2">$10.00</td>
                     </tr>
                     <tr>
-                      <td colSpan="2">total</td>
-                      <td colSpan="2">{orderData.summary.total}</td>
+                      <td colSpan="2">Total</td>
+                      <td colSpan="2">{order.totalAmount}</td>
                     </tr>
                   </tfoot>
                 </table>
@@ -183,18 +126,17 @@ const OrderSuccess = () => {
               <div className="order-success-sec">
                 <div className="row">
                   <div className="col-sm-12">
-                    <h4>order summary</h4>
+                    <h4>Order Summary</h4>
                     <ul className="order-detail">
-                      <li>order ID: {orderData.orderId}</li>
-                      <li>Order Date: {orderData.orderDate}</li>
-                      <li>Order Total: {orderData.orderTotal}</li>
+                      <li>Order ID: {order.orderId}</li>
+                      <li>Order Total: {order.totalAmount}</li>
+                      <li>Payment Method: {order.paymentMethod}</li>
                     </ul>
                   </div>
                   <div className="col-sm-12 payment-mode">
-                    <h4>payment method</h4>
+                    <h4>Payment Method</h4>
                     <p>
-                      Pay on Card/Net banking. Card/Net banking acceptance
-                      subject to device availability.
+                      {order.paymentMethod} - Payment processed successfully.
                     </p>
                   </div>
                 </div>
