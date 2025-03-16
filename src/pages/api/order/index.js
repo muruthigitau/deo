@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Simulating a payment gateway response (Replace this with actual payment processing API)
+    // Simulate payment processing (replace with actual payment gateway API call)
     const paymentResponse = await processPayment(totalAmount, paymentMethod);
 
     if (!paymentResponse.success) {
@@ -38,17 +38,14 @@ export default async function handler(req, res) {
 
     console.log("✅ Order stored:", orderData);
 
-    return res.status(200).json({
-      message: "Order placed successfully",
-      transactionId: paymentResponse.transactionId,
-    });
+    return res.status(200).json(orderData); // Return the full order data
   } catch (error) {
     console.error("❌ Error processing order:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 }
 
-// Simulated payment processing function (Replace this with real API call)
+// Simulated payment processing function (replace with real API call)
 async function processPayment(amount, method) {
   return new Promise((resolve) => {
     setTimeout(() => {

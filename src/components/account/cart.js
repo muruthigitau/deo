@@ -176,7 +176,7 @@ const Cart = () => {
                         </td>
                         <td>
                           <h2 className="td-color">
-                            ${(product.price * item.quantity).toFixed(2)}
+                            Kshs {(product.price * item.quantity).toFixed(2)}
                           </h2>
                         </td>
                         <td>
@@ -198,7 +198,7 @@ const Cart = () => {
                     </td>
                     <td className="d-md-none">Total Price:</td>
                     <td>
-                      <h2>${totalPrice.toFixed(2)}</h2>
+                      <h2>Kshs {totalPrice.toFixed(2)}</h2>
                     </td>
                   </tr>
                 </tfoot>

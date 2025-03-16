@@ -100,14 +100,14 @@ const OrderSuccess = ({ orderDetails }) => {
                         </td>
                         <td>{product.name}</td>
                         <td>{product.quantity}</td>
-                        <td>{product.price}</td>
+                        <td>${product.price.toFixed(2)}</td>
                       </tr>
                     ))}
                   </tbody>
                   <tfoot>
                     <tr>
                       <td colSpan="2">Subtotal</td>
-                      <td colSpan="2">{order.totalAmount}</td>
+                      <td colSpan="2">${order.totalAmount.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <td colSpan="2">Tax (GST)</td>
@@ -115,7 +115,7 @@ const OrderSuccess = ({ orderDetails }) => {
                     </tr>
                     <tr>
                       <td colSpan="2">Total</td>
-                      <td colSpan="2">{order.totalAmount}</td>
+                      <td colSpan="2">${order.totalAmount.toFixed(2)}</td>
                     </tr>
                   </tfoot>
                 </table>
@@ -129,7 +129,7 @@ const OrderSuccess = ({ orderDetails }) => {
                     <h4>Order Summary</h4>
                     <ul className="order-detail">
                       <li>Order ID: {order.orderId}</li>
-                      <li>Order Total: {order.totalAmount}</li>
+                      <li>Order Total: ${order.totalAmount.toFixed(2)}</li>
                       <li>Payment Method: {order.paymentMethod}</li>
                     </ul>
                   </div>
