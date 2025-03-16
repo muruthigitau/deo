@@ -5,8 +5,8 @@ const product = {
   id: 1,
   title: "Alum Deodorant",
   subtitle: "Natural Odor Protection",
-  price: "999 Kshs", // Updated discounted price
-  oldPrice: "1,110 Kshs", // Original price before 10% discount
+  price: "Kshs 999", // Updated discounted price
+  oldPrice: "Kshs 1,110", // Original price before 10% discount
   discount: "10% Off",
   image: "/assets/images/alum-deodorant/product-1.png",
   rating: "4.8",
@@ -22,7 +22,7 @@ const Slide = () => {
           <div className="col-md-6 col-lg-4">
             <div className="basic-product theme-product-1">
               <div className="overflow-hidden">
-                <div className="img-wrapper">
+                <div className="img-wrapper flex justify-center items-center">
                   {product.ribbon && (
                     <div className="ribbon">
                       <span>{product.ribbon}</span>
@@ -34,7 +34,7 @@ const Slide = () => {
                       width={300}
                       height={300}
                       alt={product.subtitle}
-                      className="img-fluid"
+                      className="img-fluid mx-auto"
                     />
                   </Link>
                   <div className="rating-label">
@@ -53,6 +53,7 @@ const Slide = () => {
                     </Link>
                   </div>
                 </div>
+
                 <div className="product-detail text-center">
                   <Link href="/product" className="product-title">
                     {product.title}

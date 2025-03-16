@@ -1,33 +1,54 @@
 export const mockProductData = {
   id: 1,
-  name: "Sample Product",
-  price: 29.99,
-  stock: 10,
+  name: "Alum Deodorant",
+  price: 999, // Kshs 999
+  oldPrice: 1110, // Kshs 1,110 (original price before discount)
+  stock: 25, // Adjusted stock number
   description:
-    "This is a sample product description that highlights the key features and benefits of the product. Perfect for everyday use.",
-  category: "Electronics",
+    "Experience long-lasting freshness with our natural Alum Deodorant. Gentle on skin, yet powerful against odor, it provides all-day protection with zero irritation.",
+  category: "Personal Care",
   images: [
-    "/assets/images/product-details/product/5.jpg",
-    "/assets/images/product-details/product/6.jpg",
-    "/assets/images/product-details/product/7.jpg",
+    "/assets/images/alum-deodorant/product-1.png",
+    "/assets/images/alum-deodorant/product-1.png",
+    "/assets/images/alum-deodorant/product-1.png",
   ],
   smallImages: [
-    "/assets/images/product-details/small/5.jpg",
-    "/assets/images/product-details/small/6.jpg",
-    "/assets/images/product-details/small/7.jpg",
+    "/assets/images/alum-deodorant/product-1.png",
+    "/assets/images/alum-deodorant/product-1.png",
+    "/assets/images/alum-deodorant/product-1.png",
   ],
+  discount: "10% Off",
+  ribbon: "Best Seller",
+  rating: 4.8,
+  brand: "AlumFresh",
+  tags: ["deodorant", "natural", "best-seller"],
+  createdAt: "2024-03-14",
   reviews: [
     {
       id: 1,
       rating: 5,
-      comment: "Great product!",
-      user: "John Doe",
-      date: "2024-03-14",
+      comment:
+        "Absolutely love this deodorant! No irritation and lasts all day.",
+      user: "Jane Doe",
+      date: "2024-03-10",
+    },
+    {
+      id: 2,
+      rating: 4.5,
+      comment: "Works great and smells fresh! Would buy again.",
+      user: "Michael K.",
+      date: "2024-03-12",
     },
   ],
-  brand: "SampleBrand",
-  variants: [],
-  tags: ["electronics", "featured", "new-arrival"],
-  rating: 4,
-  createdAt: "2024-03-14",
+  colors: ["gainsboro", "lightgray", "whitesmoke"],
+  variants: [
+    {
+      size: "50g",
+      price: 999,
+    },
+    {
+      size: "100g",
+      price: 1599,
+    },
+  ],
 };

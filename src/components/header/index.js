@@ -69,21 +69,10 @@ const Header = () => {
                 <div>
                   <div className="icon-nav">
                     <ul>
-                      <li className="onhover-div mobile-search">
-                        <div
-                          data-bs-toggle="modal"
-                          data-bs-target="#searchModal"
-                        >
-                          <i className="ri-search-line"></i>
-                        </div>
-                      </li>
                       <li className="onhover-div mobile-cart">
-                        <div
-                          data-bs-toggle="offcanvas"
-                          data-bs-target="#cartOffcanvas"
-                        >
+                        <Link href="/product">
                           <i className="ri-shopping-cart-line"></i>
-                        </div>
+                        </Link>
                         <span className="cart_qty_cls">2</span>
                       </li>
                     </ul>

@@ -4,26 +4,26 @@ import Image from "next/image";
 const blogPosts = [
   {
     id: 1,
-    date: "25 January 2021",
-    title: "Top 10 January Best-Sellers Products – All Under $50!",
-    author: "John Dio",
-    comments: 2,
-    image: "/assets/images/fashion-1/blog/1.png",
+    date: "12 March 2024",
+    title: "5 Reasons Why Alum Deodorant is Better for Your Skin",
+    author: "Sarah K.",
+    comments: 5,
+    image: "/assets/images/fashion-1/blog/1.png", // Keeping your original images
   },
   {
     id: 2,
-    date: "25 January 2018",
-    title: "Quarantine Birthday Celebration | In The Times of COVID-19",
-    author: "John Dio",
-    comments: 2,
+    date: "5 March 2024",
+    title: "The Secret Behind Long-Lasting Freshness with Alum",
+    author: "Dr. Mark Lee",
+    comments: 3,
     image: "/assets/images/fashion-1/blog/2.png",
   },
   {
     id: 3,
-    date: "25 January 2018",
-    title: "London fashion & Hair Trends From Fashion Week",
-    author: "John Dio",
-    comments: 2,
+    date: "20 February 2024",
+    title: "How to Switch to Natural Deodorants Without Skin Irritation",
+    author: "Emma R.",
+    comments: 7,
     image: "/assets/images/fashion-1/blog/3.png",
   },
 ];
@@ -35,7 +35,7 @@ const Blog = () => {
         <div className="col">
           <div className="title1 section-t-space">
             <h4>From the Blog</h4>
-            <h2 className="title-inner1">Fashion for You</h2>
+            <h2 className="title-inner1">All About Alum Deodorant</h2>
           </div>
         </div>
       </div>

@@ -23,8 +23,11 @@ const slides = [
 ];
 
 const Hero = () => {
+  // State to track if typing has happened
   const [typedOnce, setTypedOnce] = useState(false);
-  const slideDelay = 5000; // 5 seconds
+
+  // Auto delay for slides
+  const slideDelay = 5000; // 5 seconds (longer slide time)
 
   return (
     <section className="relative w-full">
@@ -37,8 +40,8 @@ const Hero = () => {
           disableOnInteraction: false,
         }}
         loop={true}
-        speed={1000}
-        onSlideChange={() => setTypedOnce(false)}
+        speed={1000} // Smooth transition
+        onSlideChange={() => setTypedOnce(false)} // Reset typing on slide change
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
@@ -60,18 +63,18 @@ const Hero = () => {
                     <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 animate-fade-up">
                       {!typedOnce && (
                         <Typewriter
-                          key={`title-${index}`}
+                          key={`title-${index}`} // Ensures retyping on slide change
                           words={[slide.title]}
-                          loop={false}
+                          loop={false} // Types only once
                           cursor
                           cursorStyle="|"
-                          typeSpeed={70}
-                          deleteSpeed={0}
-                          delaySpeed={1500}
-                          onTypeEnd={() => setTypedOnce(true)}
+                          typeSpeed={70} // Slower typing for emphasis
+                          deleteSpeed={0} // No backspacing
+                          delaySpeed={1500} // Delay before typing
+                          onTypeEnd={() => setTypedOnce(true)} // Mark as typed
                         />
                       )}
-                      {typedOnce && slide.title}
+                      {typedOnce && slide.title} {/* Show title after typing */}
                     </h1>
 
                     {/* Static Description */}
@@ -79,11 +82,8 @@ const Hero = () => {
                       {slide.description}
                     </p>
 
-                    {/* Fancy Button */}
-                    <button className="mt-6 px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-gray-900 to-gray-700 rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:rotate-1 hover:shadow-xl relative overflow-hidden group">
-                      <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                      <span className="relative z-10">Shop Now</span>
-                      <span className="absolute top-0 left-0 w-full h-full rounded-lg border border-gray-500 opacity-20"></span>
+                    <button className="mt-6 px-6 py-3 bg-gray-900 text-white font-medium text-lg rounded-md transition-transform transform hover:scale-105 animate-fade-up animation-delay-400">
+                      Shop Now
                     </button>
                   </div>
                 </div>
