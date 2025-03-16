@@ -25,18 +25,6 @@ const Header = () => {
                     <i className="ri-heart-fill"></i>
                   </a>
                 </li>
-                <li className="onhover-dropdown mobile-account">
-                  <i className="ri-user-fill"></i>
-                  My Account
-                  <ul className="onhover-show-div">
-                    <li>
-                      <a href="login.html">Login</a>
-                    </li>
-                    <li>
-                      <a href="register.html">Register</a>
-                    </li>
-                  </ul>
-                </li>
               </ul>
             </div>
           </div>
@@ -47,42 +35,6 @@ const Header = () => {
           <div className="col-sm-12">
             <div className="main-menu">
               <div className="menu-left">
-                <div className="navbar">
-                  <a href="#!" onClick={() => openNav()}>
-                    <div className="bar-style">
-                      <i className="ri-bar-chart-horizontal-line sidebar-bar"></i>
-                    </div>
-                  </a>
-                  <div id="mySidenav" className="sidenav">
-                    <a
-                      href="#!"
-                      className="sidebar-overlay"
-                      onClick={() => closeNav()}
-                    ></a>
-                    <nav>
-                      <div onClick={() => closeNav()}>
-                        <div className="sidebar-back text-start">
-                          <i className="ri-arrow-left-s-line pe-2"></i>
-                          Back
-                        </div>
-                      </div>
-                      <ul className="sm pixelstrap sm-vertical hover-unset">
-                        <li>
-                          <Link href="/">Home</Link>
-                        </li>
-                        <li>
-                          <Link href="/product">Product</Link>
-                        </li>
-                        <li>
-                          <Link href="/about">About</Link>
-                        </li>
-                        <li>
-                          <Link href="/contact">Contact</Link>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </div>
                 <div className="brand-logo">
                   <Link href="/">
                     <Image
@@ -97,11 +49,8 @@ const Header = () => {
               </div>
               <div className="menu-right pull-right">
                 <div>
-                  <nav id="main-nav">
-                    <div className="toggle-nav">
-                      <i className="ri-bar-chart-horizontal-line sidebar-bar"></i>
-                    </div>
-                    <ul className="sm pixelstrap sm-horizontal hover-unset">
+                  <nav id="main-nav ">
+                    <ul className="sm pixelstrap sm-horizontal hover-unset ">
                       <li>
                         <Link href="/">Home</Link>
                       </li>

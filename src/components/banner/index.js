@@ -9,7 +9,7 @@ const Banner = () => {
           <div className="col-md-6">
             <Link href="/category-page">
               <Image
-                src="/assets/images/fashion-1/banner/1.png"
+                src="/assets/images/alum-deodorant/banner-3.jpg"
                 className="collection-banner img-fluid blur-up lazyloaded"
                 alt="Banner 1"
                 width={600}
@@ -20,7 +20,7 @@ const Banner = () => {
           <div className="col-md-6">
             <Link href="/category-page">
               <Image
-                src="/assets/images/fashion-1/banner/2.png"
+                src="/assets/images/alum-deodorant/banner-4.jpg"
                 className="collection-banner img-fluid blur-up lazyloaded"
                 alt="Banner 2"
                 width={600}

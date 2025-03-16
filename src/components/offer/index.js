@@ -2,8 +2,8 @@ const Offer = () => {
   return (
     <>
       <div className="title1 section-t-space">
-        <h4>special offer</h4>
-        <h2 className="title-inner1">Latest Drops</h2>
+        <h4>Special Offer - 10% Off</h4>
+        <h2 className="title-inner1">Exclusive Deals on Alum Deodorant</h2>
       </div>
 
       <div className="container">
@@ -11,9 +11,9 @@ const Offer = () => {
           <div className="col-lg-6 offset-lg-3">
             <div className="product-para">
               <p className="text-center">
-                Looking for the latest trends in clothing, shoes, and
-                accessories? Welcome to our 'Latest Drops' edit, bringing you
-                all the latest styles from all your fave brands.
+                Get 10% off on our premium Alum Deodorant! Stay fresh all day
+                with natural odor protection—gentle on skin, tough on sweat.
+                Hurry, offer valid for a limited time!
               </p>
             </div>
           </div>
