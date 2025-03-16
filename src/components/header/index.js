@@ -66,35 +66,18 @@ const Header = () => {
                           Back
                         </div>
                       </div>
-                      <ul
-                        id="sub-menu"
-                        className="sm pixelstrap sm-vertical hover-unset"
-                      >
+                      <ul className="sm pixelstrap sm-vertical hover-unset">
                         <li>
-                          <a href="#!" className="has-submenu">
-                            Clothing<span className="sub-arrow"></span>
-                          </a>
-                          <ul className="mega-menu clothing-menu">
-                            <li>
-                              <div className="row m-0">
-                                <div className="col-xl-4">
-                                  <div className="link-section"></div>
-                                </div>
-                                <div className="col-xl-4"></div>
-                                <div className="col-xl-4">
-                                  <a href="#!" className="mega-menu-banner">
-                                    <Image
-                                      src="/assets/images/mega-menu/fashion.jpg"
-                                      alt=""
-                                      className="img-fluid blur-up lazyload"
-                                      width={300}
-                                      height={200}
-                                    />
-                                  </a>
-                                </div>
-                              </div>
-                            </li>
-                          </ul>
+                          <Link href="/">Home</Link>
+                        </li>
+                        <li>
+                          <Link href="/product">Product</Link>
+                        </li>
+                        <li>
+                          <Link href="/about">About</Link>
+                        </li>
+                        <li>
+                          <Link href="/contact">Contact</Link>
                         </li>
                       </ul>
                     </nav>
@@ -118,17 +101,18 @@ const Header = () => {
                     <div className="toggle-nav">
                       <i className="ri-bar-chart-horizontal-line sidebar-bar"></i>
                     </div>
-                    <ul
-                      id="main-menu"
-                      className="sm pixelstrap sm-horizontal hover-unset"
-                    >
-                      <li className="mobile-box">
-                        <div className="mobile-back text-end">
-                          Menu<i className="ri-close-line"></i>
-                        </div>
-                      </li>
+                    <ul className="sm pixelstrap sm-horizontal hover-unset">
                       <li>
                         <Link href="/">Home</Link>
+                      </li>
+                      <li>
+                        <Link href="/product">Product</Link>
+                      </li>
+                      <li>
+                        <Link href="/about">About</Link>
+                      </li>
+                      <li>
+                        <Link href="/contact">Contact</Link>
                       </li>
                     </ul>
                   </nav>
@@ -144,7 +128,6 @@ const Header = () => {
                           <i className="ri-search-line"></i>
                         </div>
                       </li>
-
                       <li className="onhover-div mobile-cart">
                         <div
                           data-bs-toggle="offcanvas"
