@@ -10,32 +10,47 @@ const Footer = () => {
             {/* Logo & Contact Info */}
             <div className="col-xl-3 col-lg-5 col-md-6 sub-title">
               <div>
+                {/* Placeholder for text-based logo */}
                 <div className="footer-logo">
                   <Link href="/">
-                    <Image
-                      alt="logo"
-                      className="img-fluid"
-                      src="/assets/images/logo-white.png"
-                      width={150}
-                      height={50}
-                    />
+                    <h2 className="text-white font-bold text-xl">
+                      Deo African Magic Limited
+                    </h2>
                   </Link>
                 </div>
+
+                {/* Commented out the previous logo for later update */}
+                {/* 
+    <div className="footer-logo">
+      <Link href="/">
+        <Image
+          alt="logo"
+          className="img-fluid"
+          src="/assets/images/logo-white.png"
+          width={150}
+          height={50}
+        />
+      </Link>
+    </div> 
+    */}
+
                 <p>
-                  Discover the latest trends and enjoy seamless shopping with
-                  our exclusive collections.
+                  Deo African Magic Limited is committed to providing natural
+                  and skin-friendly deodorants with long-lasting protection,
+                  free from harmful chemicals.
                 </p>
+
                 <ul className="contact-list">
                   <li>
-                    <i className="ri-map-pin-line"></i> Multikart Demo Store,
-                    Demo Store India 345-659
+                    <i className="ri-map-pin-line"></i> MyTown Karen, Nairobi,
+                    Kenya
                   </li>
                   <li>
-                    <i className="ri-phone-line"></i> Call Us: 123-456-7898
+                    <i className="ri-phone-line"></i> Call Us: +254 732 333 330
                   </li>
                   <li>
                     <i className="ri-mail-line"></i> Email Us:
-                    Support@Multikart.com
+                    info@deoafricanmagic.com
                   </li>
                 </ul>
               </div>
@@ -45,20 +60,20 @@ const Footer = () => {
             <div className="col-xl-2 col-lg-3 col-md-4 col-md-6">
               <div className="sub-title">
                 <div className="footer-title">
-                  <h4>Categories</h4>
+                  <h4>About Product</h4>
                 </div>
                 <div className="footer-content">
                   <ul>
                     {[
-                      "Baby Essentials",
-                      "Bag Emporium",
-                      "Books",
-                      "Christmas",
-                      "Classic Furnishings",
-                      "Crystal Clarity Optics",
+                      "24 Hours",
+                      "No irtitations",
+                      "Alcohol-Free",
+                      "No Stains",
+                      "Natural",
+                      "Made in Thailand",
                     ].map((category, index) => (
                       <li key={index}>
-                        <Link href="/category-page" className="text-content">
+                        <Link href="/product" className="text-content">
                           {category}
                         </Link>
                       </li>
@@ -76,14 +91,7 @@ const Footer = () => {
                 </div>
                 <div className="footer-content">
                   <ul>
-                    {[
-                      "Home",
-                      "Collections",
-                      "About Us",
-                      "Blogs",
-                      "Offers",
-                      "Search",
-                    ].map((link, index) => (
+                    {["Home", "About Us", "Product"].map((link, index) => (
                       <li key={index}>
                         <Link
                           href={`/${link.toLowerCase().replace(/\s+/g, "-")}`}
@@ -106,19 +114,9 @@ const Footer = () => {
                 </div>
                 <div className="footer-content">
                   <ul>
-                    {[
-                      "My Account",
-                      "My Orders",
-                      "Track Order",
-                      "Wishlist",
-                      "FAQ",
-                      "Contact Us",
-                    ].map((link, index) => (
+                    {["Contact Us"].map((link, index) => (
                       <li key={index}>
-                        <Link
-                          href={`/${link.toLowerCase().replace(/\s+/g, "-")}`}
-                          className="text-content"
-                        >
+                        <Link href="/contact" className="text-content">
                           {link}
                         </Link>
                       </li>

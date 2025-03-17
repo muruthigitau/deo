@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -156,7 +155,7 @@ const Contact = () => {
                     </div>
                     <div className="media-body">
                       <h6>Contact Us</h6>
-                      <p>+91 123 - 456 - 7890</p>
+                      <p>+254 732 333 330</p>
                     </div>
                   </li>
                   <li>
@@ -165,7 +164,7 @@ const Contact = () => {
                     </div>
                     <div className="media-body">
                       <h6>Address</h6>
-                      <p>ABC Complex,Near xyz, New York</p>
+                      <p>MyTown Karen, Nairobi, Kenya</p>
                     </div>
                   </li>
                   <li>
@@ -174,7 +173,7 @@ const Contact = () => {
                     </div>
                     <div className="media-body">
                       <h6>Email</h6>
-                      <p>support@multikart.com</p>
+                      <p>info@deoafricanmagic.com</p>
                     </div>
                   </li>
                   <li>
@@ -183,7 +182,7 @@ const Contact = () => {
                     </div>
                     <div className="media-body">
                       <h6>Fax</h6>
-                      <p>support@multikart.com</p>
+                      <p>+254 732 333 331</p>
                     </div>
                   </li>
                 </ul>
@@ -198,7 +197,8 @@ const Contact = () => {
           title="location-map"
           frameBorder="0"
           className="w-100 h-100"
-          src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1605.811957341231!2d25.45976406005396!3d36.3940974010114!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1550912388321"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.05985752431!2d36.700654!3d-1.320556!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1a6b1f1f1f1f%3A0x1a2b3c4d5e6f7g8h!2sMyTown%20Karen%2C%20Nairobi%2C%20Kenya!5e0!3m2!1sen!2ske!4v1616161616161"
+          allowFullScreen
         ></iframe>
       </section>
     </>
