@@ -4,74 +4,72 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Testimonial Data
+// Updated Testimonials
 const testimonials = [
   {
     id: 1,
     image: "/assets/images/avtar.jpg",
     name: "Mark Junco",
-    role: "Designer",
-    text: "You how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings.",
+    role: "Lead Designer",
+    text: "The experience with Deo African Magic Limited has been nothing short of exceptional. Their attention to detail and quality is truly impressive.",
   },
   {
     id: 2,
     image: "/assets/images/2.jpg",
-    name: "Mark Junco",
-    role: "Designer",
-    text: "You how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings.",
+    name: "Emily Carter",
+    role: "Creative Director",
+    text: "I have worked with many teams, but none compare to the professionalism and dedication of Deo African Magic Limited. Highly recommended!",
   },
-  // Add more testimonials as needed
 ];
 
-// Team Data
+// Updated Team Members
 const teamMembers = [
   {
     id: 1,
     image: "/assets/images/team/1.jpg",
-    name: "Hileri Keol",
-    role: "CEO & Founder At Company",
+    name: "James Akinyi",
+    role: "CEO & Founder",
   },
   {
     id: 2,
     image: "/assets/images/team/2.jpg",
-    name: "Hileri Keol",
-    role: "CEO & Founder At Company",
+    name: "Sarah Njeri",
+    role: "Head of Operations",
   },
   {
     id: 3,
     image: "/assets/images/team/3.jpg",
-    name: "Hileri Keol",
-    role: "CEO & Founder At Company",
+    name: "David Mwangi",
+    role: "Creative Lead",
   },
   {
     id: 4,
     image: "/assets/images/team/4.jpg",
-    name: "Hileri Keol",
-    role: "CEO & Founder At Company",
+    name: "Linda Ochieng",
+    role: "Marketing Strategist",
   },
 ];
 
-// About Content Data
+// Updated About Content
 const aboutContent = {
   banner: {
     image: "/assets/images/about/about-us.jpg",
-    alt: "About Us Banner",
+    alt: "About Deo African Magic Limited",
     width: 1200,
     height: 600,
   },
   content: {
-    title:
-      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
+    title: "Experience the Magic of African Craftsmanship",
     shortDescription:
-      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,",
-    longDescription: `On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.`,
+      "At Deo African Magic Limited, we blend innovation and tradition to create outstanding products that reflect Africa’s rich heritage.",
+    longDescription: `With years of expertise, we are committed to delivering excellence in every aspect of our work. Our passion lies in preserving culture while embracing modern creativity. We prioritize customer satisfaction, ensuring that our products and services exceed expectations. From concept to execution, our team works diligently to bring visions to life. Join us on this incredible journey of art, culture, and innovation.`,
   },
   testimonialSection: {
-    subtitle: "Latest Testimonials",
-    title: "What People Say",
+    subtitle: "Our Clients Speak",
+    title: "What Our Customers Say",
   },
   teamSection: {
-    title: "Multikart Team Member",
+    title: "Meet the Deo African Magic Team",
   },
 };
 
@@ -138,7 +136,7 @@ const About = () => {
   // Initialize sliders
   useEffect(() => {
     if (testimonialSliderRef.current && teamSliderRef.current) {
-      // Initialize sliders here if needed
+      // Initialize sliders if needed
     }
   }, []);
 
