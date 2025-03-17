@@ -1,55 +1,57 @@
+// pages/api/order.js
+import axios from "axios";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const {
-      orderId,
-      totalAmount,
-      billingInfo,
-      shippingAddress,
-      paymentMethod,
-      items,
-    } = req.body;
+    const { orderId, totalAmount, billingInfo, shippingAddress, items } =
+      req.body;
 
-    if (!orderId || !totalAmount || !billingInfo || !items || !paymentMethod) {
+    // Validate required fields
+    if (!orderId || !totalAmount || !billingInfo || !items) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Simulate payment processing (replace with actual payment gateway API call)
-    const paymentResponse = await processPayment(totalAmount, paymentMethod);
-
-    if (!paymentResponse.success) {
-      return res.status(400).json({ error: "Payment failed" });
-    }
-
-    // Simulated order storage (replace with DB storage)
+    // Prepare the order data to send to Django backend
     const orderData = {
       orderId,
       totalAmount,
       billingInfo,
       shippingAddress,
-      paymentMethod,
       items,
-      status: "Confirmed",
-      transactionId: paymentResponse.transactionId, // Received from payment gateway
     };
 
-    console.log("✅ Order stored:", orderData);
+    // Send the order data to Django backend for processing
+    const djangoResponse = await axios.post(
+      "https://your-django-backend.com/order-processing", // Replace with your Django backend URL
+      orderData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    return res.status(200).json(orderData); // Return the full order data
+    // Check if the Django backend successfully processed the order
+    if (djangoResponse.data && djangoResponse.data.transactionId) {
+      // Return the order confirmation data to the frontend
+      return res.status(200).json(djangoResponse.data);
+    } else {
+      throw new Error("Order processing failed in Django backend.");
+    }
   } catch (error) {
     console.error("❌ Error processing order:", error);
+
+    // Handle specific errors from Django backend
+    if (error.response && error.response.data) {
+      return res.status(error.response.status).json({
+        error: error.response.data.error || "Order processing failed.",
+      });
+    }
+
     return res.status(500).json({ error: "Internal server error" });
   }
-}
-
-// Simulated payment processing function (replace with real API call)
-async function processPayment(amount, method) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true, transactionId: `TXN_${Date.now()}` });
-    }, 1500);
-  });
 }

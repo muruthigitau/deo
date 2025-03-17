@@ -4,6 +4,7 @@ import axios from "axios";
 import Image from "next/image";
 import Slider from "react-slick";
 import { mockProductData } from "@/data/mockProduct";
+import ErrorNotification from "../account/errornotification";
 
 const Product = () => {
   const router = useRouter();
@@ -40,8 +41,19 @@ const Product = () => {
         setProductData(response.data);
       } catch (err) {
         console.error("Failed to fetch product data:", err);
-        setProductData(mockProductData);
-        setError(null);
+
+        // Extract the error message from the AxiosError
+        let errorMessage = "Failed to fetch product data. Please try again.";
+        if (err.response) {
+          // Use the error message from the backend if available
+          errorMessage = err.response.data.error || errorMessage;
+        } else if (err.request) {
+          // Handle network errors
+          errorMessage = "Network error. Please check your connection.";
+        }
+
+        setError(errorMessage);
+        setProductData(mockProductData); // Fallback to mock data
       } finally {
         setLoading(false);
       }
@@ -79,15 +91,32 @@ const Product = () => {
       }
     } catch (error) {
       console.error("Failed to add to cart:", error);
+
+      // Extract the error message from the AxiosError
+      let errorMessage = "Failed to add to cart. Please try again.";
+      if (error.response) {
+        errorMessage = error.response.data.error || errorMessage;
+      } else if (error.request) {
+        errorMessage = "Network error. Please check your connection.";
+      }
+
+      setError(errorMessage);
     }
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
   if (!productData) return <div>No product found</div>;
 
   return (
     <section>
+      {/* Display error notification if there's an error */}
+      {error && (
+        <ErrorNotification
+          message={error}
+          onClose={() => setError(null)} // Clear the error when the user clicks the close button
+        />
+      )}
+
       <div className="collection-wrapper">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { mockProductData } from "@/data/mockProduct";
+import ErrorNotification from "./errornotification"; // Import the ErrorNotification component
 
 const Checkout = () => {
+  const router = useRouter();
   const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState({});
   const [billingInfo, setBillingInfo] = useState({
@@ -19,10 +22,10 @@ const Checkout = () => {
     state: "",
     zip: "",
   });
-  const [useMpesa, setUseMpesa] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [orderSuccess, setOrderSuccess] = useState(null);
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   // Track validation errors
   const [validationErrors, setValidationErrors] = useState({
@@ -131,7 +134,7 @@ const Checkout = () => {
   const handlePlaceOrder = async () => {
     try {
       setError(null); // Clear previous errors
-      setOrderSuccess(null); // Reset success message
+      setIsPlacingOrder(true); // Show loading state
 
       // Validate all fields before submitting
       const newValidationErrors = {};
@@ -146,6 +149,7 @@ const Checkout = () => {
       // Check if any field is invalid
       if (!isFormValid()) {
         setError("Please fix the errors before placing the order.");
+        setIsPlacingOrder(false);
         return;
       }
 
@@ -160,32 +164,44 @@ const Checkout = () => {
         totalAmount,
         billingInfo,
         shippingAddress,
-        paymentMethod: useMpesa ? "M-Pesa" : "Card",
         items: cartItems,
-        status: "Processing",
       };
 
       // Send order request to API
       const response = await axios.post("/api/order", orderData);
 
-      if (response.data.transactionId) {
-        // Store transaction ID if payment is successful
-        setOrderSuccess({
-          ...orderData,
-          status: "Confirmed",
-          transactionId: response.data.transactionId,
+      // Debugging: Log the response
+      console.log("API Response:", response);
+
+      if (response.data && response.data.transactionId) {
+        // Order placed successfully, redirect to order success page
+        setOrderPlaced(true);
+        router.push({
+          pathname: "/order-success",
+          query: { orderDetails: JSON.stringify(response.data) },
         });
       } else {
-        throw new Error("Payment processing failed.");
+        throw new Error("Order processing failed. No transaction ID received.");
       }
     } catch (err) {
       console.error("Error placing order:", err);
-      setError("Failed to place order. Please try again.");
+
+      // Extract the error message from the AxiosError
+      let errorMessage = "Failed to place order. Please try again.";
+      if (err.response) {
+        // Use the error message from the backend if available
+        errorMessage = err.response.data.error || errorMessage;
+      } else if (err.request) {
+        // Handle network errors
+        errorMessage = "Network error. Please check your connection.";
+      }
+
+      setError(errorMessage);
+      setIsPlacingOrder(false);
     }
   };
 
   if (loading) return <div>Loading checkout...</div>;
-  if (error) return <div className="error-message">{error}</div>;
 
   const subTotal = cartItems.reduce(
     (sum, item) => sum + (products[item.productId]?.price || 0) * item.quantity,
@@ -197,6 +213,14 @@ const Checkout = () => {
 
   return (
     <>
+      {/* Display error notification if there's an error */}
+      {error && (
+        <ErrorNotification
+          message={error}
+          onClose={() => setError(null)} // Clear the error when the user clicks the close button
+        />
+      )}
+
       <div className="breadcrumb-section">
         <div className="container">
           <h2>Checkout</h2>
@@ -213,15 +237,13 @@ const Checkout = () => {
 
       <section className="checkout-section section-b-space">
         <div className="container">
-          {orderSuccess ? (
-            <div className="order-success-message bg-white p-6 rounded-lg shadow-md">
+          {orderPlaced ? (
+            <div className="order-placed-message bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold text-green-600">
-                🎉 Order Confirmed!
+                🎉 Order Placed!
               </h2>
-              <p>Order ID: {orderSuccess.orderId}</p>
-              <p>Total: ${orderSuccess.totalAmount.toFixed(2)}</p>
-              <p>Status: {orderSuccess.status}</p>
-              <p>Thank you, {orderSuccess.billingInfo.firstName}!</p>
+              <p>Your order has been successfully placed.</p>
+              <p>Please wait while we process your payment...</p>
             </div>
           ) : (
             <>
@@ -404,9 +426,9 @@ const Checkout = () => {
               <button
                 className="mt-10 px-6 py-3 bg-green-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-green-700 transition-all duration-300 disabled:bg-gray-400"
                 onClick={handlePlaceOrder}
-                disabled={!isFormValid()}
+                disabled={!isFormValid() || isPlacingOrder}
               >
-                Pay with M-Pesa
+                {isPlacingOrder ? "Placing Order..." : "Place Order"}
               </button>
             </>
           )}

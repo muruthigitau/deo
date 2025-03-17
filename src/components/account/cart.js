@@ -143,7 +143,7 @@ const Cart = () => {
                           </Link>
                         </td>
                         <td className="table-price">
-                          <h2>${product.price?.toFixed(2)}</h2>
+                          <h2>Kshs {product.price?.toFixed(2)}</h2>
                         </td>
                         <td>
                           <div className="qty-box">
