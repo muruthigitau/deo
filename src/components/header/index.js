@@ -11,9 +11,10 @@ const Header = () => {
             <div className="col-lg-6">
               <div className="header-contact">
                 <ul>
-                  <li>Welcome to Our Online store</li>
+                  <li>Welcome to Deo African Magic Limited</li>
                   <li>
-                    <i className="ri-phone-fill"></i>Call Us: 123 - 456 - 7890
+                    <i className="ri-phone-fill"></i> Call Us:{" "}
+                    <Link href="tel:+254732333330">+254 732 333 330</Link>
                   </li>
                 </ul>
               </div>
@@ -30,27 +31,28 @@ const Header = () => {
           </div>
         </div>
       </div>
+
       <div className="container">
         <div className="row">
           <div className="col-sm-12">
             <div className="main-menu">
               <div className="menu-left">
-                <div className="brand-logo">
+                
                   <Link href="/">
                     <Image
                       src="/assets/images/logo.png"
-                      className="img-fluid blur-up lazyloaded"
                       alt="Logo"
                       width={150}
-                      height={50}
+                      height={150}
+                      style={{ objectFit: "contain", display: "block" }}
                     />
                   </Link>
-                </div>
+                
               </div>
               <div className="menu-right pull-right">
                 <div>
-                  <nav id="main-nav ">
-                    <ul className="sm pixelstrap sm-horizontal hover-unset ">
+                  <nav id="main-nav">
+                    <ul className="sm pixelstrap sm-horizontal hover-unset">
                       <li>
                         <Link href="/">Home</Link>
                       </li>
@@ -62,6 +64,12 @@ const Header = () => {
                       </li>
                       <li>
                         <Link href="/contact">Contact</Link>
+                      </li>
+                      <li>
+                        <Link href="/privacy-policy">Privacy Policy</Link>
+                      </li>
+                      <li>
+                        <Link href="/terms-of-service">Terms of Service</Link>
                       </li>
                     </ul>
                   </nav>
