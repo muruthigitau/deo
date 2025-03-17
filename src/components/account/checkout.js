@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { mockProductData } from "@/data/mockProduct";
-import ErrorNotification from "./errornotification"; // Import the ErrorNotification component
+import ErrorNotification from "./errornotification";
+import BillingInfo from "./BillingInfo";
+import ShippingAddress from "./ShippingAddress";
+import OrderSummary from "./OrderSummary";
+import MpesaPayment from "./MpesaPayment";
 
 const Checkout = () => {
   const router = useRouter();
@@ -26,30 +28,8 @@ const Checkout = () => {
   const [error, setError] = useState(null);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
-
-  // Track validation errors
-  const [validationErrors, setValidationErrors] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    street: "",
-    city: "",
-    state: "",
-    zip: "",
-  });
-
-  // Track whether fields have been touched
-  const [touchedFields, setTouchedFields] = useState({
-    firstName: false,
-    lastName: false,
-    email: false,
-    phone: false,
-    street: false,
-    city: false,
-    state: false,
-    zip: false,
-  });
+  const [validationErrors, setValidationErrors] = useState({});
+  const [touchedFields, setTouchedFields] = useState({});
 
   useEffect(() => {
     const fetchCheckoutData = async () => {
@@ -58,67 +38,37 @@ const Checkout = () => {
         setCartItems(response.data.items || []);
         setProducts(response.data.products || {});
       } catch (err) {
-        console.error("Error fetching checkout data:", err);
         setError("Failed to load checkout details.");
       } finally {
         setLoading(false);
       }
     };
-
     fetchCheckoutData();
   }, []);
 
-  // Validate a single field
   const validateField = (name, value) => {
     let error = "";
-    switch (name) {
-      case "firstName":
-      case "lastName":
-      case "street":
-      case "city":
-      case "state":
-        if (!value.trim()) error = "This field is required.";
-        break;
-      case "email":
-        if (!value.trim()) {
-          error = "This field is required.";
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-          error = "Invalid email address.";
-        }
-        break;
-      case "phone":
-        if (!value.trim()) {
-          error = "This field is required.";
-        } else if (!/^\d{10}$/.test(value)) {
-          error = "Invalid phone number.";
-        }
-        break;
-      case "zip":
-        if (!value.trim()) {
-          error = "This field is required.";
-        } else if (!/^\d{5}$/.test(value)) {
-          error = "Invalid ZIP code.";
-        }
-        break;
-      default:
-        break;
+    if (!value.trim()) {
+      error = "This field is required.";
+    } else {
+      if (name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        error = "Invalid email.";
+      if (name === "phone" && !/^\d{10}$/.test(value)) error = "Invalid phone.";
+      if (name === "zip" && !/^\d{5}$/.test(value)) error = "Invalid ZIP.";
     }
     return error;
   };
 
-  // Handle input change and validate
-  const handleInputChange = (e, setState, stateName) => {
+  const handleInputChange = (e, setState) => {
     const { name, value } = e.target;
     setState((prev) => ({ ...prev, [name]: value }));
 
-    // Validate the field if it has been touched
     if (touchedFields[name]) {
       const error = validateField(name, value);
       setValidationErrors((prev) => ({ ...prev, [name]: error }));
     }
   };
 
-  // Handle blur event (when a field loses focus)
   const handleBlur = (e) => {
     const { name, value } = e.target;
     setTouchedFields((prev) => ({ ...prev, [name]: true }));
@@ -126,82 +76,40 @@ const Checkout = () => {
     setValidationErrors((prev) => ({ ...prev, [name]: error }));
   };
 
-  // Check if all fields are valid
-  const isFormValid = () => {
-    return Object.values(validationErrors).every((error) => !error);
-  };
-
   const handlePlaceOrder = async () => {
     try {
-      setError(null); // Clear previous errors
-      setIsPlacingOrder(true); // Show loading state
-
-      // Validate all fields before submitting
-      const newValidationErrors = {};
-      Object.keys(billingInfo).forEach((key) => {
-        newValidationErrors[key] = validateField(key, billingInfo[key]);
-      });
-      Object.keys(shippingAddress).forEach((key) => {
-        newValidationErrors[key] = validateField(key, shippingAddress[key]);
-      });
-      setValidationErrors(newValidationErrors);
-
-      // Check if any field is invalid
-      if (!isFormValid()) {
-        setError("Please fix the errors before placing the order.");
-        setIsPlacingOrder(false);
-        return;
-      }
-
-      const totalAmount = cartItems.reduce(
-        (sum, item) =>
-          sum + (products[item.productId]?.price || 0) * item.quantity,
-        0
-      );
-
+      setIsPlacingOrder(true);
+      setError(null);
       const orderData = {
         orderId: `ORD-${Math.floor(Math.random() * 100000)}`,
-        totalAmount,
         billingInfo,
         shippingAddress,
         items: cartItems,
       };
-
-      // Send order request to API
       const response = await axios.post("/api/order", orderData);
-
-      // Debugging: Log the response
-      console.log("API Response:", response);
-
-      if (response.data && response.data.transactionId) {
-        // Order placed successfully, redirect to order success page
+      if (response.data?.transactionId) {
         setOrderPlaced(true);
         router.push({
           pathname: "/order-success",
           query: { orderDetails: JSON.stringify(response.data) },
         });
       } else {
-        throw new Error("Order processing failed. No transaction ID received.");
+        throw new Error("Order failed.");
       }
     } catch (err) {
-      console.error("Error placing order:", err);
-
-      // Extract the error message from the AxiosError
-      let errorMessage = "Failed to place order. Please try again.";
-      if (err.response) {
-        // Use the error message from the backend if available
-        errorMessage = err.response.data.error || errorMessage;
-      } else if (err.request) {
-        // Handle network errors
-        errorMessage = "Network error. Please check your connection.";
-      }
-
-      setError(errorMessage);
+      setError("Failed to place order. Try again.");
+    } finally {
       setIsPlacingOrder(false);
     }
   };
 
-  if (loading) return <div>Loading checkout...</div>;
+  if (loading) {
+    return (
+      <div className="text-center py-10 text-orange-500">
+        Loading checkout...
+      </div>
+    );
+  }
 
   const subTotal = cartItems.reduce(
     (sum, item) => sum + (products[item.productId]?.price || 0) * item.quantity,
@@ -213,225 +121,82 @@ const Checkout = () => {
 
   return (
     <>
-      {/* Display error notification if there's an error */}
       {error && (
-        <ErrorNotification
-          message={error}
-          onClose={() => setError(null)} // Clear the error when the user clicks the close button
-        />
+        <ErrorNotification message={error} onClose={() => setError(null)} />
       )}
-
-      <div className="breadcrumb-section">
-        <div className="container">
-          <h2>Checkout</h2>
-          <nav className="theme-breadcrumb">
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item">
-                <Link href="/">Home</Link>
+      <div className="breadcrumb-section bg-gray-50 py-4">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-semibold text-gray-700">Checkout</h2>
+          <nav className="text-sm text-gray-500 mt-2">
+            <ol className="flex space-x-2">
+              <li>
+                <Link href="/" className="hover:underline text-blue-600">
+                  Home
+                </Link>
               </li>
-              <li className="breadcrumb-item active">Checkout</li>
+              <li>/</li>
+              <li className="text-gray-600 font-medium">Checkout</li>
             </ol>
           </nav>
         </div>
       </div>
 
-      <section className="checkout-section section-b-space">
-        <div className="container">
-          {orderPlaced ? (
-            <div className="order-placed-message bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold text-green-600">
-                🎉 Order Placed!
-              </h2>
-              <p>Your order has been successfully placed.</p>
-              <p>Please wait while we process your payment...</p>
-            </div>
-          ) : (
-            <>
-              {/* Order Summary */}
-              <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-                <div className="table-responsive">
-                  <table className="table cart-table">
-                    <thead>
-                      <tr className="table-head">
-                        <th>Image</th>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {cartItems.map((item) => {
-                        const product =
-                          products[item.productId] || mockProductData;
-                        return (
-                          <tr key={item.productId}>
-                            <td>
-                              <Image
-                                src={product.images?.[0] || "/placeholder.jpg"}
-                                className="img-fluid"
-                                alt={product.name}
-                                width={60}
-                                height={60}
-                                className="rounded-md shadow-sm"
-                              />
-                            </td>
-                            <td>{product.name}</td>
-                            <td>Kshs {product.price?.toFixed(2)}</td>
-                            <td>{item.quantity}</td>
-                            <td>
-                              Kshs {(product.price * item.quantity).toFixed(2)}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+      <section className="checkout-section section-b-space py-10">
+        <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-[1fr_1px_2fr] gap-8">
+          {/* Left - Order Summary */}
+          <div className="bg-gray-50 p-6 rounded-lg shadow-sm h-fit">
+            <OrderSummary
+              cartItems={cartItems}
+              products={products}
+              subTotal={subTotal}
+              shippingFee={shippingFee}
+              tax={tax}
+              totalAmount={totalAmount}
+            />
+          </div>
 
-              {/* Billing & Shipping Info */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Billing Information */}
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                  <h2 className="text-xl font-semibold mb-4">
-                    Billing Information
-                  </h2>
-                  <input
-                    type="text"
-                    className="w-full p-3 border rounded-md mb-3"
-                    name="firstName"
-                    value={billingInfo.firstName}
-                    onChange={(e) =>
-                      handleInputChange(e, setBillingInfo, "billingInfo")
-                    }
-                    onBlur={handleBlur}
-                    placeholder="First Name"
-                  />
-                  {validationErrors.firstName && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {validationErrors.firstName}
-                    </p>
-                  )}
-                  <input
-                    type="text"
-                    className="w-full p-3 border rounded-md mb-3"
-                    name="lastName"
-                    value={billingInfo.lastName}
-                    onChange={(e) =>
-                      handleInputChange(e, setBillingInfo, "billingInfo")
-                    }
-                    onBlur={handleBlur}
-                    placeholder="Last Name"
-                  />
-                  {validationErrors.lastName && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {validationErrors.lastName}
-                    </p>
-                  )}
-                  <input
-                    type="email"
-                    className="w-full p-3 border rounded-md mb-3"
-                    name="email"
-                    value={billingInfo.email}
-                    onChange={(e) =>
-                      handleInputChange(e, setBillingInfo, "billingInfo")
-                    }
-                    onBlur={handleBlur}
-                    placeholder="Email"
-                  />
-                  {validationErrors.email && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {validationErrors.email}
-                    </p>
-                  )}
-                  <input
-                    type="tel"
-                    className="w-full p-3 border rounded-md"
-                    name="phone"
-                    value={billingInfo.phone}
-                    onChange={(e) =>
-                      handleInputChange(e, setBillingInfo, "billingInfo")
-                    }
-                    onBlur={handleBlur}
-                    placeholder="Phone"
-                  />
-                  {validationErrors.phone && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {validationErrors.phone}
-                    </p>
-                  )}
-                </div>
+          {/* Vertical Border */}
+          <div className="hidden lg:block border-r border-gray-200"></div>
 
-                {/* Shipping Address */}
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                  <h2 className="text-xl font-semibold mb-4">
-                    Shipping Address
-                  </h2>
-                  <input
-                    type="text"
-                    className="w-full p-3 border rounded-md mb-3"
-                    name="street"
-                    value={shippingAddress.street}
-                    onChange={(e) =>
-                      handleInputChange(
-                        e,
-                        setShippingAddress,
-                        "shippingAddress"
-                      )
-                    }
-                    onBlur={handleBlur}
-                    placeholder="Street Address"
-                  />
-                  {validationErrors.street && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {validationErrors.street}
-                    </p>
-                  )}
-                  <input
-                    type="text"
-                    className="w-full p-3 border rounded-md mb-3"
-                    name="city"
-                    value={shippingAddress.city}
-                    onChange={(e) =>
-                      handleInputChange(
-                        e,
-                        setShippingAddress,
-                        "shippingAddress"
-                      )
-                    }
-                    onBlur={handleBlur}
-                    placeholder="City"
-                  />
-                  {validationErrors.city && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {validationErrors.city}
-                    </p>
-                  )}
-                </div>
-              </div>
+          {/* Right - All Steps */}
+          <div className="space-y-8">
+            {/* Billing Info */}
+            <BillingInfo
+              billingInfo={billingInfo}
+              setBillingInfo={setBillingInfo}
+              validationErrors={validationErrors}
+              handleBlur={handleBlur}
+              handleInputChange={(e) => handleInputChange(e, setBillingInfo)}
+            />
 
-              {/* Billing Summary */}
-              <div className="bg-white p-6 rounded-lg shadow-md mt-8 mb-8">
-                <h2 className="text-xl font-semibold mb-4">Billing Summary</h2>
-                <p>Subtotal: Kshs {subTotal.toFixed(2)}</p>
-                <p>Shipping: Kshs {shippingFee.toFixed(2)}</p>
-                <p>Tax: Kshs {tax.toFixed(2)}</p>
-                <p className="text-lg font-bold">
-                  Total: Kshs {totalAmount.toFixed(2)}
-                </p>
-              </div>
+            {/* Shipping Address */}
+            <ShippingAddress
+              shippingAddress={shippingAddress}
+              setShippingAddress={setShippingAddress}
+              validationErrors={validationErrors}
+              handleBlur={handleBlur}
+              handleInputChange={(e) =>
+                handleInputChange(e, setShippingAddress)
+              }
+            />
 
-              <button
-                className="mt-10 px-6 py-3 bg-green-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-green-700 transition-all duration-300 disabled:bg-gray-400"
-                onClick={handlePlaceOrder}
-                disabled={!isFormValid() || isPlacingOrder}
-              >
-                {isPlacingOrder ? "Placing Order..." : "Place Order"}
-              </button>
-            </>
-          )}
+            {/* Payment */}
+            <MpesaPayment
+              orderId={`ORD-${Math.floor(Math.random() * 100000)}`}
+              amount={totalAmount}
+            />
+
+            {/* Place Order Button */}
+            <button
+              onClick={handlePlaceOrder}
+              className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300"
+              disabled={isPlacingOrder}
+            >
+              {isPlacingOrder
+                ? "Placing Order..."
+                : "Confirm Payment & Place Order"}
+            </button>
+          </div>
         </div>
       </section>
     </>

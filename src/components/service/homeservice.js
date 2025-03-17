@@ -1,52 +1,56 @@
-import Link from "next/link";
+import { ShieldCheck, Clock, Leaf, Shirt } from "lucide-react";
+import { motion } from "framer-motion";
+
+const features = [
+  {
+    title: "Skin-Friendly Formula",
+    description: "No irritation, gentle on skin.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Long-Lasting Protection",
+    description: "All-day freshness.",
+    icon: Clock,
+  },
+  {
+    title: "Natural Ingredients",
+    description: "No artificial chemicals.",
+    icon: Leaf,
+  },
+  {
+    title: "No Stains or Residue",
+    description: "Won’t mark clothing.",
+    icon: Shirt,
+  },
+];
 
 const HomeService = () => {
   return (
-    <div className="container">
-      <section className="service border-section small-section">
-        <div className="row">
-          {/* Skin-Friendly Formula */}
-          <div className="col-md-3 service-block">
-            <div className="media">
-              <div className="media-body">
-                <h4>Skin-Friendly Formula</h4>
-                <p>No irritation, gentle on skin.</p>
+    <section className="w-full py-16 px-4 md:px-8 lg:px-12 bg-white">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {features.map((feature, index) => {
+          const Icon = feature.icon;
+          return (
+            <motion.div
+              key={index}
+              whileHover={{ translateY: -4 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300"
+            >
+              <div className="flex items-center mb-4">
+                <div className="p-2 bg-emerald-50 rounded-full">
+                  <Icon className="h-5 w-5 text-emerald-600" />
+                </div>
+                <h4 className="ml-3 text-lg font-medium text-gray-800">
+                  {feature.title}
+                </h4>
               </div>
-            </div>
-          </div>
-
-          {/* Long-Lasting Protection */}
-          <div className="col-md-3 service-block">
-            <div className="media">
-              <div className="media-body">
-                <h4>Long-Lasting Protection</h4>
-                <p>All-day freshness.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Natural Ingredients */}
-          <div className="col-md-3 service-block">
-            <div className="media">
-              <div className="media-body">
-                <h4>Natural Ingredients</h4>
-                <p>No artificial chemicals.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* No Stains or Residue */}
-          <div className="col-md-3 service-block">
-            <div className="media">
-              <div className="media-body">
-                <h4>No Stains or Residue</h4>
-                <p>Won’t mark clothing.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+              <p className="text-sm text-gray-600">{feature.description}</p>
+            </motion.div>
+          );
+        })}
+      </div>
+    </section>
   );
 };
 

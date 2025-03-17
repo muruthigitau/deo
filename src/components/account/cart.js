@@ -1,190 +1,250 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import axios from "axios";
-import { mockProductData } from "@/data/mockProduct";
+import { getFromDB, saveToDB } from "@/utils/indexedDB";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
-  const [products, setProducts] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const fetchCartItems = async () => {
+    try {
+      const dbData = await getFromDB("cart");
+      const items = dbData?.items || [];
+
+      const mappedItems = items.map((item) => ({
+        productId: item.product_id,
+        quantity: item.qty,
+        product: item.product || {
+          id: item.product_id,
+          name: "Unknown Product",
+          price: 0,
+          images: ["/placeholder.jpg"],
+        },
+      }));
+
+      setCartItems(mappedItems);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error loading cart:", err);
+      setError("Failed to load cart items.");
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const response = await axios.get("/api/cart");
-        const items = response.data.items || [];
-        setCartItems(items);
-
-        if (items.length > 0) {
-          const productRequests = items.map((item) =>
-            axios
-              .get(`/api/product/${item.productId}`)
-              .then((res) => res.data)
-              .catch(() => {
-                console.error(
-                  `Failed to fetch product ${item.productId}, using mock data.`
-                );
-                return { ...mockProductData, id: item.productId };
-              })
-          );
-
-          const productsData = await Promise.all(productRequests);
-          const productMap = productsData.reduce((acc, product) => {
-            acc[product.id] = product;
-            return acc;
-          }, {});
-          setProducts(productMap);
-        }
-      } catch (err) {
-        console.error("Error fetching cart:", err);
-        setError("Failed to load cart. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCart();
+    fetchCartItems();
+    const intervalId = setInterval(fetchCartItems, 5000);
+    return () => clearInterval(intervalId);
   }, []);
 
-  const updateQuantity = async (productId, change) => {
+  const persistCart = async (updatedItems) => {
     try {
-      const updatedItems = cartItems.map((item) =>
-        item.productId === productId
-          ? { ...item, quantity: Math.max(1, item.quantity + change) }
-          : item
-      );
-      setCartItems(updatedItems);
-      await axios.post("/api/cart/update", { productId, quantity: change });
+      const dbPayload = updatedItems.map((item) => ({
+        product_id: item.productId,
+        qty: item.quantity,
+        product: item.product,
+      }));
+      await saveToDB("cart", { items: dbPayload });
     } catch (err) {
-      console.error("Error updating cart:", err);
+      console.error("Error saving cart to DB:", err);
     }
+  };
+
+  const updateQuantity = async (productId, change) => {
+    const updatedItems = cartItems.map((item) =>
+      item.productId === productId
+        ? { ...item, quantity: Math.max(1, item.quantity + change) }
+        : item
+    );
+    setCartItems(updatedItems);
+    await persistCart(updatedItems);
   };
 
   const removeItem = async (productId) => {
-    try {
-      setCartItems(cartItems.filter((item) => item.productId !== productId));
-      await axios.post("/api/cart/remove", { productId });
-    } catch (err) {
-      console.error("Error removing item:", err);
-    }
+    const updatedItems = cartItems.filter(
+      (item) => item.productId !== productId
+    );
+    setCartItems(updatedItems);
+    await persistCart(updatedItems);
   };
 
   const handleProceedToCheckout = async () => {
-    try {
-      await axios.post("/api/checkout", { items: cartItems, products });
-      window.location.href = "/checkout";
-    } catch (error) {
-      console.error("Error sending cart data to checkout:", error);
-    }
+    await saveToDB("checkout", { items: cartItems });
+    window.location.href = "/checkout";
   };
 
-  if (loading) return <div>Loading cart...</div>;
-  if (error) return <div className="error-message">{error}</div>;
-
   const totalPrice = cartItems.reduce(
-    (sum, item) => sum + (products[item.productId]?.price || 0) * item.quantity,
+    (sum, item) => sum + (item.product.price || 0) * item.quantity,
     0
   );
 
-  return (
-    <>
-      <div className="breadcrumb-section">
-        <div className="container">
-          <h2>Cart</h2>
-          <nav className="theme-breadcrumb">
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item">
-                <Link href="/">Home</Link>
-              </li>
-              <li className="breadcrumb-item active">Cart</li>
-            </ol>
-          </nav>
-        </div>
-      </div>
+  if (loading)
+    return (
+      <div className="text-center py-10 text-gray-600">Loading cart...</div>
+    );
+  if (error)
+    return <div className="text-red-500 text-center py-10">{error}</div>;
 
-      <section className="cart-section section-b-space">
-        <div className="container">
-          {cartItems.length === 0 ? (
-            <p className="empty-cart-message">Your cart is empty.</p>
-          ) : (
-            <div className="table-responsive">
-              <table className="table cart-table">
-                <thead>
-                  <tr className="table-head">
-                    <th>Image</th>
-                    <th>Product Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Action</th>
+  return (
+    <div className="bg-gradient-to-b from-white to-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-3xl sm:text-4xl font-bold text-green-700 mb-6 text-center">
+          Your Shopping Cart
+        </h2>
+
+        {cartItems.length === 0 ? (
+          <p className="text-center text-gray-500 text-lg">
+            Your cart is empty.
+          </p>
+        ) : (
+          <>
+            {/* Mobile Cards */}
+            <div className="sm:hidden space-y-4">
+              {cartItems.map((item) => {
+                const product = item.product;
+                return (
+                  <div
+                    key={item.productId}
+                    className="bg-white rounded-lg shadow-md p-4 flex flex-col gap-4"
+                  >
+                    <div className="flex items-center gap-4">
+                      <Image
+                        src={product.images?.[0].image || "/placeholder.jpg"}
+                        alt={product.name || "Product"}
+                        width={80}
+                        height={80}
+                        className="rounded object-cover w-20 h-20"
+                      />
+                      <div>
+                        <Link
+                          href={`/product/${item.productId}`}
+                          className="text-gray-800 font-semibold hover:underline"
+                        >
+                          {product.name || "Product Name"}
+                        </Link>
+                        <div className="text-orange-600 font-bold mt-1">
+                          Kshs {product.price}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <div className="inline-flex items-center border rounded shadow-sm">
+                        <button
+                          className="px-3 py-1 bg-orange-100 text-orange-700 hover:bg-orange-200"
+                          onClick={() =>
+                            item.quantity > 1 &&
+                            updateQuantity(item.productId, -1)
+                          }
+                        >
+                          −
+                        </button>
+                        <span className="px-4 font-semibold text-gray-700">
+                          {item.quantity}
+                        </span>
+                        <button
+                          className="px-3 py-1 bg-orange-100 text-orange-700 hover:bg-orange-200"
+                          onClick={() => updateQuantity(item.productId, 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <div className="text-green-700 font-bold">
+                        Kshs {(product.price * item.quantity).toFixed(2)}
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => removeItem(item.productId)}
+                      className="text-red-500 hover:text-red-700 font-semibold text-sm mt-2 self-end"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop Table */}
+            <div className="hidden sm:block overflow-x-auto rounded-lg shadow-md mt-6">
+              <table className="min-w-full divide-y divide-gray-200 bg-white">
+                <thead className="bg-green-100">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-sm font-bold text-green-800 uppercase tracking-wider">
+                      Product
+                    </th>
+                    <th className="px-6 py-3 text-left text-sm font-bold text-green-800 uppercase tracking-wider">
+                      Price
+                    </th>
+                    <th className="px-6 py-3 text-center text-sm font-bold text-green-800 uppercase tracking-wider">
+                      Quantity
+                    </th>
+                    <th className="px-6 py-3 text-right text-sm font-bold text-green-800 uppercase tracking-wider">
+                      Total
+                    </th>
+                    <th className="px-6 py-3 text-center text-sm font-bold text-green-800 uppercase tracking-wider">
+                      Remove
+                    </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-gray-100">
                   {cartItems.map((item) => {
-                    const product = products[item.productId] || mockProductData;
+                    const product = item.product;
                     return (
-                      <tr key={item.productId}>
-                        <td>
-                          <Link href={`/product/${item.productId}`}>
-                            <Image
-                              src={product.images?.[0] || "/placeholder.jpg"}
-                              className="img-fluid"
-                              alt={product.name}
-                              width={100}
-                              height={100}
-                            />
+                      <tr key={item.productId} className="hover:bg-green-50">
+                        <td className="px-6 py-4 flex items-center gap-4">
+                          <Image
+                            src={
+                              product.images?.[0].image || "/placeholder.jpg"
+                            }
+                            alt={product.name || "Product"}
+                            width={60}
+                            height={60}
+                            className="rounded object-cover w-16 h-16"
+                          />
+                          <Link
+                            href={`/product/${item.productId}`}
+                            className="text-gray-800 font-medium hover:underline"
+                          >
+                            {product.name || "Product Name"}
                           </Link>
                         </td>
-                        <td>
-                          <Link href={`/product/${item.productId}`}>
-                            {product.name}
-                          </Link>
+                        <td className="px-6 py-4 text-orange-600 font-semibold">
+                          Kshs {product.price}
                         </td>
-                        <td className="table-price">
-                          <h2>Kshs {product.price?.toFixed(2)}</h2>
-                        </td>
-                        <td>
-                          <div className="qty-box">
-                            <div className="input-group qty-container">
-                              <button
-                                className="btn qty-btn-minus"
-                                onClick={() =>
-                                  item.quantity > 1 &&
-                                  updateQuantity(item.productId, -1)
-                                }
-                              >
-                                <i className="ri-arrow-left-s-line"></i>
-                              </button>
-                              <input
-                                type="number"
-                                readOnly
-                                className="form-control input-qty"
-                                value={item.quantity}
-                              />
-                              <button
-                                className="btn qty-btn-plus"
-                                onClick={() =>
-                                  updateQuantity(item.productId, 1)
-                                }
-                              >
-                                <i className="ri-arrow-right-s-line"></i>
-                              </button>
-                            </div>
+                        <td className="px-6 py-4 text-center">
+                          <div className="inline-flex items-center border rounded shadow-sm">
+                            <button
+                              className="px-3 py-1 bg-orange-100 text-orange-700 hover:bg-orange-200"
+                              onClick={() =>
+                                item.quantity > 1 &&
+                                updateQuantity(item.productId, -1)
+                              }
+                            >
+                              −
+                            </button>
+                            <span className="px-4 font-semibold text-gray-700">
+                              {item.quantity}
+                            </span>
+                            <button
+                              className="px-3 py-1 bg-orange-100 text-orange-700 hover:bg-orange-200"
+                              onClick={() => updateQuantity(item.productId, 1)}
+                            >
+                              +
+                            </button>
                           </div>
                         </td>
-                        <td>
-                          <h2 className="td-color">
-                            Kshs {(product.price * item.quantity).toFixed(2)}
-                          </h2>
+                        <td className="px-6 py-4 text-right text-green-700 font-bold">
+                          Kshs {(product.price * item.quantity).toFixed(2)}
                         </td>
-                        <td>
+                        <td className="px-6 py-4 text-center">
                           <button
-                            className="icon remove-btn"
                             onClick={() => removeItem(item.productId)}
+                            className="text-red-500 hover:text-red-700 font-bold text-lg"
                           >
-                            <i className="ri-close-line"></i>
+                            ×
                           </button>
                         </td>
                       </tr>
@@ -192,39 +252,34 @@ const Cart = () => {
                   })}
                 </tbody>
                 <tfoot>
-                  <tr>
-                    <td colSpan="4" className="d-md-table-cell d-none">
-                      Total Price:
+                  <tr className="bg-green-100">
+                    <td
+                      colSpan={3}
+                      className="px-6 py-4 text-right font-bold text-green-800"
+                    >
+                      Total:
                     </td>
-                    <td className="d-md-none">Total Price:</td>
-                    <td>
-                      <h2>Kshs {totalPrice.toFixed(2)}</h2>
+                    <td className="px-6 py-4 text-right text-green-700 font-extrabold">
+                      Kshs {totalPrice.toFixed(2)}
                     </td>
+                    <td></td>
                   </tr>
                 </tfoot>
               </table>
             </div>
-          )}
 
-          <div className="row cart-buttons">
-            <div className="col-6">
-              <Link href="/product/" className="btn btn-solid text-capitalize">
-                Continue Shopping
-              </Link>
-            </div>
-            <div className="col-6">
+            <div className="mt-6 flex justify-center sm:justify-end">
               <button
-                className="btn btn-solid text-capitalize"
                 onClick={handleProceedToCheckout}
-                disabled={cartItems.length === 0}
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-200"
               >
-                Check Out
+                Proceed to Checkout
               </button>
             </div>
-          </div>
-        </div>
-      </section>
-    </>
+          </>
+        )}
+      </div>
+    </div>
   );
 };
 

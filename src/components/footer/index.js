@@ -1,218 +1,143 @@
 import Link from "next/link";
-import Image from "next/image";
+import { motion } from "framer-motion";
 
 const Footer = () => {
   return (
-    <footer className="footer-style-1">
-      <section className="section-b-space darken-layout">
-        <div className="container">
-          <div className="row footer-theme g-md-5 g-2">
-            {/* Logo & Contact Info */}
-            <div className="col-xl-3 col-lg-5 col-md-6 sub-title">
-              <div>
-                {/* Placeholder for text-based logo */}
-                <div className="footer-logo">
-                  <Link href="/">
-                    <h2 className="text-white font-bold text-xl">
-                      Deo African Magic Limited
-                    </h2>
-                  </Link>
-                </div>
+    <footer className="bg-gradient-to-b from-gray-900 to-gray-800 text-white py-16 relative overflow-hidden">
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-transparent opacity-20 pointer-events-none" />
 
-                {/* Commented out the previous logo for later update */}
-                {/* 
-    <div className="footer-logo">
-      <Link href="/">
-        <Image
-          alt="logo"
-          className="img-fluid"
-          src="/assets/images/logo-white.png"
-          width={150}
-          height={50}
-        />
-      </Link>
-    </div> 
-    */}
-
-                <p>
-                  Deo African Magic Limited is committed to providing natural
-                  and skin-friendly deodorants with long-lasting protection,
-                  free from harmful chemicals.
-                </p>
-
-                <ul className="contact-list">
-                  <li>
-                    <i className="ri-map-pin-line"></i> MyTown Karen, Nairobi,
-                    Kenya
-                  </li>
-                  <li>
-                    <i className="ri-phone-line"></i> Call Us: +254 732 333 330
-                  </li>
-                  <li>
-                    <i className="ri-mail-line"></i> Email Us:
-                    info@deoafricanmagic.com
-                  </li>
-                </ul>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+          {/* Logo and Info */}
+          <motion.div
+            className="lg:col-span-2"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Link href="/">
+              <div className="text-3xl font-extrabold tracking-wide text-white hover:text-green-400 transition duration-300 ease-in-out mb-4 cursor-pointer">
+                Deo African Magic
+              </div>
+            </Link>
+            <div className="text-gray-400 mb-6 max-w-md leading-relaxed">
+              Committed to natural, skin-friendly deodorants with long-lasting
+              protection and no harmful chemicals.
+            </div>
+            <div className="space-y-2 text-sm text-gray-400">
+              <div className="flex items-center hover:text-green-400 transition">
+                <i className="ri-map-pin-line text-lg mr-2" />
+                <div>MyTown Karen, Nairobi, Kenya</div>
+              </div>
+              <div className="flex items-center hover:text-green-400 transition">
+                <i className="ri-phone-line text-lg mr-2" />
+                <div>+254 732 333 330</div>
+              </div>
+              <div className="flex items-center hover:text-green-400 transition">
+                <i className="ri-mail-line text-lg mr-2" />
+                <div>info@deoafricanmagic.com</div>
               </div>
             </div>
+          </motion.div>
 
-            {/* Categories */}
-            <div className="col-xl-2 col-lg-3 col-md-4 col-md-6">
-              <div className="sub-title">
-                <div className="footer-title">
-                  <h4>About Product</h4>
-                </div>
-                <div className="footer-content">
-                  <ul>
-                    {[
-                      "24 Hours",
-                      "No irtitations",
-                      "Alcohol-Free",
-                      "No Stains",
-                      "Natural",
-                      "Made in Thailand",
-                    ].map((category, index) => (
-                      <li key={index}>
-                        <Link href="/product" className="text-content">
-                          {category}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+          {/* About Product */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="text-lg font-semibold mb-4">About Product</div>
+            <div className="space-y-2 text-sm text-gray-400">
+              {[
+                "24 Hours",
+                "No Irritations",
+                "Alcohol-Free",
+                "No Stains",
+                "Natural",
+                "Made in Thailand",
+              ].map((item, i) => (
+                <Link
+                  key={i}
+                  href="/product"
+                  className="!text-gray-200 !hover:text-gray-400 transition block"
+                >
+                  {item}
+                </Link>
+              ))}
             </div>
+          </motion.div>
 
-            {/* Useful Links */}
-            <div className="col-xl col-lg-3 col-md-3">
-              <div className="sub-title">
-                <div className="footer-title">
-                  <h4>Useful Links</h4>
-                </div>
-                <div className="footer-content">
-                  <ul>
-                    {["Home", "About Us", "Product"].map((link, index) => (
-                      <li key={index}>
-                        <Link
-                          href={`/${link.toLowerCase().replace(/\s+/g, "-")}`}
-                          className="text-content"
-                        >
-                          {link}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+          {/* Useful Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <div className="text-lg font-semibold mb-4">Useful Links</div>
+            <div className="space-y-2 text-sm text-gray-400">
+              {["Home", "About Us", "Product"].map((link, i) => (
+                <Link
+                  key={i}
+                  href={`/${link.toLowerCase().replace(/\s+/g, "-")}`}
+                  className="!text-gray-200 !hover:text-gray-400 transition block"
+                >
+                  {link}
+                </Link>
+              ))}
             </div>
+          </motion.div>
 
-            {/* Help Center */}
-            <div className="col-xl-2 col-md-3">
-              <div className="sub-title">
-                <div className="footer-title">
-                  <h4>Help Center</h4>
-                </div>
-                <div className="footer-content">
-                  <ul>
-                    {["Contact Us"].map((link, index) => (
-                      <li key={index}>
-                        <Link href="/contact" className="text-content">
-                          {link}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+          {/* Newsletter & Socials */}
+          <motion.div
+            className="lg:col-span-2"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <div className="text-lg font-semibold mb-4">Follow Us</div>
+            <div className="text-gray-400 mb-4 text-sm">
+              Subscribe to our newsletter for the latest updates and offers.
             </div>
-
-            {/* Newsletter & Social Links */}
-            <div className="col-xl-3 col-lg-4 col-md-6">
-              <div className="sub-title">
-                <div className="footer-title">
-                  <h4>Follow Us</h4>
+            <form className="flex flex-col sm:flex-row gap-3 mb-4">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-2 bg-gray-800 text-white rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="px-6 py-2 bg-green-500 hover:bg-green-600 rounded-lg text-white font-medium transition"
+              >
+                Subscribe
+              </button>
+            </form>
+            <div className="flex space-x-4">
+              {[
+                { icon: "ri-facebook-fill", url: "https://facebook.com" },
+                { icon: "ri-twitter-fill", url: "https://twitter.com" },
+                { icon: "ri-instagram-fill", url: "https://instagram.com" },
+                { icon: "ri-pinterest-fill", url: "https://pinterest.com" },
+              ].map((social, i) => (
+                <div key={i}>
+                  <a
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-green-400 transition"
+                  >
+                    <i className={`${social.icon} text-xl !text-gray-400`} />
+                  </a>
                 </div>
-                <div className="footer-content">
-                  <p className="mb-cls-content">
-                    Never Miss Anything From Store By Signing Up To Our
-                    Newsletter.
-                  </p>
-                  <form className="form-inline">
-                    <div className="form-group me-sm-3 mb-2">
-                      <input
-                        type="email"
-                        className="form-control"
-                        placeholder="Enter Email Address"
-                      />
-                    </div>
-                    <button className="btn btn-solid mb-2">Subscribe</button>
-                  </form>
-                  <div className="footer-social">
-                    <ul className="flex space-x-3">
-                      {[
-                        {
-                          name: "Facebook",
-                          icon: "ri-facebook-fill",
-                          url: "https://facebook.com/",
-                        },
-                        {
-                          name: "Twitter",
-                          icon: "ri-twitter-fill",
-                          url: "https://twitter.com/",
-                        },
-                        {
-                          name: "Instagram",
-                          icon: "ri-instagram-fill",
-                          url: "https://instagram.com/",
-                        },
-                        {
-                          name: "Pinterest",
-                          icon: "ri-pinterest-fill",
-                          url: "https://pinterest.com/",
-                        },
-                      ].map((social, index) => (
-                        <li key={index}>
-                          <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={social.url}
-                          >
-                            <i className={social.icon}></i>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
 
-      {/* Footer Bottom */}
-      <div className="sub-footer dark-subfooter">
-        <div className="container">
-          <div className="row">
-            <div className="col-xl-6 col-md-6 col-sm-12">
-              <div className="footer-end">
-                <p>
-                  <i className="ri-copyright-line"></i>{" "}
-                  {new Date().getFullYear()} MSLABDESIGNS
-                </p>
-              </div>
-            </div>
-            <div className="col-xl-6 col-md-6 col-sm-12">
-              <div className="payment-card-bottom">
-                <Image
-                  alt="payment options"
-                  src="/assets/images/payment.png"
-                  className="img-fluid"
-                  width={300}
-                  height={50}
-                />
-              </div>
-            </div>
+        {/* Footer Bottom */}
+        <div className="border-t border-gray-700 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+          <div>
+            &copy; {new Date().getFullYear()} MSLABDESIGNS. All rights reserved.
           </div>
         </div>
       </div>
