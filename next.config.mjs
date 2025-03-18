@@ -3,7 +3,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ["test.localhost", "localhost", "cms.destinycarehome.org"], // Add your domain(s) here
+    domains: ["test.localhost", "localhost", "admin.deo.arifahub.com"], // Add your domain(s) here
   },
 };
 
