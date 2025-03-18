@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Preset API URL
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/apis/";
+  process.env.NEXT_PUBLIC_API_URL || "https://admin.deo.arifahub.com/apis/";
 
 // Utility function to fetch data with retry logic
 const fetchWithRetry = async (url, params, headers, retries = 3) => {
