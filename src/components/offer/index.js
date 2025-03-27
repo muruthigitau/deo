@@ -4,7 +4,7 @@ const Offer = () => {
       {/* Title Section */}
       <div className="text-center mb-10">
         <h4 className="text-lg md:text-xl font-semibold text-emerald-600 uppercase tracking-widest">
-          Special Offer - 10% Off
+          Special Offer - 33% Off
         </h4>
         <h2 className="mt-2 text-3xl md:text-4xl font-extrabold text-neutral-900 dark:text-white">
           Exclusive Deals on Alum Deodorant
@@ -14,7 +14,7 @@ const Offer = () => {
       {/* Offer Description */}
       <div className="max-w-3xl mx-auto">
         <p className="text-center text-lg md:text-xl text-neutral-700 dark:text-neutral-300 leading-relaxed">
-          Get <span className="font-bold text-emerald-500">10% off</span> on our
+          Get <span className="font-bold text-emerald-500">33% off</span> on our
           premium Alum Deodorant! Stay fresh all day with{" "}
           <span className="font-medium">natural odor protection</span>—gentle on
           skin, tough on sweat.{" "}

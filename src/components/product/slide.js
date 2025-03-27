@@ -1,122 +1,103 @@
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { fetchData, postData } from "@/utils/Api";
-import { saveToDB } from "@/utils/indexedDB"; // Import IndexedDB utility
-import axios from "axios";
+import { fetchData } from "@/utils/Api";
+import { saveToDB } from "@/utils/indexedDB";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { getBrowserId } from "@/utils/getBrowserId";
+import Loader from "@/components/Loader";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { getBrowserId } from "@/utils/getBrowserId";
 
 const Slide = () => {
-  const router = useRouter();
   const [productData, setProductData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [cartLoading, setCartLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [quantity, setQuantity] = useState(1); // Quantity state
-  const [note, setNote] = useState(""); // Note state
+  const [quantity, setQuantity] = useState(1);
+  const [discountRibbon, setDiscountRibbon] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        setLoading(true);
         const response = await fetchData(
           "shop/public/product/Alum%20Deodorant/",
           {}
         );
         if (response?.status === 200 && response?.data) {
           setProductData(response.data);
+          const { old_price = 1500, price } = response.data;
+          if (old_price > price) {
+            const discount = Math.round(
+              ((old_price - price) / old_price) * 100
+            );
+            setDiscountRibbon(`${discount}% OFF`);
+          }
         }
       } catch (err) {
-        let message = "Failed to fetch product data.";
-        if (err.response) message = err.response.data.error || message;
-        else if (err.request)
-          message = "Network error. Please check connection.";
+        const message =
+          err.response?.data?.error || "Failed to fetch product data.";
         setError(message);
       } finally {
         setLoading(false);
       }
     };
+
     fetchProduct();
   }, []);
 
-  // Handle quantity change
   const handleQuantityChange = (type) => {
-    let newQuantity = quantity;
-
-    if (type === "plus") {
-      newQuantity = Math.min(quantity + 1, productData?.stock_balance);
-    } else if (type === "minus") {
-      newQuantity = Math.max(quantity - 1, 1);
-    }
-
-    setQuantity(newQuantity);
+    setQuantity((prev) =>
+      type === "plus"
+        ? Math.min(prev + 1, productData?.stock_balance)
+        : Math.max(prev - 1, 1)
+    );
   };
 
-  // Handle quantity input
   const handleQuantityInput = (e) => {
-    let value = parseInt(e.target.value);
-    if (!isNaN(value)) {
-      value = Math.min(Math.max(1, value), productData?.stock_balance);
-      setQuantity(value);
-    }
+    const value = Math.max(
+      1,
+      Math.min(parseInt(e.target.value), productData?.stock_balance)
+    );
+    if (!isNaN(value)) setQuantity(value);
   };
 
   const handleAddToCart = async () => {
+    setCartLoading(true);
     try {
-      const browserId = await getBrowserId(); // Generate/retrieve unique browser ID
-
+      const browserId = await getBrowserId();
       const item = {
-        product_id: productData.id, // Backend expects `product_id` not `productId`
-        product: productData, // Backend expects `product_id` not `productId`
-        qty: quantity, // Match your model field `qty`
+        product_id: productData.id,
+        product: productData,
+        qty: quantity,
       };
-
-      const cartPayload = {
-        browser_id: browserId,
-        items: [item], // List of one or more items
-      };
-
-      // Save to IndexedDB if needed (optional step)
+      const cartPayload = { browser_id: browserId, items: [item] };
       await saveToDB("cart", cartPayload);
-
-      console.log("browserId", cartPayload);
-      // // Send to backend
-      // const response = await postData(
-      //   "method/shop.shop.doctype.cart.cart.CartViewSet/",
-      //   cartPayload
-      // );
-
-      // if (response.status === 201 || response.status === 200) {
-      //   console.log("Cart updated on backend.");
-      //   // Optionally notify or redirect
-      // }
-    } catch (error) {
-      console.error("Add to cart error:", error);
-      // Show error to user
+      // await postData("method/shop.shop.doctype.cart.cart.CartViewSet/", cartPayload);
+    } catch (err) {
+      console.error("Add to cart error:", err);
+    } finally {
+      setCartLoading(false);
     }
   };
 
-  if (loading)
-    return (
-      <div className="text-center py-20 text-green-600 font-semibold text-lg">
-        Loading product...
-      </div>
-    );
-  if (!productData)
+  if (loading) return <Loader fullScreen message="Loading product..." />;
+
+  if (error || !productData)
     return (
       <div className="text-center py-20 text-red-600 font-medium">
-        No product found
+        {error || "No product found"}
       </div>
     );
 
   return (
     <section className="py-16">
+      <AnimatePresence>
+        {cartLoading && <Loader fullScreen message="Adding to cart..." />}
+      </AnimatePresence>
       <div className="max-w-6xl mx-auto px-4">
         <motion.div
           whileHover={{ scale: 1.02 }}
@@ -126,9 +107,9 @@ const Slide = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
             {/* Product Image Slider */}
             <div className="relative">
-              {productData.ribbon && (
+              {discountRibbon && (
                 <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded shadow-lg z-10">
-                  {productData.ribbon}
+                  {discountRibbon}
                 </div>
               )}
               <Swiper
@@ -139,12 +120,12 @@ const Slide = () => {
                 loop
                 className="w-full h-[400px] rounded-lg overflow-hidden"
               >
-                {productData.images?.map((image, index) => (
-                  <SwiperSlide key={index}>
+                {productData.images?.map((img, i) => (
+                  <SwiperSlide key={i}>
                     <div className="relative w-full h-full">
                       <Image
-                        src={image.image}
-                        alt={`${productData.name} - Image ${index + 1}`}
+                        src={img.image}
+                        alt={`${productData.name} - Image ${i + 1}`}
                         fill
                         className="object-cover"
                         priority
@@ -160,27 +141,26 @@ const Slide = () => {
               <div className="space-y-4">
                 <Link href="/product">
                   <h1 className="text-3xl font-bold text-gray-800">
-                    {productData.name}
+                    {productData.name || "Alum Deodorant"}
                   </h1>
                 </Link>
                 <p className="text-sm text-gray-600">
                   {productData.subtitle || "Natural Odor Protection"}
                 </p>
-
                 {/* Rating */}
                 <div className="flex items-center gap-2 text-yellow-500 text-lg">
                   {[...Array(5)].map((_, idx) => (
                     <i key={idx} className="ri-star-fill" />
                   ))}
                   <span className="text-sm text-gray-500 ml-2">
-                    (6 reviews)
+                    (653 reviews)
                   </span>
                 </div>
 
                 {/* Price & Discount */}
                 <div className="flex items-center gap-4 text-2xl font-semibold">
                   <span className="text-red-500 line-through">
-                    Kshs {productData.original_price || 1100}
+                    Kshs {productData.old_price || 1500}
                   </span>
                   <span className="text-green-700">
                     Kshs {productData.price || 999}
@@ -231,7 +211,7 @@ const Slide = () => {
                 <button
                   className="flex-1 px-6 py-3 bg-green-600 text-white font-medium rounded-lg shadow-md hover:bg-green-700 transition disabled:opacity-50"
                   onClick={handleAddToCart}
-                  disabled={productData.stock_balance === 0}
+                  disabled={productData.stock_balance === 0 || cartLoading}
                 >
                   {productData.stock_balance === 0
                     ? "Out of Stock"
@@ -239,27 +219,9 @@ const Slide = () => {
                 </button>
                 <Link
                   href="/cart"
-                  className="flex-1 px-6 py-3 bg-orange-500 text-center text-white font-medium rounded-lg shadow-md hover:bg-orange-600 transition"
+                  className="flex-1 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg shadow-md hover:bg-orange-600 transition text-center"
                 >
                   Buy Now
-                </Link>
-              </div>
-
-              {/* Additional Actions */}
-              <div className="flex items-center gap-4">
-                <Link
-                  href="#"
-                  className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition"
-                >
-                  <i className="ri-heart-line text-lg" />
-                  <span>Add to Wishlist</span>
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition"
-                >
-                  <i className="ri-share-line text-lg" />
-                  <span>Share</span>
                 </Link>
               </div>
             </div>
