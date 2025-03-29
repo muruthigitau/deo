@@ -7,6 +7,7 @@ import BillingInfo from "./BillingInfo";
 import ShippingAddress from "./ShippingAddress";
 import OrderSummary from "./OrderSummary";
 import MpesaPayment from "./MpesaPayment";
+import fetchShippingCost from "./shippingcost";
 
 const Checkout = () => {
   const router = useRouter();
@@ -23,6 +24,7 @@ const Checkout = () => {
     city: "",
     state: "",
     zip: "",
+    deliveryOption: "deliver", // "deliver" or "pickup"
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,6 +32,8 @@ const Checkout = () => {
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [touchedFields, setTouchedFields] = useState({});
+  const [shippingFee, setShippingFee] = useState(0.0);
+  const [isShippingCostFetched, setIsShippingCostFetched] = useState(false);
 
   useEffect(() => {
     const fetchCheckoutData = async () => {
@@ -76,6 +80,53 @@ const Checkout = () => {
     setValidationErrors((prev) => ({ ...prev, [name]: error }));
   };
 
+  const handleDeliveryOptionChange = (option) => {
+    console.log("Delivery Option Changed:", option);
+    setShippingAddress((prev) => ({ ...prev, deliveryOption: option }));
+
+    if (option === "pickup") {
+      setShippingFee(0.0);
+      setIsShippingCostFetched(true); // Mark shipping cost as confirmed for pickup
+      console.log("Shipping Cost Set to 0 for Pickup");
+    } else if (option === "deliver") {
+      setShippingFee(0.0); // Reset shipping fee for delivery until fetched
+      setIsShippingCostFetched(false); // Reset shipping cost confirmation for delivery
+      console.log(
+        "Delivery Option Set to Deliver. Awaiting Address Confirmation."
+      );
+    }
+  };
+
+  const handleShippingAddressChange = async (e) => {
+    const { name, value } = e.target;
+    handleInputChange(e, setShippingAddress);
+
+    if (shippingAddress.deliveryOption === "deliver") {
+      const updatedAddress = { ...shippingAddress, [name]: value };
+
+      console.log("Delivery Option: Deliver");
+      console.log("Updated Address:", updatedAddress);
+
+      if (
+        updatedAddress.street &&
+        updatedAddress.city &&
+        updatedAddress.state &&
+        updatedAddress.zip
+      ) {
+        try {
+          const cost = await fetchShippingCost(updatedAddress);
+          setShippingFee(cost);
+          setIsShippingCostFetched(true);
+          console.log("Shipping Cost Fetched:", cost);
+        } catch (error) {
+          setError("Failed to fetch shipping cost.");
+          setIsShippingCostFetched(false);
+          console.error("Error fetching shipping cost:", error);
+        }
+      }
+    }
+  };
+
   const handlePlaceOrder = async () => {
     try {
       setIsPlacingOrder(true);
@@ -115,9 +166,13 @@ const Checkout = () => {
     (sum, item) => sum + (products[item.productId]?.price || 0) * item.quantity,
     0
   );
-  const shippingFee = 0.0;
   const tax = subTotal * 0.05;
   const totalAmount = subTotal + tax + shippingFee;
+
+  const isPlaceOrderDisabled =
+    isPlacingOrder ||
+    !isShippingCostFetched || // Ensure shipping cost is confirmed
+    Object.values(validationErrors).some(Boolean);
 
   return (
     <>
@@ -175,27 +230,39 @@ const Checkout = () => {
               setShippingAddress={setShippingAddress}
               validationErrors={validationErrors}
               handleBlur={handleBlur}
-              handleInputChange={(e) =>
-                handleInputChange(e, setShippingAddress)
-              }
+              handleInputChange={handleShippingAddressChange}
+              onDeliveryOptionChange={handleDeliveryOptionChange} // Pass the handler to ShippingAddress
             />
 
-            {/* Payment */}
-            <MpesaPayment
-              orderId={`ORD-${Math.floor(Math.random() * 100000)}`}
-              amount={totalAmount}
-            />
+            {/* Block Payment Section if Shipping Cost is Not Confirmed */}
+            {!isShippingCostFetched ? (
+              <div className="text-red-500 text-center py-4">
+                Please confirm your shipping cost to proceed with payment.
+              </div>
+            ) : (
+              <>
+                {/* Payment */}
+                <MpesaPayment
+                  orderId={`ORD-${Math.floor(Math.random() * 100000)}`}
+                  amount={totalAmount}
+                />
 
-            {/* Place Order Button */}
-            <button
-              onClick={handlePlaceOrder}
-              className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300"
-              disabled={isPlacingOrder}
-            >
-              {isPlacingOrder
-                ? "Placing Order..."
-                : "Confirm Payment & Place Order"}
-            </button>
+                {/* Place Order Button */}
+                <button
+                  onClick={handlePlaceOrder}
+                  className={`w-full px-4 py-2 rounded transition duration-300 ${
+                    isPlaceOrderDisabled
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-green-600 text-white hover:bg-green-700"
+                  }`}
+                  disabled={isPlaceOrderDisabled}
+                >
+                  {isPlacingOrder
+                    ? "Placing Order..."
+                    : "Confirm Payment & Place Order"}
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>

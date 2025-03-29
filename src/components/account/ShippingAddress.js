@@ -22,6 +22,7 @@ const ShippingAddress = ({
   validationErrors,
   handleBlur,
   handleInputChange,
+  onDeliveryOptionChange, // Notify parent about delivery option change
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [usePickup, setUsePickup] = useState(false);
@@ -46,6 +47,25 @@ const ShippingAddress = ({
       ? "border-red-400 focus:ring-red-200"
       : "border-gray-300 focus:border-lime-400 focus:ring-lime-100";
 
+  const handlePickupSelection = (locationId) => {
+    setSelectedPickup(locationId);
+    setShippingAddress((prev) => ({
+      ...prev,
+      deliveryOption: "pickup",
+      pickupLocation: locationId,
+    }));
+    onDeliveryOptionChange("pickup"); // Notify parent to set shipping cost to 0
+  };
+
+  const handleDeliverySelection = () => {
+    setUsePickup(false);
+    setShippingAddress((prev) => ({
+      ...prev,
+      deliveryOption: "deliver",
+    }));
+    onDeliveryOptionChange("deliver"); // Notify parent to fetch shipping cost
+  };
+
   return (
     <div className="bg-white p-4 rounded-xl shadow-md border border-gray-200">
       {/* Header */}
@@ -68,7 +88,7 @@ const ShippingAddress = ({
           {/* Toggle Pickup or Delivery */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setUsePickup(false)}
+              onClick={handleDeliverySelection}
               className={`px-3 py-1.5 rounded-lg border ${
                 !usePickup
                   ? "bg-lime-500 text-white border-lime-500"
@@ -95,7 +115,7 @@ const ShippingAddress = ({
               {pickupLocations.map((location) => (
                 <div
                   key={location.id}
-                  onClick={() => setSelectedPickup(location.id)}
+                  onClick={() => handlePickupSelection(location.id)}
                   className={`border rounded-lg p-3 cursor-pointer transition shadow-sm ${
                     selectedPickup === location.id
                       ? "border-lime-500 bg-lime-50"
