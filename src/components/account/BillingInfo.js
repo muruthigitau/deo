@@ -59,9 +59,9 @@ const BillingInfo = ({
                   id="firstName"
                   name="firstName"
                   className={`${inputBase} ${borderColor(
-                    validationErrors.firstName
+                    validationErrors?.firstName
                   )}`}
-                  value={billingInfo.firstName}
+                  value={billingInfo?.firstName}
                   onChange={(e) =>
                     handleInputChange(e, setBillingInfo, "billingInfo")
                   }
@@ -69,9 +69,9 @@ const BillingInfo = ({
                   placeholder="John"
                 />
               </div>
-              {validationErrors.firstName && (
+              {validationErrors?.firstName && (
                 <p className="text-red-500 text-xs mt-1">
-                  {validationErrors.firstName}
+                  {validationErrors?.firstName}
                 </p>
               )}
             </div>
@@ -88,9 +88,9 @@ const BillingInfo = ({
                   id="lastName"
                   name="lastName"
                   className={`${inputBase} ${borderColor(
-                    validationErrors.lastName
+                    validationErrors?.lastName
                   )}`}
-                  value={billingInfo.lastName}
+                  value={billingInfo?.lastName}
                   onChange={(e) =>
                     handleInputChange(e, setBillingInfo, "billingInfo")
                   }
@@ -98,9 +98,9 @@ const BillingInfo = ({
                   placeholder="Doe"
                 />
               </div>
-              {validationErrors.lastName && (
+              {validationErrors?.lastName && (
                 <p className="text-red-500 text-xs mt-1">
-                  {validationErrors.lastName}
+                  {validationErrors?.lastName}
                 </p>
               )}
             </div>
@@ -119,9 +119,9 @@ const BillingInfo = ({
                   id="email"
                   name="email"
                   className={`${inputBase} ${borderColor(
-                    validationErrors.email
+                    validationErrors?.email
                   )}`}
-                  value={billingInfo.email}
+                  value={billingInfo?.email}
                   onChange={(e) =>
                     handleInputChange(e, setBillingInfo, "billingInfo")
                   }
@@ -129,9 +129,9 @@ const BillingInfo = ({
                   placeholder="you@example.com"
                 />
               </div>
-              {validationErrors.email && (
+              {validationErrors?.email && (
                 <p className="text-red-500 text-xs mt-1">
-                  {validationErrors.email}
+                  {validationErrors?.email}
                 </p>
               )}
             </div>
@@ -148,9 +148,9 @@ const BillingInfo = ({
                   id="phone"
                   name="phone"
                   className={`${inputBase} ${borderColor(
-                    validationErrors.phone
+                    validationErrors?.phone
                   )}`}
-                  value={billingInfo.phone}
+                  value={billingInfo?.phone}
                   onChange={(e) =>
                     handleInputChange(e, setBillingInfo, "billingInfo")
                   }
@@ -158,9 +158,9 @@ const BillingInfo = ({
                   placeholder="+1234567890"
                 />
               </div>
-              {validationErrors.phone && (
+              {validationErrors?.phone && (
                 <p className="text-red-500 text-xs mt-1">
-                  {validationErrors.phone}
+                  {validationErrors?.phone}
                 </p>
               )}
             </div>

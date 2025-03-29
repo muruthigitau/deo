@@ -13,10 +13,10 @@ const OrderSummary = () => {
       const items = dbData?.items || [];
 
       const mappedItems = items.map((item) => ({
-        productId: item.product_id,
-        quantity: item.qty,
-        product: item.product || {
-          id: item.product_id,
+        productId: item?.product_id,
+        quantity: item?.qty,
+        product: item?.product || {
+          id: item?.product_id,
           name: "Unknown Product",
           price: 0,
           images: ["/placeholder.jpg"],
@@ -37,7 +37,7 @@ const OrderSummary = () => {
   }, []);
 
   const totalPrice = cartItems.reduce(
-    (sum, item) => sum + (item.product.price || 0) * item.quantity,
+    (sum, item) => sum + (item?.product?.price || 0) * (item?.quantity || 0),
     0
   );
 
@@ -66,28 +66,28 @@ const OrderSummary = () => {
       {/* Mobile Cards */}
       <div className="sm:hidden space-y-4">
         {cartItems.map((item) => {
-          const product = item.product;
+          const product = item?.product;
           return (
             <div
-              key={item.productId}
+              key={item?.productId}
               className="flex items-center gap-3 bg-orange-50 p-4 rounded-lg shadow-sm"
             >
               <Image
-                src={product.images?.[0].image || "/placeholder.jpg"}
-                alt={product.name || "Product"}
+                src={product?.images?.[0]?.image || "/placeholder.jpg"}
+                alt={product?.name || "Product"}
                 width={60}
                 height={60}
                 className="rounded-lg object-cover w-14 h-14"
               />
               <div className="flex-1">
                 <p className="text-gray-800 font-medium text-sm truncate">
-                  {product.name || "Product Name"}
+                  {product?.name || "Product Name"}
                 </p>
                 <p className="text-gray-600 text-xs mt-1">
-                  Qty: {item.quantity} × Kshs {product.price}
+                  Qty: {item?.quantity} × Kshs {product?.price}
                 </p>
                 <p className="text-lime-700 font-semibold text-sm mt-1">
-                  Kshs {(product.price * item.quantity).toFixed(2)}
+                  Kshs {(product?.price * item?.quantity).toFixed(2)}
                 </p>
               </div>
             </div>
@@ -97,29 +97,29 @@ const OrderSummary = () => {
 
       {/* Desktop Cards */}
       <div className="hidden sm:block space-y-4">
-        {cartItems.map((item) => {
-          const product = item.product;
+        {cartItems?.map((item) => {
+          const product = item?.product;
           return (
             <div
-              key={item.productId}
+              key={item?.productId}
               className="flex items-center gap-4 bg-orange-50 p-4 rounded-lg shadow-sm"
             >
               <Image
-                src={product.images?.[0].image || "/placeholder.jpg"}
-                alt={product.name || "Product"}
+                src={product?.images?.[0]?.image || "/placeholder.jpg"}
+                alt={product?.name || "Product"}
                 width={80}
                 height={80}
                 className="rounded-lg object-cover w-16 h-16"
               />
               <div className="flex-1">
                 <p className="text-gray-800 font-medium text-sm truncate">
-                  {product.name || "Product Name"}
+                  {product?.name || "Product Name"}
                 </p>
                 <p className="text-gray-600 text-xs mt-1">
-                  Qty: {item.quantity} × Kshs {product.price}
+                  Qty: {item?.quantity} × Kshs {product?.price}
                 </p>
                 <p className="text-lime-700 font-semibold text-sm mt-1">
-                  Kshs {(product.price * item.quantity).toFixed(2)}
+                  Kshs {(product?.price * item?.quantity).toFixed(2)}
                 </p>
               </div>
             </div>

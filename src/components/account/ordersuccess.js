@@ -47,8 +47,8 @@ const OrderSuccess = () => {
   }, []);
 
   const handlePrintReceipt = () => {
-    const printContent = document.getElementById("print-receipt").innerHTML;
-    const originalContent = document.body.innerHTML;
+    const printContent = document.getElementById("print-receipt")?.innerHTML;
+    const originalContent = document.body?.innerHTML;
 
     document.body.innerHTML = printContent;
     window.print();
@@ -69,7 +69,7 @@ const OrderSuccess = () => {
             way.
           </p>
           <p className="font-weight-bold transaction-id">
-            Transaction ID: {order.transactionId}
+            Transaction ID: {order?.transactionId}
           </p>
         </div>
       </section>
@@ -83,30 +83,31 @@ const OrderSuccess = () => {
                 <h4>Order Summary</h4>
                 <ul className="order-detail">
                   <li>
-                    <strong>Order ID:</strong> {order.orderId}
+                    <strong>Order ID:</strong> {order?.orderId}
                   </li>
                   <li>
                     <strong>Order Total:</strong> KSh{" "}
-                    {order.totalAmount.toLocaleString()}
+                    {order?.totalAmount?.toLocaleString()}
                   </li>
                   <li>
-                    <strong>Payment Method:</strong> {order.paymentMethod}
+                    <strong>Payment Method:</strong> {order?.paymentMethod}
                   </li>
                 </ul>
               </div>
               <div className="col-lg-6">
                 <h4>Billing Information</h4>
                 <p>
-                  {order.billingInfo.firstName} {order.billingInfo.lastName}{" "}
+                  {order?.billingInfo?.firstName} {order?.billingInfo?.lastName}{" "}
                   <br />
-                  {order.billingInfo.email} <br />
-                  {order.billingInfo.phone}
+                  {order?.billingInfo?.email} <br />
+                  {order?.billingInfo?.phone}
                 </p>
                 <h4>Shipping Address</h4>
                 <p>
-                  {order.shippingAddress.street}, {order.shippingAddress.city},
+                  {order?.shippingAddress?.street},{" "}
+                  {order?.shippingAddress?.city},
                   <br />
-                  {order.shippingAddress.state}, {order.shippingAddress.zip}
+                  {order?.shippingAddress?.state}, {order?.shippingAddress?.zip}
                 </p>
               </div>
             </div>
@@ -122,11 +123,11 @@ const OrderSuccess = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {order.items.map((product, index) => (
+                  {order?.items?.map((product, index) => (
                     <tr key={index}>
-                      <td>{product.name}</td>
-                      <td>{product.quantity}</td>
-                      <td>KSh {product.price.toLocaleString()}</td>
+                      <td>{product?.name}</td>
+                      <td>{product?.quantity}</td>
+                      <td>KSh {product?.price?.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -135,7 +136,7 @@ const OrderSuccess = () => {
                     <td colSpan="2">
                       <strong>Subtotal</strong>
                     </td>
-                    <td>KSh {order.totalAmount.toLocaleString()}</td>
+                    <td>KSh {order?.totalAmount?.toLocaleString()}</td>
                   </tr>
                   <tr>
                     <td colSpan="2">
@@ -147,7 +148,7 @@ const OrderSuccess = () => {
                     <td colSpan="2">
                       <strong>Total</strong>
                     </td>
-                    <td>KSh {(order.totalAmount + 1500).toLocaleString()}</td>
+                    <td>KSh {(order?.totalAmount + 1500)?.toLocaleString()}</td>
                   </tr>
                 </tfoot>
               </table>

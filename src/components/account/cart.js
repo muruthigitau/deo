@@ -111,7 +111,7 @@ const Cart = () => {
                   >
                     <div className="flex items-center gap-4">
                       <Image
-                        src={product.images?.[0].image || "/placeholder.jpg"}
+                        src={product.images?.[0]?.image || "/placeholder.jpg"}
                         alt={product.name || "Product"}
                         width={80}
                         height={80}
@@ -190,14 +190,14 @@ const Cart = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {cartItems.map((item) => {
+                  {cartItems?.map((item) => {
                     const product = item.product;
                     return (
                       <tr key={item.productId} className="hover:bg-green-50">
                         <td className="px-6 py-4 flex items-center gap-4">
                           <Image
                             src={
-                              product.images?.[0].image || "/placeholder.jpg"
+                              product.images?.[0]?.image || "/placeholder.jpg"
                             }
                             alt={product.name || "Product"}
                             width={60}

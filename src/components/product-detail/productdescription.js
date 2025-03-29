@@ -19,62 +19,75 @@ const ProductDescription = () => {
     "Eco-conscious choice: Long-lasting stone means less waste. Recyclable packaging aligns with our mission to reduce environmental impact.";
 
   return (
-    <section className="py-14 px-6">
-      <div className="max-w-5xl mx-auto space-y-12">
+    <section className="py-12 px-6">
+      <div className="max-w-5xl mx-auto space-y-10">
         {/* Product Overview */}
         <div className="text-center">
-          <h2 className="text-4xl font-extrabold text-green-700 mb-5 tracking-wide drop-shadow">
+          <h2 className="text-3xl font-extrabold text-green-700 mb-4 tracking-wide drop-shadow">
             Pure Protection, Naturally
           </h2>
-          <p className="text-gray-700 text-lg leading-relaxed max-w-3xl mx-auto">
+          <p className="text-gray-700 text-base leading-relaxed max-w-3xl mx-auto">
             {description}
           </p>
         </div>
 
-        {/* Info Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Ingredients */}
-          <div className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-green-400 hover:shadow-lg transition duration-300 ease-in-out">
-            <h3 className="text-xl font-bold text-green-600 mb-4 flex items-center">
-              <i className="ri-leaf-line text-green-500 mr-3 text-2xl"></i>
-              Ingredients
-            </h3>
-            <ul className="list-disc list-inside text-gray-700 space-y-1">
-              {ingredients.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
+        {/* Info Cards Grid & Image */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Image */}
+          <div className="flex justify-start items-start w-full h-fit">
+            <img
+              src="/assets/images/deo/IMG-30.jpg"
+              alt="Natural alum deodorant stone"
+              className="rounded-lg shadow-md w-full h-auto object-cover"
+            />
           </div>
 
-          {/* Usage */}
-          <div className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-yellow-400 hover:shadow-lg transition duration-300 ease-in-out">
-            <h3 className="text-xl font-bold text-yellow-600 mb-4 flex items-center">
-              <i className="ri-hand-heart-line text-yellow-500 mr-3 text-2xl"></i>
-              Usage
-            </h3>
-            <p className="text-gray-700 leading-relaxed">{usage}</p>
-          </div>
+          <div className="grid grid-cols-1 gap-3">
+            {/* Ingredients */}
+            <div className="bg-white p-4 rounded-xl shadow-md border-l-4 border-green-400 hover:shadow-lg transition duration-300 ease-in-out">
+              <h3 className="text-lg font-bold text-green-600 mb-3 flex items-center">
+                <i className="ri-leaf-line text-green-500 mr-2 text-xl"></i>
+                Ingredients
+              </h3>
+              <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
+                {ingredients.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Benefits */}
-          <div className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-teal-400 md:col-span-2 hover:shadow-lg transition duration-300 ease-in-out">
-            <h3 className="text-xl font-bold text-teal-700 mb-4 flex items-center">
-              <i className="ri-star-smile-line text-teal-500 mr-3 text-2xl"></i>
-              Key Benefits
-            </h3>
-            <ul className="list-disc list-inside text-gray-700 space-y-1">
-              {benefits.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </div>
+            {/* Usage */}
+            <div className="bg-white p-4 rounded-xl shadow-md border-l-4 border-yellow-400 hover:shadow-lg transition duration-300 ease-in-out">
+              <h3 className="text-lg font-bold text-yellow-600 mb-3 flex items-center">
+                <i className="ri-hand-heart-line text-yellow-500 mr-2 text-xl"></i>
+                Usage
+              </h3>
+              <p className="text-gray-700 text-sm leading-relaxed">{usage}</p>
+            </div>
 
-          {/* Sustainability */}
-          <div className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-red-400 md:col-span-2 hover:shadow-lg transition duration-300 ease-in-out">
-            <h3 className="text-xl font-bold text-red-600 mb-4 flex items-center">
-              <i className="ri-earth-line text-red-500 mr-3 text-2xl"></i>
-              Sustainability
-            </h3>
-            <p className="text-gray-700 leading-relaxed">{sustainability}</p>
+            {/* Benefits */}
+            <div className="bg-white p-4 rounded-xl shadow-md border-l-4 border-teal-400 hover:shadow-lg transition duration-300 ease-in-out">
+              <h3 className="text-lg font-bold text-teal-700 mb-3 flex items-center">
+                <i className="ri-star-smile-line text-teal-500 mr-2 text-xl"></i>
+                Key Benefits
+              </h3>
+              <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
+                {benefits.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Sustainability */}
+            <div className="bg-white p-4 rounded-xl shadow-md border-l-4 border-red-400 hover:shadow-lg transition duration-300 ease-in-out">
+              <h3 className="text-lg font-bold text-red-600 mb-3 flex items-center">
+                <i className="ri-earth-line text-red-500 mr-2 text-xl"></i>
+                Sustainability
+              </h3>
+              <p className="text-gray-700 text-sm leading-relaxed">
+                {sustainability}
+              </p>
+            </div>
           </div>
         </div>
       </div>

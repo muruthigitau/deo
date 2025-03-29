@@ -39,8 +39,8 @@ const Checkout = () => {
     const fetchCheckoutData = async () => {
       try {
         const response = await axios.get("/api/checkout");
-        setCartItems(response.data.items || []);
-        setProducts(response.data.products || {});
+        setCartItems(response?.data?.items || []);
+        setProducts(response?.data?.products || {});
       } catch (err) {
         setError("Failed to load checkout details.");
       } finally {
@@ -52,7 +52,7 @@ const Checkout = () => {
 
   const validateField = (name, value) => {
     let error = "";
-    if (!value.trim()) {
+    if (!value?.trim()) {
       error = "This field is required.";
     } else {
       if (name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
@@ -64,7 +64,7 @@ const Checkout = () => {
   };
 
   const handleInputChange = (e, setState) => {
-    const { name, value } = e.target;
+    const { name, value } = e?.target;
     setState((prev) => ({ ...prev, [name]: value }));
 
     if (touchedFields[name]) {
@@ -74,7 +74,7 @@ const Checkout = () => {
   };
 
   const handleBlur = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e?.target;
     setTouchedFields((prev) => ({ ...prev, [name]: true }));
     const error = validateField(name, value);
     setValidationErrors((prev) => ({ ...prev, [name]: error }));
@@ -98,20 +98,20 @@ const Checkout = () => {
   };
 
   const handleShippingAddressChange = async (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e?.target;
     handleInputChange(e, setShippingAddress);
 
-    if (shippingAddress.deliveryOption === "deliver") {
+    if (shippingAddress?.deliveryOption === "deliver") {
       const updatedAddress = { ...shippingAddress, [name]: value };
 
       console.log("Delivery Option: Deliver");
       console.log("Updated Address:", updatedAddress);
 
       if (
-        updatedAddress.street &&
-        updatedAddress.city &&
-        updatedAddress.state &&
-        updatedAddress.zip
+        updatedAddress?.street &&
+        updatedAddress?.city &&
+        updatedAddress?.state &&
+        updatedAddress?.zip
       ) {
         try {
           const cost = await fetchShippingCost(updatedAddress);
@@ -138,11 +138,11 @@ const Checkout = () => {
         items: cartItems,
       };
       const response = await axios.post("/api/order", orderData);
-      if (response.data?.transactionId) {
+      if (response?.data?.transactionId) {
         setOrderPlaced(true);
         router.push({
           pathname: "/order-success",
-          query: { orderDetails: JSON.stringify(response.data) },
+          query: { orderDetails: JSON.stringify(response?.data) },
         });
       } else {
         throw new Error("Order failed.");
@@ -162,8 +162,9 @@ const Checkout = () => {
     );
   }
 
-  const subTotal = cartItems.reduce(
-    (sum, item) => sum + (products[item.productId]?.price || 0) * item.quantity,
+  const subTotal = cartItems?.reduce(
+    (sum, item) =>
+      sum + (products?.[item?.productId]?.price || 0) * item?.quantity,
     0
   );
   const tax = subTotal * 0.05;
@@ -172,7 +173,7 @@ const Checkout = () => {
   const isPlaceOrderDisabled =
     isPlacingOrder ||
     !isShippingCostFetched || // Ensure shipping cost is confirmed
-    Object.values(validationErrors).some(Boolean);
+    Object.values(validationErrors)?.some(Boolean);
 
   return (
     <>

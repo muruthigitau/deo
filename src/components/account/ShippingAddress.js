@@ -25,7 +25,7 @@ const ShippingAddress = ({
   onDeliveryOptionChange, // Notify parent about delivery option change
 }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [usePickup, setUsePickup] = useState(false);
+  const [usePickup, setUsePickup] = useState(true);
   const [selectedPickup, setSelectedPickup] = useState(null);
 
   const toggleOpen = () => setIsOpen(!isOpen);
@@ -49,21 +49,21 @@ const ShippingAddress = ({
 
   const handlePickupSelection = (locationId) => {
     setSelectedPickup(locationId);
-    setShippingAddress((prev) => ({
+    setShippingAddress?.((prev) => ({
       ...prev,
       deliveryOption: "pickup",
       pickupLocation: locationId,
     }));
-    onDeliveryOptionChange("pickup"); // Notify parent to set shipping cost to 0
+    onDeliveryOptionChange?.("pickup"); // Notify parent to set shipping cost to 0
   };
 
   const handleDeliverySelection = () => {
     setUsePickup(false);
-    setShippingAddress((prev) => ({
+    setShippingAddress?.((prev) => ({
       ...prev,
       deliveryOption: "deliver",
     }));
-    onDeliveryOptionChange("deliver"); // Notify parent to fetch shipping cost
+    onDeliveryOptionChange?.("deliver"); // Notify parent to fetch shipping cost
   };
 
   return (
@@ -88,16 +88,6 @@ const ShippingAddress = ({
           {/* Toggle Pickup or Delivery */}
           <div className="flex items-center gap-3">
             <button
-              onClick={handleDeliverySelection}
-              className={`px-3 py-1.5 rounded-lg border ${
-                !usePickup
-                  ? "bg-lime-500 text-white border-lime-500"
-                  : "bg-white text-gray-700 border-gray-300"
-              } transition`}
-            >
-              Deliver to Address
-            </button>
-            <button
               onClick={togglePickup}
               className={`px-3 py-1.5 rounded-lg border ${
                 usePickup
@@ -107,17 +97,27 @@ const ShippingAddress = ({
             >
               Pickup Location
             </button>
+            <button
+              onClick={handleDeliverySelection}
+              className={`px-3 py-1.5 rounded-lg border ${
+                !usePickup
+                  ? "bg-lime-500 text-white border-lime-500"
+                  : "bg-white text-gray-700 border-gray-300"
+              } transition`}
+            >
+              Deliver to Address
+            </button>
           </div>
 
           {/* Pickup Locations */}
           {usePickup ? (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
-              {pickupLocations.map((location) => (
+              {pickupLocations?.map?.((location) => (
                 <div
-                  key={location.id}
-                  onClick={() => handlePickupSelection(location.id)}
+                  key={location?.id}
+                  onClick={() => handlePickupSelection(location?.id)}
                   className={`border rounded-lg p-3 cursor-pointer transition shadow-sm ${
-                    selectedPickup === location.id
+                    selectedPickup === location?.id
                       ? "border-lime-500 bg-lime-50"
                       : "border-gray-200 bg-white"
                   }`}
@@ -125,13 +125,13 @@ const ShippingAddress = ({
                   <div className="flex items-center gap-2 mb-1">
                     <Store className="text-orange-500" />
                     <div className="font-medium text-gray-800 text-sm">
-                      {location.name}
+                      {location?.name}
                     </div>
                   </div>
                   <div className="text-gray-600 text-xs">
-                    {location.address}
+                    {location?.address}
                   </div>
-                  {selectedPickup === location.id && (
+                  {selectedPickup === location?.id && (
                     <div className="text-lime-600 mt-1 text-xs font-medium">
                       Selected
                     </div>
@@ -154,11 +154,11 @@ const ShippingAddress = ({
                     id="street"
                     name="street"
                     className={`${inputBase} ${borderColor(
-                      validationErrors.street
+                      validationErrors?.street
                     )}`}
-                    value={shippingAddress.street}
+                    value={shippingAddress?.street}
                     onChange={(e) =>
-                      handleInputChange(
+                      handleInputChange?.(
                         e,
                         setShippingAddress,
                         "shippingAddress"
@@ -168,9 +168,9 @@ const ShippingAddress = ({
                     placeholder="123 Main St"
                   />
                 </div>
-                {validationErrors.street && (
+                {validationErrors?.street && (
                   <div className="text-red-500 text-xs mt-1">
-                    {validationErrors.street}
+                    {validationErrors?.street}
                   </div>
                 )}
               </div>
@@ -187,11 +187,11 @@ const ShippingAddress = ({
                     id="city"
                     name="city"
                     className={`${inputBase} ${borderColor(
-                      validationErrors.city
+                      validationErrors?.city
                     )}`}
-                    value={shippingAddress.city}
+                    value={shippingAddress?.city}
                     onChange={(e) =>
-                      handleInputChange(
+                      handleInputChange?.(
                         e,
                         setShippingAddress,
                         "shippingAddress"
@@ -201,9 +201,9 @@ const ShippingAddress = ({
                     placeholder="Nairobi"
                   />
                 </div>
-                {validationErrors.city && (
+                {validationErrors?.city && (
                   <div className="text-red-500 text-xs mt-1">
-                    {validationErrors.city}
+                    {validationErrors?.city}
                   </div>
                 )}
               </div>
@@ -220,11 +220,11 @@ const ShippingAddress = ({
                     id="state"
                     name="state"
                     className={`${inputBase} ${borderColor(
-                      validationErrors.state
+                      validationErrors?.state
                     )}`}
-                    value={shippingAddress.state}
+                    value={shippingAddress?.state}
                     onChange={(e) =>
-                      handleInputChange(
+                      handleInputChange?.(
                         e,
                         setShippingAddress,
                         "shippingAddress"
@@ -234,9 +234,9 @@ const ShippingAddress = ({
                     placeholder="Central"
                   />
                 </div>
-                {validationErrors.state && (
+                {validationErrors?.state && (
                   <div className="text-red-500 text-xs mt-1">
-                    {validationErrors.state}
+                    {validationErrors?.state}
                   </div>
                 )}
               </div>
@@ -253,11 +253,11 @@ const ShippingAddress = ({
                     id="zip"
                     name="zip"
                     className={`${inputBase} ${borderColor(
-                      validationErrors.zip
+                      validationErrors?.zip
                     )}`}
-                    value={shippingAddress.zip}
+                    value={shippingAddress?.zip}
                     onChange={(e) =>
-                      handleInputChange(
+                      handleInputChange?.(
                         e,
                         setShippingAddress,
                         "shippingAddress"
@@ -267,9 +267,9 @@ const ShippingAddress = ({
                     placeholder="00100"
                   />
                 </div>
-                {validationErrors.zip && (
+                {validationErrors?.zip && (
                   <div className="text-red-500 text-xs mt-1">
-                    {validationErrors.zip}
+                    {validationErrors?.zip}
                   </div>
                 )}
               </div>

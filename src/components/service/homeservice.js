@@ -1,5 +1,6 @@
 import { ShieldCheck, Clock, Leaf, Shirt } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const features = [
   {
@@ -26,8 +27,9 @@ const features = [
 
 const HomeService = () => {
   return (
-    <section className="w-full py-16 px-4 md:px-8 lg:px-12 bg-white">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <section className="w-full bg-white max-w-6xl mx-auto py-16 grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
+      {/* Features Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {features.map((feature, index) => {
           const Icon = feature.icon;
           return (
@@ -49,6 +51,24 @@ const HomeService = () => {
             </motion.div>
           );
         })}
+      </div>
+
+      {/* Full-width Image Section */}
+      <div className="w-full relative">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="w-full"
+        >
+          <Image
+            src="/assets/images/deo/product.jpeg"
+            alt="Product Display"
+            width={1920}
+            height={600}
+            className="w-full h-auto object-cover"
+          />
+        </motion.div>
       </div>
     </section>
   );
