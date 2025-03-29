@@ -24,14 +24,14 @@ const fetchWithRetry = async (url, params, headers, retries = 3) => {
 export const fetchData = async (
   endpoint,
   params = {},
-  tenant = "test",
+  tenant = "shop",
   options = {}
 ) => {
   try {
     const url = `${API_URL}${endpoint}`;
     const headers = {
       "Content-Type": "application/json",
-      // "X-Tenant": tenant,
+      "X-Tenant": tenant,
     };
 
     // Fetch data with retry logic
@@ -45,12 +45,18 @@ export const fetchData = async (
 };
 
 // Function to handle form data (multipart/form-data)
-export const postFormData = async (endpoint, formData, headers = {}) => {
+export const postFormData = async (
+  endpoint,
+  formData,
+  headers = {},
+  tenant = "shop"
+) => {
   try {
     const url = `${API_URL}${endpoint}`;
     const response = await axios.post(url, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        "X-Tenant": tenant,
         ...headers,
       },
     });
@@ -63,12 +69,18 @@ export const postFormData = async (endpoint, formData, headers = {}) => {
 };
 
 // Function to handle JSON data (application/json)
-export const postData = async (endpoint, body, headers = {}) => {
+export const postData = async (
+  endpoint,
+  body,
+  headers = {},
+  tenant = "shop"
+) => {
   try {
     const url = `${API_URL}${endpoint}`;
     const response = await axios.post(url, body, {
       headers: {
         "Content-Type": "application/json",
+        "X-Tenant": tenant,
         ...headers,
       },
     });
@@ -81,12 +93,18 @@ export const postData = async (endpoint, body, headers = {}) => {
 };
 
 // Function to update data (PATCH request)
-export const updateData = async (endpoint, body, headers = {}) => {
+export const updateData = async (
+  endpoint,
+  body,
+  headers = {},
+  tenant = "shop"
+) => {
   try {
     const url = `${API_URL}${endpoint}`;
     const response = await axios.patch(url, body, {
       headers: {
         "Content-Type": "application/json",
+        "X-Tenant": tenant,
         ...headers,
       },
     });

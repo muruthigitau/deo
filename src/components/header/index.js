@@ -28,6 +28,7 @@ const Header = () => {
         const allKeys = await getFromDB("cart");
 
         let totalItems = 0;
+        if (!allKeys?.items) return;
         for (const item of allKeys?.items) {
           if (item) {
             totalItems += item.qty || 1; // Add quantity to total
@@ -105,12 +106,6 @@ const Header = () => {
                 className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
               >
                 Product
-              </Link>
-              <Link
-                href="/about"
-                className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
-              >
-                About
               </Link>
               <Link
                 href="/contact"

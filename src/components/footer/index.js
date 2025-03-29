@@ -76,7 +76,7 @@ const Footer = () => {
           >
             <div className="text-lg font-semibold mb-4">Useful Links</div>
             <div className="space-y-2 text-sm text-gray-400">
-              {["Home", "About Us", "Product"].map((link, i) => (
+              {["Home", "Contact", "Product"].map((link, i) => (
                 <Link
                   key={i}
                   href={`/${link.toLowerCase().replace(/\s+/g, "-")}`}
@@ -137,7 +137,9 @@ const Footer = () => {
         {/* Footer Bottom */}
         <div className="border-t border-gray-700 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
           <div>
-            &copy; {new Date().getFullYear()} MSLABDESIGNS. All rights reserved.
+            &copy; {new Date().getFullYear()} All Rights Reserved. | Designed
+            with ❤️ by <Link href="https://softleek.com/"></Link>
+            <Link href="https://mslabdesigns.com/"> Mslabdesigns </Link>
           </div>
         </div>
       </div>
