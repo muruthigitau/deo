@@ -1,185 +1,324 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import axios from "axios";
 import { useRouter } from "next/router";
 import ErrorNotification from "./errornotification";
 import BillingInfo from "./BillingInfo";
 import ShippingAddress from "./ShippingAddress";
 import OrderSummary from "./OrderSummary";
-import MpesaPayment from "./MpesaPayment";
-import fetchShippingCost from "./shippingcost";
+import { getFromDB } from "@/utils/indexedDB";
+import { fetchData, postData } from "@/utils/Api";
+import Loader from "../Loader";
 
 const Checkout = () => {
   const router = useRouter();
-  const [cartItems, setCartItems] = useState([]);
-  const [products, setProducts] = useState({});
-  const [billingInfo, setBillingInfo] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // Main state management
+  const [checkoutState, setCheckoutState] = useState({
+    cart: {
+      items: [],
+      products: {},
+      loading: true,
+      error: null,
+    },
+    billing: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      validationErrors: {},
+      touchedFields: {},
+    },
+    shipping: {
+      address: {
+        pickup_station: null,
+        location_name: "",
+        location_description: "",
+        street_address: "",
+        city: "",
+        state: "",
+        zip_code: "",
+        deliveryOption: "pickup", // "pickup" or "custom"
+      },
+      locations: {
+        list: [],
+        loading: true,
+        error: null,
+      },
+      cost: 0,
+      isCostConfirmed: false,
+    },
   });
-  const [shippingAddress, setShippingAddress] = useState({
-    street: "",
-    city: "",
-    state: "",
-    zip: "",
-    deliveryOption: "deliver", // "deliver" or "pickup"
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
-  const [orderPlaced, setOrderPlaced] = useState(false);
-  const [validationErrors, setValidationErrors] = useState({});
-  const [touchedFields, setTouchedFields] = useState({});
-  const [shippingFee, setShippingFee] = useState(0.0);
-  const [isShippingCostFetched, setIsShippingCostFetched] = useState(false);
 
+  // Fetch all initial data
   useEffect(() => {
-    const fetchCheckoutData = async () => {
+    const fetchInitialData = async () => {
       try {
-        const response = await axios.get("/api/checkout");
-        setCartItems(response?.data?.items || []);
-        setProducts(response?.data?.products || {});
-      } catch (err) {
-        setError("Failed to load checkout details.");
-      } finally {
-        setLoading(false);
+        // Fetch cart data
+        const [cartData, shippingLocations] = await Promise.all([
+          getFromDB("cart"),
+          fetchData("shop/public/locations/", {}),
+        ]);
+
+        setCheckoutState((prev) => ({
+          ...prev,
+          cart: {
+            ...prev.cart,
+            items: cartData?.items || [],
+            products: cartData?.products || {},
+            loading: false,
+          },
+          shipping: {
+            ...prev.shipping,
+            locations: {
+              list: shippingLocations?.data?.data || [],
+              loading: false,
+              error: null,
+            },
+          },
+        }));
+      } catch (error) {
+        setCheckoutState((prev) => ({
+          ...prev,
+          cart: {
+            ...prev.cart,
+            loading: false,
+            error: "Failed to load checkout data",
+          },
+        }));
       }
     };
-    fetchCheckoutData();
+
+    fetchInitialData();
   }, []);
 
-  const validateField = (name, value) => {
-    let error = "";
-    if (!value?.trim()) {
-      error = "This field is required.";
-    } else {
-      if (name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
-        error = "Invalid email.";
-      if (name === "phone" && !/^\d{10}$/.test(value)) error = "Invalid phone.";
-      if (name === "zip" && !/^\d{5}$/.test(value)) error = "Invalid ZIP.";
-    }
-    return error;
-  };
+  // Handle billing info changes
+  const handleBillingChange = (e) => {
+    const { name, value } = e.target;
 
-  const handleInputChange = (e, setState) => {
-    const { name, value } = e?.target;
-    setState((prev) => ({ ...prev, [name]: value }));
+    setCheckoutState((prev) => ({
+      ...prev,
+      billing: {
+        ...prev.billing,
+        [name]: value,
+      },
+    }));
 
-    if (touchedFields[name]) {
+    // Validate if field was touched
+    if (checkoutState.billing.touchedFields[name]) {
       const error = validateField(name, value);
-      setValidationErrors((prev) => ({ ...prev, [name]: error }));
+      setCheckoutState((prev) => ({
+        ...prev,
+        billing: {
+          ...prev.billing,
+          validationErrors: {
+            ...prev.billing.validationErrors,
+            [name]: error,
+          },
+        },
+      }));
     }
   };
 
-  const handleBlur = (e) => {
-    const { name, value } = e?.target;
-    setTouchedFields((prev) => ({ ...prev, [name]: true }));
-    const error = validateField(name, value);
-    setValidationErrors((prev) => ({ ...prev, [name]: error }));
+  // Handle shipping address changes
+  const handleShippingChange = (e) => {
+    const { name, value } = e.target;
+    setCheckoutState((prev) => ({
+      ...prev,
+      shipping: {
+        ...prev.shipping,
+        address: {
+          ...prev.shipping.address,
+          [name]: value,
+        },
+      },
+    }));
   };
 
+  // Handle delivery option change
   const handleDeliveryOptionChange = (option) => {
-    console.log("Delivery Option Changed:", option);
-    setShippingAddress((prev) => ({ ...prev, deliveryOption: option }));
+    const newShippingCost = option === "pickup" ? 0 : 0;
 
-    if (option === "pickup") {
-      setShippingFee(0.0);
-      setIsShippingCostFetched(true); // Mark shipping cost as confirmed for pickup
-      console.log("Shipping Cost Set to 0 for Pickup");
-    } else if (option === "deliver") {
-      setShippingFee(0.0); // Reset shipping fee for delivery until fetched
-      setIsShippingCostFetched(false); // Reset shipping cost confirmation for delivery
-      console.log(
-        "Delivery Option Set to Deliver. Awaiting Address Confirmation."
+    setCheckoutState((prev) => ({
+      ...prev,
+      shipping: {
+        ...prev.shipping,
+        address: {
+          ...prev.shipping.address,
+          deliveryOption: option,
+        },
+        cost: newShippingCost,
+        isCostConfirmed: option === "pickup", // Pickup always has confirmed cost
+      },
+    }));
+  };
+
+  // Handle pickup location selection
+  const handlePickupSelection = (location) => {
+    const updatedShipping = {
+      deliveryOption: "pickup",
+      pickup_station: location.id,
+      location_name: location.name,
+      location_description: location.description,
+      street_address: location.street_address,
+      city: location.city,
+      cost: location.cost,
+    };
+
+    setCheckoutState((prev) => ({
+      ...prev,
+      shipping: {
+        ...prev.shipping,
+        address: updatedShipping,
+        cost: parseFloat(location.cost),
+        isCostConfirmed: true,
+      },
+    }));
+  };
+
+  // Handle custom address selection
+  const handleCustomAddressSelection = () => {
+    const updatedShipping = {
+      deliveryOption: "custom",
+      pickup_station: null,
+      cost: "0.00",
+    };
+
+    setCheckoutState((prev) => ({
+      ...prev,
+      shipping: {
+        ...prev.shipping,
+        address: updatedShipping,
+        cost: 0,
+        isCostConfirmed: false,
+      },
+    }));
+  };
+
+  // Calculate order totals
+  const calculateTotal = () => {
+    const subtotal = checkoutState.cart.items.reduce(
+      (sum, item) =>
+        sum + (parseFloat(item?.product?.price) || 0) * (item.qty || 0),
+      0
+    );
+    return subtotal + checkoutState.shipping.cost;
+  };
+
+  // Validation helper
+  const validateField = (name, value) => {
+    if (!value?.trim()) return "This field is required";
+    switch (name) {
+      case "email":
+        return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? "Invalid email" : "";
+      case "phone":
+        return !/^\d{10}$/.test(value) ? "Invalid phone number" : "";
+      case "zip":
+        return !/^\d{5}$/.test(value) ? "Invalid ZIP code" : "";
+      default:
+        return "";
+    }
+  };
+
+  const handleConfirmOrder = async () => {
+    setIsSubmitting(true); // Start loading
+
+    try {
+      // Format order details to match API expectations
+      const orderDetails = {
+        total: calculateTotal().toString(),
+        shipping: checkoutState.shipping.cost.toString(),
+        first_name: checkoutState.billing.firstName,
+        last_name: checkoutState.billing.lastName,
+        email: checkoutState.billing.email,
+        phone_number: checkoutState.billing.phone,
+        quantity: checkoutState.cart.items[0].qty,
+        product_id: checkoutState.cart.items[0]?.product_id,
+        ...(checkoutState.shipping.address.deliveryOption === "pickup"
+          ? {
+              pickup_station_id: checkoutState.shipping.address.pickup_station,
+            }
+          : {
+              street_address: checkoutState.shipping.address.street_address,
+              city: checkoutState.shipping.address.city,
+              state: checkoutState.shipping.address.state,
+              zip_code: checkoutState.shipping.address.zip_code,
+              location_name: checkoutState.shipping.address.location_name,
+              location_description:
+                checkoutState.shipping.address.location_description,
+            }),
+        notes: "",
+        status: "pending",
+      };
+
+      // Simulate API delay for demonstration
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await postData(
+        "method/shop/shop/api/order/OrderAPI/",
+        orderDetails
+      );
+
+      // After successful submission, you might redirect to payment
+      router.push(
+        `/checkout/${response?.data?.id || response?.data?.data?.id}`
+      );
+    } catch (error) {
+      console.error("Error confirming order:", error);
+      setCheckoutState((prev) => ({
+        ...prev,
+        cart: {
+          ...prev.cart,
+          error: "Failed to confirm order. Please try again.",
+        },
+      }));
+    } finally {
+      setIsSubmitting(false); // Stop loading regardless of success/error
+    }
+  };
+  // Add this helper function to validate shipping address
+  const isShippingAddressValid = () => {
+    if (checkoutState.shipping.address.deliveryOption === "pickup") {
+      return checkoutState.shipping.isCostConfirmed;
+    } else {
+      // For custom address, check required fields
+      const requiredFields = ["location_name", "street_address", "city"];
+      return requiredFields.every((field) =>
+        checkoutState.shipping.address[field]?.trim()
       );
     }
   };
 
-  const handleShippingAddressChange = async (e) => {
-    const { name, value } = e?.target;
-    handleInputChange(e, setShippingAddress);
+  // Update the isConfirmDisabled calculation
+  const isConfirmDisabled =
+    !isShippingAddressValid() ||
+    Object.values(checkoutState.billing.validationErrors).some(Boolean) ||
+    !checkoutState.billing.firstName ||
+    !checkoutState.billing.lastName ||
+    !checkoutState.billing.email ||
+    !checkoutState.billing.phone;
 
-    if (shippingAddress?.deliveryOption === "deliver") {
-      const updatedAddress = { ...shippingAddress, [name]: value };
-
-      console.log("Delivery Option: Deliver");
-      console.log("Updated Address:", updatedAddress);
-
-      if (
-        updatedAddress?.street &&
-        updatedAddress?.city &&
-        updatedAddress?.state &&
-        updatedAddress?.zip
-      ) {
-        try {
-          const cost = await fetchShippingCost(updatedAddress);
-          setShippingFee(cost);
-          setIsShippingCostFetched(true);
-          console.log("Shipping Cost Fetched:", cost);
-        } catch (error) {
-          setError("Failed to fetch shipping cost.");
-          setIsShippingCostFetched(false);
-          console.error("Error fetching shipping cost:", error);
-        }
-      }
-    }
-  };
-
-  const handlePlaceOrder = async () => {
-    try {
-      setIsPlacingOrder(true);
-      setError(null);
-      const orderData = {
-        orderId: `ORD-${Math.floor(Math.random() * 100000)}`,
-        billingInfo,
-        shippingAddress,
-        items: cartItems,
-      };
-      const response = await axios.post("/api/order", orderData);
-      if (response?.data?.transactionId) {
-        setOrderPlaced(true);
-        router.push({
-          pathname: "/order-success",
-          query: { orderDetails: JSON.stringify(response?.data) },
-        });
-      } else {
-        throw new Error("Order failed.");
-      }
-    } catch (err) {
-      setError("Failed to place order. Try again.");
-    } finally {
-      setIsPlacingOrder(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="text-center py-10 text-orange-500">
-        Loading checkout...
-      </div>
-    );
+  if (checkoutState.cart.loading) {
+    return <Loader fullScreen message="Loading ..." />;
   }
-
-  const subTotal = cartItems?.reduce(
-    (sum, item) =>
-      sum + (products?.[item?.productId]?.price || 0) * item?.quantity,
-    0
-  );
-  const tax = subTotal * 0.05;
-  const totalAmount = subTotal + tax + shippingFee;
-
-  const isPlaceOrderDisabled =
-    isPlacingOrder ||
-    !isShippingCostFetched || // Ensure shipping cost is confirmed
-    Object.values(validationErrors)?.some(Boolean);
 
   return (
     <>
-      {error && (
-        <ErrorNotification message={error} onClose={() => setError(null)} />
+      {checkoutState.cart.error && (
+        <ErrorNotification
+          message={checkoutState.cart.error}
+          onClose={() =>
+            setCheckoutState((prev) => ({
+              ...prev,
+              cart: { ...prev.cart, error: null },
+            }))
+          }
+        />
       )}
+      {isSubmitting && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loader className="h-12 w-12 text-white animate-spin" />
+        </div>
+      )}
+
       <div className="breadcrumb-section bg-gray-50 py-4">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-semibold text-gray-700">Checkout</h2>
@@ -199,71 +338,83 @@ const Checkout = () => {
 
       <section className="checkout-section section-b-space py-10">
         <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-[1fr_1px_2fr] gap-8">
-          {/* Left - Order Summary */}
+          {/* Order Summary */}
           <div className="bg-gray-50 p-6 rounded-lg shadow-sm h-fit">
             <OrderSummary
-              cartItems={cartItems}
-              products={products}
-              subTotal={subTotal}
-              shippingFee={shippingFee}
-              tax={tax}
-              totalAmount={totalAmount}
+              cartItems={checkoutState.cart.items}
+              products={checkoutState.cart.products}
+              shippingInfo={checkoutState.shipping.address}
+              shippingCost={checkoutState.shipping.cost}
+              subtotal={calculateTotal() - checkoutState.shipping.cost}
+              totalAmount={calculateTotal()}
             />
           </div>
 
           {/* Vertical Border */}
           <div className="hidden lg:block border-r border-gray-200"></div>
 
-          {/* Right - All Steps */}
+          {/* Checkout Steps */}
           <div className="space-y-8">
             {/* Billing Info */}
             <BillingInfo
-              billingInfo={billingInfo}
-              setBillingInfo={setBillingInfo}
-              validationErrors={validationErrors}
-              handleBlur={handleBlur}
-              handleInputChange={(e) => handleInputChange(e, setBillingInfo)}
+              billingInfo={{
+                firstName: checkoutState.billing.firstName,
+                lastName: checkoutState.billing.lastName,
+                email: checkoutState.billing.email,
+                phone: checkoutState.billing.phone,
+              }}
+              validationErrors={checkoutState.billing.validationErrors}
+              handleBlur={(e) => {
+                const { name } = e.target;
+                setCheckoutState((prev) => ({
+                  ...prev,
+                  billing: {
+                    ...prev.billing,
+                    touchedFields: {
+                      ...prev.billing.touchedFields,
+                      [name]: true,
+                    },
+                    validationErrors: {
+                      ...prev.billing.validationErrors,
+                      [name]: validateField(name, e.target.value),
+                    },
+                  },
+                }));
+              }}
+              handleInputChange={handleBillingChange}
             />
 
             {/* Shipping Address */}
             <ShippingAddress
-              shippingAddress={shippingAddress}
-              setShippingAddress={setShippingAddress}
-              validationErrors={validationErrors}
-              handleBlur={handleBlur}
-              handleInputChange={handleShippingAddressChange}
-              onDeliveryOptionChange={handleDeliveryOptionChange} // Pass the handler to ShippingAddress
+              shippingAddress={checkoutState.shipping.address}
+              pickupLocations={checkoutState.shipping.locations.list}
+              loading={checkoutState.shipping.locations.loading}
+              error={checkoutState.shipping.locations.error}
+              validationErrors={{}}
+              handleInputChange={handleShippingChange}
+              onDeliveryOptionChange={handleDeliveryOptionChange}
+              onLocationSelect={handlePickupSelection}
+              onCustomAddressSelect={handleCustomAddressSelection}
             />
 
-            {/* Block Payment Section if Shipping Cost is Not Confirmed */}
-            {!isShippingCostFetched ? (
-              <div className="text-red-500 text-center py-4">
-                Please confirm your shipping cost to proceed with payment.
-              </div>
-            ) : (
-              <>
-                {/* Payment */}
-                <MpesaPayment
-                  orderId={`ORD-${Math.floor(Math.random() * 100000)}`}
-                  amount={totalAmount}
-                />
-
-                {/* Place Order Button */}
-                <button
-                  onClick={handlePlaceOrder}
-                  className={`w-full px-4 py-2 rounded transition duration-300 ${
-                    isPlaceOrderDisabled
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-green-600 text-white hover:bg-green-700"
-                  }`}
-                  disabled={isPlaceOrderDisabled}
-                >
-                  {isPlacingOrder
-                    ? "Placing Order..."
-                    : "Confirm Payment & Place Order"}
-                </button>
-              </>
-            )}
+            {/* Confirm Order Button */}
+            <button
+              onClick={handleConfirmOrder}
+              disabled={isConfirmDisabled || isSubmitting}
+              className={`w-full px-4 py-3 rounded-lg text-lg font-medium transition relative ${
+                isConfirmDisabled || isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-600 text-white hover:bg-green-700"
+              }`}
+            >
+              {isSubmitting ? (
+                <div className="flex items-center justify-center">
+                  Processing...
+                </div>
+              ) : (
+                "Confirm Order & Proceed to Payment"
+              )}
+            </button>
           </div>
         </div>
       </section>

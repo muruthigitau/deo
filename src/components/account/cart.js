@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { getFromDB, saveToDB } from "@/utils/indexedDB";
+import Loader from "../Loader";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -80,10 +81,7 @@ const Cart = () => {
     0
   );
 
-  if (loading)
-    return (
-      <div className="text-center py-10 text-gray-600">Loading cart...</div>
-    );
+  if (loading) return <Loader fullScreen message="Loading ..." />;
   if (error)
     return <div className="text-red-500 text-center py-10">{error}</div>;
 

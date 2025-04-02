@@ -15,7 +15,7 @@ const Loader = ({ message = "Loading...", fullScreen = false }) => {
     >
       <div className="flex flex-col items-center gap-4 p-6 bg-white rounded-xl shadow-lg">
         <LoaderCircle className="animate-spin text-green-600" size={48} />
-        <span className="text-gray-700 font-medium">{message}</span>
+        {/* <span className="text-gray-700 font-medium">{message}</span> */}
       </div>
     </motion.div>
   );

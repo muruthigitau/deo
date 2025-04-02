@@ -1,39 +1,35 @@
-import { useState } from "react";
 import { User, Mail, Phone, ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
 
 const BillingInfo = ({
-  billingInfo,
-  setBillingInfo,
-  validationErrors,
-  handleBlur,
-  handleInputChange,
+  billingInfo = {},
+  validationErrors = {},
+  handleBlur = () => {},
+  handleInputChange = () => {},
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
-  const toggleOpen = () => setIsOpen(!isOpen);
-
+  // Input styling constants
   const inputBase =
     "w-full pl-10 pr-4 py-2 rounded-lg border transition duration-200 focus:outline-none focus:ring-2 placeholder-gray-500 text-sm text-gray-800 bg-white shadow-sm";
-
   const labelStyle = "text-gray-700 font-medium mb-1 flex items-center text-sm";
-
-  const borderColor = (error) =>
-    error
-      ? "border-red-400 focus:ring-red-200"
-      : "border-gray-300 focus:border-lime-400 focus:ring-lime-100";
-
   const requiredMark = (
     <span className="text-red-500 ml-1" title="Required">
       *
     </span>
   );
 
+  const borderColor = (error) =>
+    error
+      ? "border-red-400 focus:ring-red-200"
+      : "border-gray-300 focus:border-lime-400 focus:ring-lime-100";
+
   return (
     <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
-      {/* Header */}
+      {/* Header with toggle */}
       <div
         className="flex justify-between items-center cursor-pointer text-sm"
-        onClick={toggleOpen}
+        onClick={() => setIsOpen(!isOpen)}
       >
         <div className="font-semibold text-gray-800">Billing Information</div>
         {isOpen ? (
@@ -47,7 +43,7 @@ const BillingInfo = ({
       {isOpen && (
         <div className="mt-4 space-y-3 transition-all duration-300 ease-in-out">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* First Name */}
+            {/* First Name Field */}
             <div>
               <label htmlFor="firstName" className={labelStyle}>
                 First Name{requiredMark}
@@ -59,24 +55,21 @@ const BillingInfo = ({
                   id="firstName"
                   name="firstName"
                   className={`${inputBase} ${borderColor(
-                    validationErrors?.firstName
+                    validationErrors.firstName
                   )}`}
-                  value={billingInfo?.firstName}
-                  onChange={(e) =>
-                    handleInputChange(e, setBillingInfo, "billingInfo")
-                  }
+                  value={billingInfo.firstName || ""}
+                  onChange={handleInputChange}
                   onBlur={handleBlur}
-                  placeholder="John"
                 />
               </div>
-              {validationErrors?.firstName && (
+              {validationErrors.firstName && (
                 <p className="text-red-500 text-xs mt-1">
-                  {validationErrors?.firstName}
+                  {validationErrors.firstName}
                 </p>
               )}
             </div>
 
-            {/* Last Name */}
+            {/* Last Name Field */}
             <div>
               <label htmlFor="lastName" className={labelStyle}>
                 Last Name{requiredMark}
@@ -88,26 +81,23 @@ const BillingInfo = ({
                   id="lastName"
                   name="lastName"
                   className={`${inputBase} ${borderColor(
-                    validationErrors?.lastName
+                    validationErrors.lastName
                   )}`}
-                  value={billingInfo?.lastName}
-                  onChange={(e) =>
-                    handleInputChange(e, setBillingInfo, "billingInfo")
-                  }
+                  value={billingInfo.lastName || ""}
+                  onChange={handleInputChange}
                   onBlur={handleBlur}
-                  placeholder="Doe"
                 />
               </div>
-              {validationErrors?.lastName && (
+              {validationErrors.lastName && (
                 <p className="text-red-500 text-xs mt-1">
-                  {validationErrors?.lastName}
+                  {validationErrors.lastName}
                 </p>
               )}
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Email */}
+            {/* Email Field */}
             <div>
               <label htmlFor="email" className={labelStyle}>
                 Email Address{requiredMark}
@@ -119,24 +109,21 @@ const BillingInfo = ({
                   id="email"
                   name="email"
                   className={`${inputBase} ${borderColor(
-                    validationErrors?.email
+                    validationErrors.email
                   )}`}
-                  value={billingInfo?.email}
-                  onChange={(e) =>
-                    handleInputChange(e, setBillingInfo, "billingInfo")
-                  }
+                  value={billingInfo.email || ""}
+                  onChange={handleInputChange}
                   onBlur={handleBlur}
-                  placeholder="you@example.com"
                 />
               </div>
-              {validationErrors?.email && (
+              {validationErrors.email && (
                 <p className="text-red-500 text-xs mt-1">
-                  {validationErrors?.email}
+                  {validationErrors.email}
                 </p>
               )}
             </div>
 
-            {/* Phone */}
+            {/* Phone Field */}
             <div>
               <label htmlFor="phone" className={labelStyle}>
                 Phone Number{requiredMark}
@@ -148,19 +135,16 @@ const BillingInfo = ({
                   id="phone"
                   name="phone"
                   className={`${inputBase} ${borderColor(
-                    validationErrors?.phone
+                    validationErrors.phone
                   )}`}
-                  value={billingInfo?.phone}
-                  onChange={(e) =>
-                    handleInputChange(e, setBillingInfo, "billingInfo")
-                  }
+                  value={billingInfo.phone || ""}
+                  onChange={handleInputChange}
                   onBlur={handleBlur}
-                  placeholder="+1234567890"
                 />
               </div>
-              {validationErrors?.phone && (
+              {validationErrors.phone && (
                 <p className="text-red-500 text-xs mt-1">
-                  {validationErrors?.phone}
+                  {validationErrors.phone}
                 </p>
               )}
             </div>

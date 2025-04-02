@@ -31,6 +31,8 @@ const Product = () => {
         );
         if (response?.status === 200 && response?.data) {
           const product = response.data;
+          console.log(product);
+
           setProductData(product);
           const { old_price = 1500, price } = product;
           if (old_price > price) {
