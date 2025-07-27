@@ -42,7 +42,7 @@ const OrderSummary = ({ order }) => {
       </h3>
       <div className="flex justify-between mt-4">
         <div>
-          <span className="text-gray-600">{order.item}</span>
+          <span className="text-gray-600">{order?.item?.id}</span>
           <span className="ml-2 text-sm text-gray-500">
             (Qty: {order.quantity})
           </span>

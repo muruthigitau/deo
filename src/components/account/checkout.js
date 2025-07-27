@@ -56,7 +56,7 @@ const Checkout = () => {
         // Fetch cart data
         const [cartData, shippingLocations] = await Promise.all([
           getFromDB("cart"),
-          fetchData("shop/public/locations/", {}),
+          fetchData("shop/public/locations/", { type: "Pickup Station" }),
         ]);
 
         setCheckoutState((prev) => ({

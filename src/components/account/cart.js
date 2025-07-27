@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getFromDB, saveToDB } from "@/utils/indexedDB";
 import Loader from "../Loader";
+import { constructImagePath } from "@/utils/imagePath";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -109,7 +110,7 @@ const Cart = () => {
                   >
                     <div className="flex items-center gap-4">
                       <Image
-                        src={product.images?.[0]?.image || "/placeholder.jpg"}
+                        src="/product.jpeg"
                         alt={product.name || "Product"}
                         width={80}
                         height={80}
@@ -194,9 +195,7 @@ const Cart = () => {
                       <tr key={item.productId} className="hover:bg-green-50">
                         <td className="px-6 py-4 flex items-center gap-4">
                           <Image
-                            src={
-                              product.images?.[0]?.image || "/placeholder.jpg"
-                            }
+                            src="/product.jpeg"
                             alt={product.name || "Product"}
                             width={60}
                             height={60}

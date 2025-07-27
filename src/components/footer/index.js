@@ -18,7 +18,7 @@ const Footer = () => {
           >
             <Link href="/">
               <div className="text-3xl font-extrabold tracking-wide text-white hover:text-green-400 transition duration-300 ease-in-out mb-4 cursor-pointer">
-                Deo African Magic
+                African Magic Deo
               </div>
             </Link>
             <div className="text-gray-400 mb-6 max-w-md leading-relaxed">
@@ -36,7 +36,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center hover:text-green-400 transition">
                 <i className="ri-mail-line text-lg mr-2" />
-                <div>info@deoafricanmagic.com</div>
+                <div>info@africanmagicdeo.com</div>
               </div>
             </div>
           </motion.div>

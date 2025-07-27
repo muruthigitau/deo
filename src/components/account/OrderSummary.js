@@ -1,3 +1,4 @@
+import { constructImagePath } from "@/utils/imagePath";
 import Image from "next/image";
 
 const OrderSummary = ({
@@ -59,7 +60,7 @@ const OrderSummary = ({
             >
               <div className="relative w-16 h-16 flex-shrink-0">
                 <Image
-                  src={product.images?.[0]?.image || "/placeholder.jpg"}
+                  src="/product.jpeg"
                   alt={product.name || "Product"}
                   fill
                   className="rounded-lg object-cover"

@@ -11,14 +11,14 @@ const testimonials = [
     image: "/assets/images/avtar.jpg",
     name: "Mark Junco",
     role: "Lead Designer",
-    text: "The experience with Deo African Magic Limited has been nothing short of exceptional. Their attention to detail and quality is truly impressive.",
+    text: "The experience with African Magic Deo Limited has been nothing short of exceptional. Their attention to detail and quality is truly impressive.",
   },
   {
     id: 2,
     image: "/assets/images/2.jpg",
     name: "Emily Carter",
     role: "Creative Director",
-    text: "I have worked with many teams, but none compare to the professionalism and dedication of Deo African Magic Limited. Highly recommended!",
+    text: "I have worked with many teams, but none compare to the professionalism and dedication of African Magic Deo Limited. Highly recommended!",
   },
 ];
 
@@ -54,14 +54,14 @@ const teamMembers = [
 const aboutContent = {
   banner: {
     image: "/assets/images/about/about-us.jpg",
-    alt: "About Deo African Magic Limited",
+    alt: "About African Magic Deo Limited",
     width: 1200,
     height: 600,
   },
   content: {
     title: "Experience the Magic of African Craftsmanship",
     shortDescription:
-      "At Deo African Magic Limited, we blend innovation and tradition to create outstanding products that reflect Africa’s rich heritage.",
+      "At African Magic Deo Limited, we blend innovation and tradition to create outstanding products that reflect Africa’s rich heritage.",
     longDescription: `With years of expertise, we are committed to delivering excellence in every aspect of our work. Our passion lies in preserving culture while embracing modern creativity. We prioritize customer satisfaction, ensuring that our products and services exceed expectations. From concept to execution, our team works diligently to bring visions to life. Join us on this incredible journey of art, culture, and innovation.`,
   },
   testimonialSection: {
@@ -69,7 +69,7 @@ const aboutContent = {
     title: "What Our Customers Say",
   },
   teamSection: {
-    title: "Meet the Deo African Magic Team",
+    title: "Meet the African Magic Deo Team",
   },
 };
 

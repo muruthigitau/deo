@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Preset API URL
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/apis/";
+  process.env.NEXT_PUBLIC_API_URL || "https://admin.deo.arifahub.com/apis/";
 
 // Utility function to fetch data with retry logic
 const fetchWithRetry = async (url, params, headers, retries = 3) => {
@@ -20,11 +20,13 @@ const fetchWithRetry = async (url, params, headers, retries = 3) => {
   }
 };
 
+export { API_URL };
+
 // Main fetchData function
 export const fetchData = async (
   endpoint,
   params = {},
-  tenant = "test",
+  tenant = "shop",
   options = {}
 ) => {
   try {
@@ -49,7 +51,7 @@ export const postFormData = async (
   endpoint,
   formData,
   headers = {},
-  tenant = "test"
+  tenant = "shop"
 ) => {
   try {
     const url = `${API_URL}${endpoint}`;
@@ -73,7 +75,7 @@ export const postData = async (
   endpoint,
   body,
   headers = {},
-  tenant = "test"
+  tenant = "shop"
 ) => {
   try {
     const url = `${API_URL}${endpoint}`;
@@ -97,7 +99,7 @@ export const updateData = async (
   endpoint,
   body,
   headers = {},
-  tenant = "test"
+  tenant = "shop"
 ) => {
   try {
     const url = `${API_URL}${endpoint}`;

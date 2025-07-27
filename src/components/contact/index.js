@@ -173,7 +173,7 @@ const Contact = () => {
                     </div>
                     <div className="media-body">
                       <h6>Email</h6>
-                      <p>info@deoafricanmagic.com</p>
+                      <p>info@africanmagicdeo.com</p>
                     </div>
                   </li>
                   <li>

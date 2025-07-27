@@ -19,7 +19,7 @@ const PrivacyPolicy = () => {
         <div className="content">
           <h3>1. Introduction</h3>
           <p>
-            At <strong>Deo African Magic Limited</strong> ("Company", "we",
+            At <strong>African Magic Deo Limited</strong> ("Company", "we",
             "our", "us"), we are committed to protecting your privacy. This
             Privacy Policy outlines how we collect, use, and safeguard your
             personal information when you visit our website or use our services.
@@ -88,8 +88,8 @@ const PrivacyPolicy = () => {
           <ul>
             <li>
               Email:{" "}
-              <Link href="mailto:support@deoafricanmagic.com">
-                support@deoafricanmagic.com
+              <Link href="mailto:support@africanmagicdeo.com">
+                support@africanmagicdeo.com
               </Link>
             </li>
             <li>

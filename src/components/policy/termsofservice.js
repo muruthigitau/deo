@@ -19,7 +19,7 @@ const TermsOfService = () => {
         <div className="content">
           <h3>1. Introduction</h3>
           <p>
-            Welcome to <strong>Deo African Magic Limited</strong> ("Company",
+            Welcome to <strong>African Magic Deo Limited</strong> ("Company",
             "we", "our", "us")! These Terms of Service ("Terms", "Agreement")
             govern your use of our website and services. By accessing or using
             our platform, you agree to comply with these Terms.
@@ -44,9 +44,9 @@ const TermsOfService = () => {
           <p>
             Customers may request returns or refunds in accordance with our
             policies. To initiate a return, contact our support team at
-            <a href="mailto:support@deoafricanmagic.com">
+            <a href="mailto:support@africanmagicdeo.com">
               {" "}
-              support@deoafricanmagic.com
+              support@africanmagicdeo.com
             </a>
             .
           </p>
@@ -60,7 +60,7 @@ const TermsOfService = () => {
 
           <h3>6. Limitation of Liability</h3>
           <p>
-            Deo African Magic Limited is not liable for any indirect damages
+            African Magic Deo Limited is not liable for any indirect damages
             resulting from the use of our website or products. While we strive
             to provide accurate product details, we do not guarantee error-free
             descriptions or availability.
@@ -73,8 +73,8 @@ const TermsOfService = () => {
           <ul>
             <li>
               Email:{" "}
-              <a href="mailto:support@deoafricanmagic.com">
-                support@deoafricanmagic.com
+              <a href="mailto:support@africanmagicdeo.com">
+                support@africanmagicdeo.com
               </a>
             </li>
             <li>

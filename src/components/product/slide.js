@@ -11,6 +11,7 @@ import Loader from "@/components/Loader";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { constructImagePath } from "@/utils/imagePath";
 
 const Slide = () => {
   const [productData, setProductData] = useState(null);
@@ -104,7 +105,7 @@ const Slide = () => {
           transition={{ duration: 0.4 }}
           className="bg-white border border-gray-100 rounded-2xl shadow-lg overflow-hidden"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 p-2 md:p-6">
             {/* Product Image Slider */}
             <div className="relative">
               {discountRibbon && (
@@ -124,7 +125,7 @@ const Slide = () => {
                   <SwiperSlide key={i}>
                     <div className="relative w-full h-full">
                       <Image
-                        src={img.image}
+                        src={constructImagePath(img?.image)}
                         alt={`${productData.name} - Image ${i + 1}`}
                         fill
                         className="object-cover"
