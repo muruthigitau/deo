@@ -5,7 +5,7 @@ function SEO() {
     <Head>
       {/* Basic SEO */}
       <title>
-        African Magic Deo - 100% Natural Alum Deodorant | Eco-Friendly
+        African Magic Deo - 100% Natural Alum Deodorant | Eco-Friendly and Safe
       </title>
       <meta
         name="description"
