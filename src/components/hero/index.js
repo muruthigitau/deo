@@ -11,9 +11,9 @@ const slides = [
   {
     image: "/assets/images/bg-4.png",
     link: "/product",
-    title: "Stay Fresh, Stay Confident",
+    title: "Stay Fresh. Naturally. All Day. Everywhere.",
     description:
-      "Long-lasting alum protection with zero irritation. Experience all-day freshness with a pure, natural solution to body odor, free from harmful chemicals.",
+      "The ancient wellness secret your body has been waiting for, no fragrance, no stains, no chemicals just 1 ingredient.",
   },
   {
     image: "/assets/images/bg-3.png",
