@@ -3,22 +3,17 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import {
   Leaf,
-  Droplet,
   CheckCircle,
   XCircle,
   Package,
   Sparkle,
   Shirt,
   Heart,
-  Award,
-  Lightbulb,
   Hand,
-  MessageSquare,
-  User,
   MapPin,
   Calendar,
   Zap,
-} from "lucide-react"; // !Import necessary Lucide icons
+} from "lucide-react";
 
 const ProductDescription = () => {
   const description =
@@ -127,7 +122,7 @@ const ProductDescription = () => {
   return (
     <section className="!py-12 !px-6 !bg-gradient-to-br !from-green-50 !to-lime-50 !font-sans">
       <div className="!max-w-6xl !mx-auto !space-y-16">
-        {/* !Hero Section */}
+        {/* Hero Section */}
         <motion.div
           className="!text-center !bg-white !p-8 !rounded-3xl !shadow-xl !border !border-green-100 !relative !overflow-hidden"
           initial="hidden"
@@ -153,18 +148,18 @@ const ProductDescription = () => {
             <strong className="!text-emerald-700">
               African Magic Deodorant
             </strong>{" "}
-            - a !100% !natural !potassium !alum !stone that works with your
-            body, not against it.
+            - a 100% natural potassium alum stone that works with your body, not
+            against it.
           </motion.p>
           <motion.p
             className="!text-2xl !font-semibold !text-emerald-600 !italic !relative !z-10"
             variants={itemVariants}
           >
-            🌿 !No !Fragrance. !No !Aluminum. !No !Worries.
+            🌿 No Fragrance. No Aluminum. No Worries.
           </motion.p>
         </motion.div>
 
-        {/* !Say !Goodbye / !Say !Hello !Section */}
+        {/* Say Goodbye / Say Hello Section */}
         <motion.div
           className="!grid !grid-cols-1 md:!grid-cols-2 !gap-12 !bg-white !p-8 !rounded-3xl !shadow-xl !border !border-green-100"
           initial="hidden"
@@ -174,8 +169,8 @@ const ProductDescription = () => {
         >
           <div className="!space-y-6">
             <h2 className="!text-3xl !font-bold !text-green-700 !mb-4 !flex !items-center">
-              <XCircle className="!h-8 !w-8 !text-red-500 !mr-3" /> !Say
-              !goodbye to:
+              <XCircle className="!h-8 !w-8 !text-red-500 !mr-3" /> Say goodbye
+              to:
             </h2>
             <ul className="!space-y-3">
               {pains.map((item, index) => {
@@ -195,8 +190,8 @@ const ProductDescription = () => {
           </div>
           <div className="!space-y-6">
             <h2 className="!text-3xl !font-bold !text-green-700 !mb-4 !flex !items-center">
-              <CheckCircle className="!h-8 !w-8 !text-green-500 !mr-3" /> !And
-              !say !hello to:
+              <CheckCircle className="!h-8 !w-8 !text-green-500 !mr-3" /> And
+              say hello to:
             </h2>
             <ul className="!space-y-3">
               {gains.map((item, index) => {
@@ -216,7 +211,7 @@ const ProductDescription = () => {
           </div>
         </motion.div>
 
-        {/* !Key !Benefits !Section */}
+        {/* Key Benefits Section */}
         <motion.div
           className="!bg-white !p-8 !rounded-3xl !shadow-xl !border !border-green-100"
           initial="hidden"
@@ -225,7 +220,7 @@ const ProductDescription = () => {
           variants={containerVariants}
         >
           <h2 className="!text-4xl !font-extrabold !text-green-800 !text-center !mb-10 !drop-shadow-md">
-            ✅ !Key !Benefits
+            ✅ Key Benefits
           </h2>
           <div className="!grid !grid-cols-1 md:!grid-cols-2 lg:!grid-cols-3 !gap-8">
             {keyBenefits.map((benefit, index) => {
@@ -255,7 +250,7 @@ const ProductDescription = () => {
           </div>
         </motion.div>
 
-        {/* !How to !Use !Section */}
+        {/* How to Use Section */}
         <motion.div
           className="!bg-emerald-50 !p-8 !rounded-3xl !shadow-xl !border !border-emerald-100 !grid !grid-cols-1 lg:!grid-cols-2 !gap-10 !items-center"
           initial="hidden"
@@ -265,7 +260,7 @@ const ProductDescription = () => {
         >
           <motion.div variants={itemVariants}>
             <h2 className="!text-4xl !font-extrabold !text-emerald-800 !mb-6 !drop-shadow-md">
-              💧 !How to !Use
+              💧 How to Use
             </h2>
             <ol className="!list-decimal !list-inside !space-y-4 !text-lg !text-gray-700">
               {usageSteps.map((step, index) => (
@@ -285,7 +280,7 @@ const ProductDescription = () => {
               variants={itemVariants}
               className="!mt-8 !text-xl !font-bold !text-emerald-700 !italic"
             >
-              That’s it. !Simple. !Powerful. !Natural.
+              That’s it. Simple. Powerful. Natural.
             </motion.p>
           </motion.div>
           <motion.div
@@ -293,16 +288,16 @@ const ProductDescription = () => {
             className="!relative !w-full !h-80 !rounded-2xl !overflow-hidden !shadow-lg"
           >
             <Image
-              src="/assets/images/deo/IMG-30.jpg" // !Using !IMG-30.jpg as the !primary !product !image
-              alt="!How to use !natural !deodorant"
+              src="/assets/images/deo/IMG-30.jpg" // Using IMG-30.jpg as the primary product image
+              alt="How to use natural deodorant"
               layout="fill"
-              objectFit="cover" // !Cover to !fill the !space, !common for !visual !demos
+              objectFit="cover" // Cover to fill the space, common for visual demos
               className="!rounded-2xl"
             />
           </motion.div>
         </motion.div>
 
-        {/* !Real !Reviews !Section */}
+        {/* Real Reviews Section */}
         <motion.div
           className="!bg-white !p-8 !rounded-3xl !shadow-xl !border !border-green-100"
           initial="hidden"
@@ -311,7 +306,7 @@ const ProductDescription = () => {
           variants={containerVariants}
         >
           <h2 className="!text-4xl !font-extrabold !text-green-800 !text-center !mb-10 !drop-shadow-md">
-            ⭐ !Real !Reviews !From !Real !People
+            ⭐ Real Reviews From Real People
           </h2>
           <div className="!grid !grid-cols-1 md:!grid-cols-2 lg:!grid-cols-3 !gap-8">
             {reviews.map((review, index) => (
@@ -325,7 +320,7 @@ const ProductDescription = () => {
                 className="!bg-green-50 !p-6 !rounded-2xl !shadow-md !border !border-green-200 !flex !flex-col !transition-all !duration-300"
               >
                 <div className="!flex !items-center !mb-4">
-                  {/* !Removed !image !from !reviews !as !requested */}
+                  {/* Removed image from reviews as requested */}
                   <div>
                     <p className="!font-bold !text-gray-900 !text-lg">
                       {review.name}
@@ -340,7 +335,7 @@ const ProductDescription = () => {
                 </p>
                 <div className="!flex !justify-end !text-sm !text-gray-500">
                   <Calendar className="!h-4 !w-4 !mr-1" />
-                  !Verified !Purchase
+                  Verified Purchase
                 </div>
               </motion.div>
             ))}

@@ -105,13 +105,31 @@ const Header = () => {
                 href="/product"
                 className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
               >
-                Product
+                Products
+              </Link>
+              {/* <Link
+                href="/product"
+                className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
+              >
+                New & Media
+              </Link> */}
+              <Link
+                href="/ask-us"
+                className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
+              >
+                Ask Us
+              </Link>
+              <Link
+                href="/testimonials"
+                className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
+              >
+                Testimonials
               </Link>
               <Link
                 href="/contact"
                 className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
               >
-                Contact
+                Get in Touch
               </Link>
             </nav>
 
