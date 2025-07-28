@@ -125,7 +125,7 @@ const WhatIsSection = () => (
       >
         {/* Image scaled to fit, retaining aspect ratio without overflow */}
         <Image
-          src="/assets/images/deo/IMG-1.jpg" // Using IMG-1.jpg
+          src="/assets/images/deo/why.png" // Using why.png
           alt="African Magic Deodorant Stone"
           layout="fill"
           objectFit="contain" // Ensures full image is visible, no distortion, no crop
@@ -148,7 +148,7 @@ const WhyGoNaturalSection = () => (
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-5xl font-extrabold text-gray-900 mb-6 drop-shadow-lg w-full"
       >
-        <span className="text-green-700">🧘🏾‍♀️ Why Go Natural?</span>
+        <span className="text-green-700">Why Go Natural?</span>
       </motion.h2>
       <motion.p
         initial={{ opacity: 0, y: -30 }}
@@ -256,7 +256,7 @@ const WhatMakesItDifferentSection = () => (
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-5xl font-extrabold text-gray-900 mb-6 drop-shadow-lg w-full"
       >
-        <span className="text-green-700">💬 What Makes It Different?</span>
+        <span className="text-green-700">What Makes It Different?</span>
       </motion.h2>
       <motion.p
         initial={{ opacity: 0, y: -30 }}
@@ -407,7 +407,7 @@ const WhosItForSection = () => (
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-5xl font-extrabold text-gray-900 mb-6 drop-shadow-lg w-full"
       >
-        <span className="text-emerald-700">🌍 Who&apos;s It For?</span>
+        <span className="text-emerald-700">Who&apos;s It For?</span>
       </motion.h2>
       <motion.p
         initial={{ opacity: 0, y: -30 }}
@@ -470,8 +470,8 @@ const HowToUseItSection = () => (
     <div className="absolute inset-0 bg-diagonal-lines opacity-5 pointer-events-none"></div>
     {/* Title now explicitly full width within its container */}
     <h2 className="text-5xl font-extrabold !px-4 !mb-8 text-green-900 leading-tight tracking-tight w-full">
-      <span className="text-green-600 drop-shadow-md">🧴 How to Use It</span>{" "}
-      (and Why It Works)
+      <span className="text-green-600 drop-shadow-md">How to Use It</span> (and
+      Why It Works)
     </h2>
 
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
@@ -588,7 +588,7 @@ const WhatDoesNaturalMeanSection = () => (
         className="text-5xl font-extrabold text-gray-900 mb-6 drop-shadow-lg w-full"
       >
         <span className="text-teal-700">
-          💡 What Does “100% Natural” Mean Here?
+          What Does “100% Natural” Mean Here?
         </span>
       </motion.h2>
       <motion.p
@@ -672,7 +672,7 @@ const OurPromiseSection = () => (
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-5xl font-extrabold text-gray-900 mb-6 drop-shadow-lg w-full"
       >
-        <span className="text-green-700">⭐ Our Promise</span>
+        <span className="text-green-700">Our Promise</span>
       </motion.h2>
       <motion.p
         initial={{ opacity: 0, y: -30 }}
@@ -722,9 +722,7 @@ const CallToActionSection = () => (
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-5xl font-extrabold mb-8 leading-tight drop-shadow-lg w-full"
       >
-        <span className="text-emerald-200">
-          🙌 Ready to Feel the Difference?
-        </span>
+        <span className="text-emerald-200">Ready to Feel the Difference?</span>
       </motion.h2>
       <motion.p
         initial={{ opacity: 0, y: -30 }}

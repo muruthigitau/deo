@@ -51,7 +51,7 @@ const ProductDescription = () => {
     {
       title: "Eliminates Odor",
       description:
-        "Neutralizes bacteria before it causes body odor, it’s not just a cover-up.",
+        "Neutralizes bacteria before it causes body odor, it's not just a cover-up.",
       icon: Zap,
     },
     {
@@ -90,12 +90,12 @@ const ProductDescription = () => {
     {
       name: "Faith Muso.",
       location: "Kilimani",
-      text: "I sweat a lot, like a lot, and I was honestly skeptical. But wow. I’ve gone a full day in Nairobi heat, walked, worked, even hit the gym, and didn’t smell a thing. Plus, no marks on my black top. I’m sold.",
+      text: "I sweat a lot, like a lot, and I was honestly skeptical. But wow. I've gone a full day in Nairobi heat, walked, worked, even hit the gym, and didn't smell a thing. Plus, no marks on my black top. I'm sold.",
     },
     {
       name: "Ben .",
       location: "Mombasa",
-      text: "I’ve used natural deodorants before, but this is on a whole new level. It doesn’t smell at all, which I LOVE because it doesn’t interfere with my perfume. And I’ve been using the same stone for 8 months.",
+      text: "I've used natural deodorants before, but this is on a whole new level. It doesn't smell at all, which I LOVE because it doesn't interfere with my perfume. And I've been using the same stone for 8 months.",
     },
     {
       name: "Angela Achieng",
@@ -137,7 +137,7 @@ const ProductDescription = () => {
             className="!text-5xl !font-extrabold !text-green-800 !mb-4 !leading-tight !drop-shadow-md !relative !z-10"
             variants={itemVariants}
           >
-            Your Body’s Best-Kept Secret. Now in Your Hands.
+            Your Body's Best-Kept Secret. Now in Your Hands.
           </motion.h1>
           <motion.p
             className="!text-xl !text-gray-700 !mb-6 !max-w-4xl !mx-auto !leading-relaxed !relative !z-10"
@@ -155,7 +155,7 @@ const ProductDescription = () => {
             className="!text-2xl !font-semibold !text-emerald-600 !italic !relative !z-10"
             variants={itemVariants}
           >
-            🌿 No Fragrance. No Aluminum. No Worries.
+            No Fragrance. No Aluminum. No Worries.
           </motion.p>
         </motion.div>
 
@@ -220,7 +220,7 @@ const ProductDescription = () => {
           variants={containerVariants}
         >
           <h2 className="!text-4xl !font-extrabold !text-green-800 !text-center !mb-10 !drop-shadow-md">
-            ✅ Key Benefits
+            Key Benefits
           </h2>
           <div className="!grid !grid-cols-1 md:!grid-cols-2 lg:!grid-cols-3 !gap-8">
             {keyBenefits.map((benefit, index) => {
@@ -260,7 +260,7 @@ const ProductDescription = () => {
         >
           <motion.div variants={itemVariants}>
             <h2 className="!text-4xl !font-extrabold !text-emerald-800 !mb-6 !drop-shadow-md">
-              💧 How to Use
+              How to Use
             </h2>
             <ol className="!list-decimal !list-inside !space-y-4 !text-lg !text-gray-700">
               {usageSteps.map((step, index) => (
@@ -280,7 +280,7 @@ const ProductDescription = () => {
               variants={itemVariants}
               className="!mt-8 !text-xl !font-bold !text-emerald-700 !italic"
             >
-              That’s it. Simple. Powerful. Natural.
+              That's it. Simple. Powerful. Natural.
             </motion.p>
           </motion.div>
           <motion.div
@@ -306,7 +306,7 @@ const ProductDescription = () => {
           variants={containerVariants}
         >
           <h2 className="!text-4xl !font-extrabold !text-green-800 !text-center !mb-10 !drop-shadow-md">
-            ⭐ Real Reviews From Real People
+            Real Reviews From Real People
           </h2>
           <div className="!grid !grid-cols-1 md:!grid-cols-2 lg:!grid-cols-3 !gap-8">
             {reviews.map((review, index) => (

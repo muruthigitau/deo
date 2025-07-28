@@ -22,6 +22,13 @@ const slides = [
     description:
       "Experience all-day freshness with our classic alum formula. 100% natural potassium alum eliminates odor-causing bacteria without blocking pores.",
   },
+  {
+    image: "/assets/images/bg-5.png",
+    link: "/product",
+    title: "An Ancient Wellness Secret",
+    description:
+      "Rediscover the time-tested mineral that has been used for centuries across civilizations for its natural purifying and protective properties.",
+  },
 ];
 
 const Hero = () => {

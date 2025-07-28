@@ -73,7 +73,7 @@ const Testimonials = () => {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
         >
-          ⭐ Real Stories, Real Results.
+          Real Stories, Real Results.
         </motion.h2>
 
         <motion.div

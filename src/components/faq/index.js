@@ -8,7 +8,7 @@ const FAQ = () => {
     {
       question: "Is this an antiperspirant?",
       answer:
-        "No, and that’s a good thing. Sweat is natural and healthy. African Magic Deodorant doesn’t block sweat; it neutralizes the odor-causing bacteria.",
+        "No, and that's a good thing. Sweat is natural and healthy. African Magic Deodorant doesn't block sweat; it neutralizes the odor-causing bacteria.",
     },
     {
       question: "Will it leave a white residue or yellow stains?",
@@ -33,27 +33,27 @@ const FAQ = () => {
     {
       question: "Can I still wear perfume with it?",
       answer:
-        "100%. Since it’s fragrance-free, it won’t clash or mix with your signature scent.",
+        "100%. Since it's fragrance-free, it won't clash or mix with your signature scent.",
     },
     {
-      question: "What if I try it and it doesn’t work for me?",
+      question: "What if I try it and it doesn't work for me?",
       answer:
-        "We’re confident you’ll love it. However, if you’re not “wow’ed,” just call us. We’ll make it right.",
+        "We're confident you'll love it. However, if you're not wow'ed, just call us. We'll make it right.",
     },
     {
       question: "Is this suitable for teenagers?",
       answer:
-        "Yes, absolutely. African Magic Deodorant is made from pure potassium alum, a naturally occurring mineral salt with no alcohol, no fragrance, and no synthetic chemicals, making it gentle enough for teens, even those with sensitive skin. It’s a great way to support your teenager’s hygiene without introducing harsh antiperspirants or heavily perfumed products that may irritate developing skin.",
+        "Yes, absolutely. African Magic Deodorant is made from pure potassium alum, a naturally occurring mineral salt with no alcohol, no fragrance, and no synthetic chemicals, making it gentle enough for teens, even those with sensitive skin. It's a great way to support your teenager's hygiene without introducing harsh antiperspirants or heavily perfumed products that may irritate developing skin.",
     },
     {
       question: "Can I use it during pregnancy?",
       answer:
-        "Yes, it is considered safe to use during pregnancy. Unlike traditional deodorants that often contain aluminum compounds, parabens, or artificial fragrance blends, our formula is 100% natural and works by neutralizing odor-causing bacteria, not blocking sweat glands. Because it contains no hormone-disrupting ingredients, no additives, and no essential oils, it’s a thoughtful choice for expecting mothers who want to reduce chemical exposure without sacrificing freshness. Of course, if you have specific health concerns or allergies, always consult your healthcare provider.",
+        "Yes, it is considered safe to use during pregnancy. Unlike traditional deodorants that often contain aluminum compounds, parabens, or artificial fragrance blends, our formula is 100% natural and works by neutralizing odor-causing bacteria, not blocking sweat glands. Because it contains no hormone-disrupting ingredients, no additives, and no essential oils, it's a thoughtful choice for expecting mothers who want to reduce chemical exposure without sacrificing freshness. Of course, if you have specific health concerns or allergies, always consult your healthcare provider.",
     },
     {
       question: "Does it wash out in the laundry?",
       answer:
-        "Yes, and this is one of the biggest benefits. African Magic Deodorant does not stain fabrics or leave behind chemical residues that cling to your clothes like many antiperspirants do. It’s free from waxes, oils, and synthetic scents that are often the culprits behind stubborn odors or discoloration on clothing. Even on dark fabrics or delicate materials, the deodorant rinses out easily during regular washing. No build-up, no residue, no lingering “deo smell” in your wardrobe.",
+        "Yes, and this is one of the biggest benefits. African Magic Deodorant does not stain fabrics or leave behind chemical residues that cling to your clothes like many antiperspirants do. It's free from waxes, oils, and synthetic scents that are often the culprits behind stubborn odors or discoloration on clothing. Even on dark fabrics or delicate materials, the deodorant rinses out easily during regular washing. No build-up, no residue, no lingering deo smell in your wardrobe.",
     },
     {
       question: "Is it reef-safe?",
@@ -89,7 +89,7 @@ const FAQ = () => {
       <div className="!bg-transparent !pb-4 !pt-12">
         <div className="!max-w-4xl !mx-auto !text-center !px-4">
           <h2 className="!text-4xl !font-extrabold !text-green-700 !mb-3 !tracking-wide !drop-shadow">
-            💬 Ask Us (FAQs)
+            Ask Us (FAQs)
           </h2>
           <nav className="!text-sm !text-green-600 !font-medium">
             <ol className="!inline-flex !items-center !space-x-2">
@@ -174,10 +174,10 @@ const FAQ = () => {
           <div className="!relative !z-10">
             <Lightbulb className="!h-16 !w-16 !text-emerald-300 !mx-auto !mb-6 !animate-pulse-light" />
             <h3 className="!text-3xl !font-extrabold !mb-4 !drop-shadow !text-emerald-100">
-              💡 Wellness is Simple. Start With Your Skin.
+              Wellness is Simple. Start With Your Skin.
             </h3>
             <p className="!text-xl !leading-relaxed !mb-6 !text-emerald-200 !drop-shadow">
-              African Magic Deodorant is more than odor control; it’s part of a
+              African Magic Deodorant is more than odor control; it's part of a
               mindful, minimalist, clean-living journey.
             </p>
             <p className="!text-2xl !font-bold !text-emerald-200 !drop-shadow">
