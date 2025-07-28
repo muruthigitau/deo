@@ -110,7 +110,7 @@ const WhatIsSection = () => (
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.7, delay: 0.7 }}
-          className="text-lg mt-10 italic text-gray-700 bg-emerald-50/50 p-6 rounded-xl border border-emerald-200 shadow-inner"
+          className="text-lg !mt-[20px] italic text-gray-700 bg-emerald-50/50 p-6 rounded-xl border border-emerald-200 shadow-inner"
         >
           This is real health and wellness for your underarms, feet, chest, back
           – wherever you sweat.
@@ -457,7 +457,7 @@ const WhosItForSection = () => (
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-      className="text-2xl font-bold text-center text-emerald-800 mt-16 italic drop-shadow-sm"
+      className="text-2xl font-bold text-center text-emerald-800 !mt-16 italic drop-shadow-sm"
     >
       If you’ve been looking for something clean, simple and real, you’ve found
       it.
@@ -468,6 +468,11 @@ const WhosItForSection = () => (
 const HowToUseItSection = () => (
   <section className="w-full bg-white max-w-7xl mx-auto py-20 px-8 my-16 rounded-3xl shadow-3xl relative overflow-hidden">
     <div className="absolute inset-0 bg-diagonal-lines opacity-5 pointer-events-none"></div>
+    {/* Title now explicitly full width within its container */}
+    <h2 className="text-5xl font-extrabold !px-4 !mb-8 text-green-900 leading-tight tracking-tight w-full">
+      <span className="text-green-600 drop-shadow-md">🧴 How to Use It</span>{" "}
+      (and Why It Works)
+    </h2>
 
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
       <motion.div
@@ -477,13 +482,6 @@ const HowToUseItSection = () => (
         transition={{ duration: 0.9, ease: "easeOut" }}
         className="text-gray-800"
       >
-        {/* Title now explicitly full width within its container */}
-        <h2 className="text-5xl font-extrabold mb-8 text-green-900 leading-tight tracking-tight w-full">
-          <span className="text-green-600 drop-shadow-md">
-            🧴 How to Use It
-          </span>{" "}
-          (and Why It Works)
-        </h2>
         <ol className="space-y-8 text-xl list-none">
           {" "}
           {/* Removed default list styling */}
@@ -547,7 +545,7 @@ const HowToUseItSection = () => (
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-          className="text-lg mt-10 italic text-gray-700 bg-green-100/70 p-8 rounded-xl border border-green-300 shadow-inner leading-relaxed"
+          className="text-lg !mt-10 italic text-gray-700 bg-green-100/70 p-8 rounded-xl border border-green-300 shadow-inner leading-relaxed"
         >
           The stone leaves behind a thin layer of natural mineral salts. These
           form an invisible barrier that stops odour before it starts, without
@@ -733,7 +731,7 @@ const CallToActionSection = () => (
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-        className="text-xl max-w-4xl mx-auto mb-12 text-emerald-100 leading-relaxed"
+        className="text-xl max-w-4xl mx-auto mb-12 !text-emerald-100 leading-relaxed"
       >
         Order yours today and experience a deodorant that respects your body,
         your clothes, your scent, and your lifestyle.
@@ -748,7 +746,7 @@ const CallToActionSection = () => (
         }}
         whileTap={{ scale: 0.95 }}
         transition={{ duration: 0.3 }}
-        className="bg-white text-emerald-800 font-extrabold py-5 px-14 rounded-full text-xl shadow-2xl hover:bg-emerald-100 transition-all duration-300 transform tracking-wide uppercase"
+        className="flex-1 px-6 py-3 !bg-orange-500 text-white font-medium rounded-lg shadow-md hover:bg-orange-600 transition text-center"
       >
         Shop Now
       </motion.button>
