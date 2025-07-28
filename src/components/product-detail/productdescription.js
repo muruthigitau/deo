@@ -14,6 +14,7 @@ import {
   Calendar,
   Zap,
 } from "lucide-react";
+import TestimonialSlider from "../faq/TestimonialSlider";
 
 const ProductDescription = () => {
   const description =
@@ -308,38 +309,7 @@ const ProductDescription = () => {
           <h2 className="!text-4xl !font-extrabold !text-green-800 !text-center !mb-10 !drop-shadow-md">
             Real Reviews From Real People
           </h2>
-          <div className="!grid !grid-cols-1 md:!grid-cols-2 lg:!grid-cols-3 !gap-8">
-            {reviews.map((review, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                whileHover={{
-                  translateY: -8,
-                  boxShadow: "0 20px 30px rgba(0,0,0,0.1)",
-                }}
-                className="!bg-green-50 !p-6 !rounded-2xl !shadow-md !border !border-green-200 !flex !flex-col !transition-all !duration-300"
-              >
-                <div className="!flex !items-center !mb-4">
-                  {/* Removed image from reviews as requested */}
-                  <div>
-                    <p className="!font-bold !text-gray-900 !text-lg">
-                      {review.name}
-                    </p>
-                    <p className="!text-sm !text-gray-600 !flex !items-center">
-                      <MapPin className="!h-4 !w-4 !mr-1" /> {review.location}
-                    </p>
-                  </div>
-                </div>
-                <p className="!italic !text-gray-700 !mb-4 !flex-grow">
-                  "{review.text}"
-                </p>
-                <div className="!flex !justify-end !text-sm !text-gray-500">
-                  <Calendar className="!h-4 !w-4 !mr-1" />
-                  Verified Purchase
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <TestimonialSlider />
         </motion.div>
       </div>
     </section>

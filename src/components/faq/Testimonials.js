@@ -1,42 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Quote } from "lucide-react"; // Using Quote icon for testimonials
 import Link from "next/link";
+import TestimonialSlider from "./TestimonialSlider"; // Import the new slider component
 
 const Testimonials = () => {
-  const reviews = [
-    {
-      name: "Faith Muso.",
-      location: "Kilimani",
-      text: "I sweat a lot, like a lot, and I was honestly skeptical. But wow. I’ve gone a full day in Nairobi heat, walked, worked, even hit the gym, and didn’t smell a thing. Plus, no marks on my black top. I’m sold.",
-    },
-    {
-      name: "Ben .",
-      location: "Mombasa",
-      text: "I’ve used natural deodorants before, but this is on a whole new level. It doesn’t smell at all, which I LOVE because it doesn’t interfere with my perfume. And I’ve been using the same stone for 8 months.",
-    },
-    {
-      name: "Angela Achieng",
-      location: "Kisumu",
-      text: "It bought two deos, because it works on my feet too, not just my underarms! I use it after my morning shower and I stay fresh all day. No irritation, no itchiness like I used to get with regular deo sprays.",
-    },
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
   return (
     <section className="!py-16 !px-6 !bg-gradient-to-br !from-green-50 !to-lime-50 !font-sans !relative !overflow-hidden">
       {/* Breadcrumb Section */}
@@ -76,39 +43,8 @@ const Testimonials = () => {
           Real Stories, Real Results.
         </motion.h2>
 
-        <motion.div
-          className="!grid !grid-cols-1 md:!grid-cols-2 lg:!grid-cols-3 !gap-10"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={containerVariants}
-        >
-          {reviews.map((review, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              whileHover={{
-                scale: 1.03,
-                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
-              }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="!bg-white/90 !backdrop-blur-md !p-8 !rounded-3xl !shadow-xl !border !border-white/70 !relative !overflow-hidden !flex !flex-col !h-full"
-            >
-              {/* Quote icon as background element */}
-              <Quote className="!absolute !-top-4 !-left-4 !h-24 !w-24 !text-green-200/50 !opacity-70 !z-0 !transform !rotate-12" />
-
-              <p className="!relative !z-10 !italic !text-gray-700 !text-lg !leading-relaxed !mb-6 !flex-grow">
-                "{review.text}"
-              </p>
-              <div className="!relative !z-10 !pt-4 !border-t !border-green-100">
-                <p className="!font-bold !text-gray-900 !text-xl !mb-1">
-                  — {review.name}
-                </p>
-                <p className="!text-sm !text-gray-600">{review.location}</p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Call the new TestimonialSlider component here */}
+        <TestimonialSlider />
       </div>
       {/* You'll need to define these animations in your global CSS or in a <style jsx global> block */}
       <style jsx global>{`
