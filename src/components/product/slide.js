@@ -153,9 +153,12 @@ const Slide = () => {
                   {[...Array(5)].map((_, idx) => (
                     <i key={idx} className="ri-star-fill" />
                   ))}
-                  <span className="text-sm text-gray-500 ml-2">
+                  <Link
+                    href="/testimonials"
+                    className="text-sm text-gray-500 ml-2"
+                  >
                     (653 reviews)
-                  </span>
+                  </Link>
                 </div>
 
                 {/* Price & Discount */}
