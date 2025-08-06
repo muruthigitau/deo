@@ -1,28 +1,32 @@
 import { useState } from "react";
 import Link from "next/link";
+import { useForm, ValidationError } from "@formspree/react";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    subject: "",
-    message: "",
-  });
+  // Replace 'your_form_id' with your actual Formspree form ID
+  const [state, handleSubmit] = useForm("meozrnpd");
 
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your form submission logic here
-    console.log(formData);
-  };
+  // If the form has been submitted successfully, display a thank you message
+  if (state.succeeded) {
+    return (
+      <div className="contact-page">
+        <div className="container">
+          <div className="text-center py-5">
+            <h2 className="thank-you-title">Thank you!</h2>
+            <p className="thank-you-message">
+              Your message has been sent successfully. We will get back to you
+              shortly.
+            </p>
+            <div className="d-flex justify-content-center mt-4">
+              <Link href="/" className="btn btn-solid">
+                Go to Home
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -54,6 +58,7 @@ const Contact = () => {
               </div>
             </div>
             <div className="col-lg-7">
+              {/* The onSubmit handler is now Formspree's handleSubmit */}
               <form className="theme-form contact-form" onSubmit={handleSubmit}>
                 <div className="row g-4">
                   <div className="col-12">
@@ -61,13 +66,13 @@ const Contact = () => {
                       <label htmlFor="name" className="form-label">
                         Full Name
                       </label>
+                      {/* Formspree maps data using the 'name' attribute */}
                       <input
                         type="text"
                         id="name"
+                        name="name"
                         className="form-control"
                         placeholder="Full Name"
-                        value={formData.name}
-                        onChange={handleInputChange}
                         required
                       />
                     </div>
@@ -80,11 +85,16 @@ const Contact = () => {
                       <input
                         type="email"
                         id="email"
+                        name="email"
                         className="form-control"
                         placeholder="Email"
-                        value={formData.email}
-                        onChange={handleInputChange}
                         required
+                      />
+                      {/* Formspree validation for the email field */}
+                      <ValidationError
+                        prefix="Email"
+                        field="email"
+                        errors={state.errors}
                       />
                     </div>
                   </div>
@@ -96,10 +106,9 @@ const Contact = () => {
                       <input
                         type="tel"
                         id="phone"
+                        name="phone"
                         className="form-control"
                         placeholder="Enter Your Phone Number"
-                        value={formData.phone}
-                        onChange={handleInputChange}
                         required
                       />
                     </div>
@@ -112,10 +121,9 @@ const Contact = () => {
                       <input
                         type="text"
                         id="subject"
+                        name="subject"
                         className="form-control"
                         placeholder="Subject"
-                        value={formData.subject}
-                        onChange={handleInputChange}
                         required
                       />
                     </div>
@@ -127,18 +135,21 @@ const Contact = () => {
                       </label>
                       <textarea
                         id="message"
+                        name="message"
                         rows="6"
                         className="form-control"
                         placeholder="Write Your Message"
-                        value={formData.message}
-                        onChange={handleInputChange}
                         required
                       ></textarea>
                     </div>
                   </div>
                   <div className="col-12">
                     <div className="form-box">
-                      <button className="btn btn-solid" type="submit">
+                      <button
+                        className="btn btn-solid"
+                        type="submit"
+                        disabled={state.submitting}
+                      >
                         Send Your Message
                       </button>
                     </div>

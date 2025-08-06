@@ -107,12 +107,12 @@ const Header = () => {
               >
                 Products
               </Link>
-              {/* <Link
-                href="/product"
+              <Link
+                href="/blog"
                 className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
               >
                 New & Media
-              </Link> */}
+              </Link>
               <Link
                 href="/ask-us"
                 className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
@@ -130,6 +130,13 @@ const Header = () => {
                 className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
               >
                 Get in Touch
+              </Link>
+
+              <Link
+                href="/partnership"
+                className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
+              >
+                Partnership
               </Link>
             </nav>
 

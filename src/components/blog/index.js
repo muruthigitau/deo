@@ -1,32 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-
-const blogPosts = [
-  {
-    id: 1,
-    date: "12 March 2024",
-    title: "5 Reasons Why Alum Deodorant is Better for Your Skin",
-    author: "Sarah K.",
-    comments: 5,
-    image: "/assets/images/fashion-1/blog/1.png", // Keeping your original images
-  },
-  {
-    id: 2,
-    date: "5 March 2024",
-    title: "The Secret Behind Long-Lasting Freshness with Alum",
-    author: "Dr. Mark Lee",
-    comments: 3,
-    image: "/assets/images/fashion-1/blog/2.png",
-  },
-  {
-    id: 3,
-    date: "20 February 2024",
-    title: "How to Switch to Natural Deodorants Without Skin Irritation",
-    author: "Emma R.",
-    comments: 7,
-    image: "/assets/images/fashion-1/blog/3.png",
-  },
-];
+import blogPosts from "@/data/blog";
 
 const Blog = () => {
   return (
@@ -40,41 +14,32 @@ const Blog = () => {
         </div>
       </div>
 
-      <section className="blog pt-0 ratio2_3">
+      <section className="blog pt-0 ">
         <div className="container">
           <div className="row">
-            {blogPosts.map((post) => (
+            {blogPosts?.map((post) => (
               <div key={post.id} className="col-md-4">
-                <Link href="#!">
+                <Link href={`/blog/${post.slug}`} className="blog-box">
                   <div className="classic-effect">
-                    <div
-                      className="bg-size blur-up lazyloaded"
-                      style={{
-                        backgroundImage: `url(${post.image})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                      }}
-                    >
+                    <div className="bg-size blur-up lazyloaded">
                       <Image
-                        src={post.image}
+                        src={post?.imageSrc}
                         width={480}
-                        height={320}
-                        className="img-fluid blur-up lazyload bg-img"
-                        alt={post.title}
+                        height={620}
+                        className="img-fluid blur-up lazyload"
+                        alt={post?.title}
                       />
                     </div>
                     <span></span>
                   </div>
                 </Link>
                 <div className="blog-details">
-                  <h4>{post.date}</h4>
-                  <Link href="#!">
-                    <p>{post.title}</p>
+                  <h4>{post?.date}</h4>
+                  <Link href={`/blog/${post.slug}`}>
+                    <p>{post?.title}</p>
                   </Link>
                   <hr className="style1" />
-                  <h6>
-                    by: {post.author}, {post.comments} Comments
-                  </h6>
+                  <h6>{post?.description}</h6>
                 </div>
               </div>
             ))}
