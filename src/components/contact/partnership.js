@@ -5,7 +5,7 @@ import { useForm, ValidationError } from "@formspree/react";
 
 const PartnershipForm = () => {
   // Use Formspree's useForm hook with your unique Form ID
-  const [state, handleSubmit] = useForm("xpwlybyv"); // <-- Replace this with your actual Form ID!
+  const [state, handleSubmit] = useForm("xldlpkbr"); // <-- Replace this with your actual Form ID!
   const [formData, setFormData] = useState({
     fullName: "",
     businessName: "",

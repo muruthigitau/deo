@@ -4,7 +4,7 @@ import { useForm, ValidationError } from "@formspree/react";
 
 const Contact = () => {
   // Replace 'your_form_id' with your actual Formspree form ID
-  const [state, handleSubmit] = useForm("meozrnpd");
+  const [state, handleSubmit] = useForm("xqalyopr");
 
   // If the form has been submitted successfully, display a thank you message
   if (state.succeeded) {
