@@ -111,7 +111,7 @@ const Header = () => {
                 href="/blog"
                 className="!text-blue-900 !hover:text-yellow-600 !text-lg transition"
               >
-                New & Media
+                News & Media
               </Link>
               <Link
                 href="/ask-us"
@@ -199,7 +199,42 @@ const Header = () => {
             onClick={closeMobileMenu}
             className="!text-orange-900"
           >
-            Product
+            Products
+          </Link>
+          <Link
+            href="/blog"
+            onClick={closeMobileMenu}
+            className="!text-orange-900"
+          >
+            News & Media
+          </Link>
+          <Link
+            href="/ask-us"
+            onClick={closeMobileMenu}
+            className="!text-orange-900"
+          >
+            Ask Us
+          </Link>
+          <Link
+            href="/testimonials"
+            onClick={closeMobileMenu}
+            className="!text-orange-900"
+          >
+            Testimonials
+          </Link>
+          <Link
+            href="/contact"
+            onClick={closeMobileMenu}
+            className="!text-orange-900"
+          >
+            Get in Touch
+          </Link>
+          <Link
+            href="/partnership"
+            onClick={closeMobileMenu}
+            className="!text-orange-900"
+          >
+            Partnership
           </Link>
           <Link
             href="/cart"
@@ -208,14 +243,8 @@ const Header = () => {
           >
             Cart
           </Link>
-          <Link
-            href="/contact"
-            onClick={closeMobileMenu}
-            className="!text-orange-900"
-          >
-            Contact
-          </Link>
         </nav>
+
         <div className="p-4 text-sm text-green-600 border-t border-green-900">
           🌱 Enjoy Shopping!
         </div>
