@@ -145,9 +145,11 @@ const Product = () => {
               </p>
               {/* Price Display */}
               <div className="flex items-center gap-2 sm:gap-3 md:gap-4 text-base sm:text-xl md:text-2xl font-semibold">
-                <span className="text-red-500 line-through text-sm sm:text-base md:text-lg lg:text-xl">
-                  Kshs {productData.old_price || 1500}
-                </span>
+                {productData.old_price > productData.price && (
+                  <span className="text-red-500 line-through text-sm sm:text-base md:text-lg lg:text-xl">
+                    Kshs {productData.old_price}
+                  </span>
+                )}
                 <span className="text-green-700">
                   Kshs {productData.price || 999}
                 </span>

@@ -163,11 +163,13 @@ const Slide = () => {
 
                 {/* Price & Discount */}
                 <div className="flex items-center gap-4 text-2xl font-semibold">
-                  <span className="text-red-500 line-through">
-                    Kshs {productData.old_price || 1500}
-                  </span>
+                  {productData.old_price > productData.price && (
+                    <span className="text-red-500 line-through">
+                      Kshs {productData.old_price || 1500}
+                    </span>
+                  )}
                   <span className="text-green-700">
-                    Kshs {productData.price || 999}
+                    Kshs {productData.price || 1500}
                   </span>
                   {productData.discount && (
                     <span className="text-sm bg-green-100 text-green-700 px-2 py-1 rounded">
