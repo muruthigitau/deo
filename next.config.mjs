@@ -3,8 +3,19 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ["test.localhost", "localhost", "admin.deo.arifahub.com"], // Add your domain(s) here
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   },
 };
 
 export default nextConfig;
+
+import("@opennextjs/cloudflare").then((m) => m.initOpenNextCloudflareForDev());

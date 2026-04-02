@@ -32,7 +32,6 @@ const Product = () => {
         );
         if (response?.status === 200 && response?.data) {
           const product = response.data;
-          console.log(product);
 
           setProductData(product);
           const { old_price = 1500, price } = product;
@@ -144,12 +143,13 @@ const Product = () => {
               <p className="text-xs sm:text-sm text-gray-600">
                 {productData.subtitle}
               </p>
-
               {/* Price Display */}
               <div className="flex items-center gap-2 sm:gap-3 md:gap-4 text-base sm:text-xl md:text-2xl font-semibold">
-                <span className="text-red-500 line-through text-sm sm:text-base md:text-lg lg:text-xl">
-                  Kshs {productData.old_price || 1500}
-                </span>
+                {productData.old_price > productData.price && (
+                  <span className="text-red-500 line-through text-sm sm:text-base md:text-lg lg:text-xl">
+                    Kshs {productData.old_price}
+                  </span>
+                )}
                 <span className="text-green-700">
                   Kshs {productData.price || 999}
                 </span>
@@ -159,12 +159,12 @@ const Product = () => {
                   </span>
                 )}
               </div>
-
               {/* Stock Info */}
               <p className="text-xs sm:text-sm text-red-600 font-semibold">
-                Hurry! Only {productData?.stock_balance} left in stock.
+                Ships Worldwide | Secure Checkout
+                <br />
+                💥 Limited stock available!
               </p>
-
               {/* Product Details */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 text-xs sm:text-sm text-slate-700 pt-1 md:pt-2">
                 <div>
@@ -186,7 +186,6 @@ const Product = () => {
                   <p>{productData?.tags?.join(", ") || "No tags"}</p>
                 </div>
               </div>
-
               {/* Quantity Selector */}
               <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
                 <div className="flex items-center border border-green-300 rounded-md md:rounded-lg overflow-hidden shadow-xs md:shadow-sm">
@@ -214,7 +213,6 @@ const Product = () => {
                   </button>
                 </div>
               </div>
-
               {/* Optional Note Input */}
               <textarea
                 className="w-full mt-2 sm:mt-3 md:mt-4 border border-gray-300 rounded-md md:rounded-lg p-1.5 sm:p-2 text-xs sm:text-sm focus:outline-none focus:ring-1 sm:focus:ring-2 focus:ring-green-500"
