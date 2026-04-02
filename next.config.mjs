@@ -3,12 +3,16 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: [
-      "test.localhost",
-      "localhost",
-      "admin.deo.arifahub.com",
-      "admin.africanmagicdeo.com",
-    ], // Add your domain(s) here
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   },
 };
 
