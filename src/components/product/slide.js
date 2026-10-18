@@ -1,17 +1,17 @@
-import Link from "next/link";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
-import { fetchData } from "@/utils/Api";
-import { saveToDB } from "@/utils/indexedDB";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { getBrowserId } from "@/utils/getBrowserId";
 import Loader from "@/components/Loader";
+import { fetchData } from "@/utils/Api";
+import { getBrowserId } from "@/utils/getBrowserId";
+import { constructImagePath } from "@/utils/imagePath";
+import { saveToDB } from "@/utils/indexedDB";
+import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { constructImagePath } from "@/utils/imagePath";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const Slide = () => {
   const [productData, setProductData] = useState(null);
@@ -24,16 +24,15 @@ const Slide = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetchData(
-          "shop/public/product/Alum%20Deodorant/",
-          {}
-        );
-        if (response?.status === 200 && response?.data) {
-          setProductData(response.data);
-          const { old_price = 1500, price } = response.data;
+        const response = await fetchData("products.get", {
+          name: "Alum Deodorant",
+        });
+        if (response?.status === 200 && response?.data?.message) {
+          setProductData(response?.data?.message);
+          const { old_price = 1500, price } = response.data.message || {};
           if (old_price > price) {
             const discount = Math.round(
-              ((old_price - price) / old_price) * 100
+              ((old_price - price) / old_price) * 100,
             );
             setDiscountRibbon(`${discount}% OFF`);
           }
@@ -54,14 +53,14 @@ const Slide = () => {
     setQuantity((prev) =>
       type === "plus"
         ? Math.min(prev + 1, productData?.stock_balance)
-        : Math.max(prev - 1, 1)
+        : Math.max(prev - 1, 1),
     );
   };
 
   const handleQuantityInput = (e) => {
     const value = Math.max(
       1,
-      Math.min(parseInt(e.target.value), productData?.stock_balance)
+      Math.min(parseInt(e.target.value), productData?.stock_balance),
     );
     if (!isNaN(value)) setQuantity(value);
   };

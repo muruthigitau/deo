@@ -1,4 +1,4 @@
-import { API_URL } from "./Api";
+import { API_ORIGIN } from "./Api";
 
 /**
  * Constructs a complete image URL from a relative path
@@ -13,5 +13,5 @@ export const constructImagePath = (imagePath) => {
     ? imagePath.substring(1)
     : imagePath;
 
-  return `${API_URL}${cleanedPath}`;
+  return `${API_ORIGIN}${cleanedPath}`;
 };

@@ -2,7 +2,9 @@ import axios from "axios";
 
 // Preset API URL
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://admin.africanmagicdeo.com/apis/";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://deo:8001/api/method/africanmagic.api."; // Preset API URL
+const API_ORIGIN = "http://deo:8001/";
 
 // Utility function to fetch data with retry logic
 const fetchWithRetry = async (url, params, headers, retries = 3) => {
@@ -20,20 +22,20 @@ const fetchWithRetry = async (url, params, headers, retries = 3) => {
   }
 };
 
-export { API_URL };
+export { API_ORIGIN, API_URL };
 
 // Main fetchData function
 export const fetchData = async (
   endpoint,
   params = {},
-  tenant = "shop",
-  options = {}
+  // tenant = "shop",
+  options = {},
 ) => {
   try {
     const url = `${API_URL}${endpoint}`;
     const headers = {
       "Content-Type": "application/json",
-      "X-Tenant": tenant,
+      // "X-Tenant": tenant,
     };
 
     // Fetch data with retry logic
@@ -51,7 +53,7 @@ export const postFormData = async (
   endpoint,
   formData,
   headers = {},
-  tenant = "shop"
+  tenant = "shop",
 ) => {
   try {
     const url = `${API_URL}${endpoint}`;
@@ -75,7 +77,7 @@ export const postData = async (
   endpoint,
   body,
   headers = {},
-  tenant = "shop"
+  tenant = "shop",
 ) => {
   try {
     const url = `${API_URL}${endpoint}`;
@@ -99,7 +101,7 @@ export const updateData = async (
   endpoint,
   body,
   headers = {},
-  tenant = "shop"
+  tenant = "shop",
 ) => {
   try {
     const url = `${API_URL}${endpoint}`;

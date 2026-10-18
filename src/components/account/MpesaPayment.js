@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { Loader2, CheckCircle, AlertCircle, Send } from "lucide-react";
+import { fetchData, postData } from "@/utils/Api";
+import { AlertCircle, CheckCircle, Loader2, Send } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { postData, fetchData } from "@/utils/Api";
 
 const MpesaPayment = ({ orderNumber, amount }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -27,10 +27,7 @@ const MpesaPayment = ({ orderNumber, amount }) => {
     };
 
     try {
-      const response = await postData(
-        "method/shop/shop/api/order/MpesaPaymentAPI/",
-        orderDetails
-      );
+      const response = await postData("order.mpesa_payment", orderDetails);
 
       console.log("STK Push response:", response);
 
@@ -57,7 +54,7 @@ const MpesaPayment = ({ orderNumber, amount }) => {
         try {
           const paymentStatusResponse = await fetchData(
             `method/shop/shop/api/order/MpesaPaymentAPI/`,
-            { mpesa_request_id: mpesaRequestId }
+            { mpesa_request_id: mpesaRequestId },
           );
 
           if (paymentStatusResponse?.data?.status === "Completed") {

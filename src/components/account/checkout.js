@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { fetchData, postData } from "@/utils/Api";
+import { getFromDB } from "@/utils/indexedDB";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import ErrorNotification from "./errornotification";
-import BillingInfo from "./BillingInfo";
-import ShippingAddress from "./ShippingAddress";
-import OrderSummary from "./OrderSummary";
-import { getFromDB } from "@/utils/indexedDB";
-import { fetchData, postData } from "@/utils/Api";
+import { useEffect, useState } from "react";
 import Loader from "../Loader";
+import BillingInfo from "./BillingInfo";
+import ErrorNotification from "./errornotification";
+import OrderSummary from "./OrderSummary";
+import ShippingAddress from "./ShippingAddress";
 
 const Checkout = () => {
   const router = useRouter();
@@ -56,7 +56,7 @@ const Checkout = () => {
         // Fetch cart data
         const [cartData, shippingLocations] = await Promise.all([
           getFromDB("cart"),
-          fetchData("shop/public/locations/", { type: "Pickup Station" }),
+          fetchData("order.get_locations"),
         ]);
 
         setCheckoutState((prev) => ({
@@ -70,7 +70,7 @@ const Checkout = () => {
           shipping: {
             ...prev.shipping,
             locations: {
-              list: shippingLocations?.data?.data || [],
+              list: shippingLocations?.data?.message || [],
               loading: false,
               error: null,
             },
@@ -199,7 +199,7 @@ const Checkout = () => {
     const subtotal = checkoutState.cart.items.reduce(
       (sum, item) =>
         sum + (parseFloat(item?.product?.price) || 0) * (item.qty || 0),
-      0
+      0,
     );
     return subtotal + checkoutState.shipping.cost;
   };
@@ -232,7 +232,7 @@ const Checkout = () => {
         email: checkoutState.billing.email,
         phone_number: checkoutState.billing.phone,
         quantity: checkoutState.cart.items[0].qty,
-        product_id: checkoutState.cart.items[0]?.product_id,
+        product_id: checkoutState.cart.items[0]?.product_id || "Alum Deodorant",
         ...(checkoutState.shipping.address.deliveryOption === "pickup"
           ? {
               pickup_station_id: checkoutState.shipping.address.pickup_station,
@@ -252,14 +252,11 @@ const Checkout = () => {
 
       // Simulate API delay for demonstration
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      const response = await postData(
-        "method/shop/shop/api/order/OrderAPI/",
-        orderDetails
-      );
+      const response = await postData("order.place_order", orderDetails);
 
       // After successful submission, you might redirect to payment
       router.push(
-        `/checkout/${response?.data?.id || response?.data?.data?.id}`
+        `/checkout/${response?.data?.id || response?.data?.data?.id}`,
       );
     } catch (error) {
       console.error("Error confirming order:", error);
@@ -282,7 +279,7 @@ const Checkout = () => {
       // For custom address, check required fields
       const requiredFields = ["location_name", "street_address", "city"];
       return requiredFields.every((field) =>
-        checkoutState.shipping.address[field]?.trim()
+        checkoutState.shipping.address[field]?.trim(),
       );
     }
   };

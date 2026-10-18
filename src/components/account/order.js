@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import ErrorNotification from "./errornotification";
 import { fetchData } from "@/utils/Api";
-import Loader from "../Loader";
-import MpesaPayment from "./MpesaPayment";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Loader from "../Loader";
+import ErrorNotification from "./errornotification";
+import MpesaPayment from "./MpesaPayment";
 
 const OrderSummary = ({ order }) => {
   return (
@@ -19,8 +19,8 @@ const OrderSummary = ({ order }) => {
       </h3>
       <div className="mt-4 space-y-3">
         {[
-          ["Order ID:", order.id],
-          ["Date:", new Date(order.created).toLocaleDateString()],
+          ["Order ID:", order.name],
+          ["Date:", new Date(order.date).toLocaleDateString()],
           ["Order Status:", order.status],
           [
             "Payment Status:",
@@ -42,7 +42,7 @@ const OrderSummary = ({ order }) => {
       </h3>
       <div className="flex justify-between mt-4">
         <div>
-          <span className="text-gray-600">{order?.item?.id}</span>
+          <span className="text-gray-600">{order?.item}</span>
           <span className="ml-2 text-sm text-gray-500">
             (Qty: {order.quantity})
           </span>
@@ -80,9 +80,9 @@ const OrderPage = () => {
       if (!id) return;
       try {
         setLoading(true);
-        const response = await fetchData(`shop/public/order/${id}`, {});
-        response?.data
-          ? setOrderData(response.data)
+        const response = await fetchData(`order.get_order`, { name: id });
+        response?.data?.message
+          ? setOrderData(response.data.message)
           : setError("Order not found");
       } catch (err) {
         setError("Failed to load order data");
@@ -104,7 +104,7 @@ const OrderPage = () => {
     <div className="container mx-auto px-6 py-10">
       <div className="max-w-7xl mx-auto">
         <div className="text-center text-3xl font-bold text-gray-800 mb-8">
-          {orderData.id}
+          {orderData.name}
         </div>
         <div
           className={`grid gap-8 ${
@@ -134,7 +134,7 @@ const OrderPage = () => {
                   </span>
                 </div>
                 <MpesaPayment
-                  orderNumber={orderData.id}
+                  orderNumber={orderData.name}
                   amount={orderData.balance}
                 />
               </div>

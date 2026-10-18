@@ -1,12 +1,12 @@
-import { useState } from "react";
 import {
-  MapPin,
   Building,
   ChevronDown,
   ChevronUp,
-  Store,
+  MapPin,
   PackageCheck,
+  Store,
 } from "lucide-react";
+import { useState } from "react";
 
 const ShippingAddress = ({
   shippingAddress = {},
@@ -21,7 +21,7 @@ const ShippingAddress = ({
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [deliveryOption, setDeliveryOption] = useState(
-    shippingAddress.deliveryOption || "pickup"
+    shippingAddress.deliveryOption || "pickup",
   );
 
   // Style constants
@@ -150,7 +150,7 @@ const ShippingAddress = ({
                     id="location_name"
                     name="location_name"
                     className={`${inputBase} ${borderColor(
-                      validationErrors.location_name
+                      validationErrors.location_name,
                     )}`}
                     value={shippingAddress.location_name || ""}
                     onChange={handleInputChange}
@@ -175,7 +175,7 @@ const ShippingAddress = ({
                     id="street_address"
                     name="street_address"
                     className={`${inputBase} ${borderColor(
-                      validationErrors.street_address
+                      validationErrors.street_address,
                     )}`}
                     value={shippingAddress.street_address || ""}
                     onChange={handleInputChange}
@@ -200,7 +200,7 @@ const ShippingAddress = ({
                     id="city"
                     name="city"
                     className={`${inputBase} ${borderColor(
-                      validationErrors.city
+                      validationErrors.city,
                     )}`}
                     value={shippingAddress.city || ""}
                     onChange={handleInputChange}
@@ -225,7 +225,7 @@ const ShippingAddress = ({
                     id="location_description"
                     name="location_description"
                     className={`${inputBase} ${borderColor(
-                      validationErrors.location_description
+                      validationErrors.location_description,
                     )}`}
                     value={shippingAddress.location_description || ""}
                     onChange={handleInputChange}
